@@ -1,12 +1,13 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class VampireBat : BaseCreature
+    public partial class VampireBat : CustomCreature
     {
         [Constructible]
-        public VampireBat() : base(AIType.AI_Melee)
+        public VampireBat() : base(AIType.AI_Melee, FightMode.Closest, 10, 1)
         {
             Body = 317;
             BaseSoundID = 0x270;

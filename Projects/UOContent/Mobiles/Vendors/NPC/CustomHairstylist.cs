@@ -8,7 +8,7 @@ using Server.Network;
 namespace Server.Mobiles;
 
 [SerializationGenerator(0, false)]
-public partial class CustomHairstylist : BaseVendor
+public partial class CustomHairstylist : BaseAICreature
 {
     private static readonly HairstylistBuyInfo[] _sellList =
     [

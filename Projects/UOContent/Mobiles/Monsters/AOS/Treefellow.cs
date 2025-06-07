@@ -1,13 +1,14 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Treefellow : BaseCreature
+    public partial class Treefellow : CustomCreature
     {
         [Constructible]
-        public Treefellow() : base(AIType.AI_Melee, FightMode.Evil)
+        public Treefellow() : base(AIType.AI_Melee, FightMode.Evil, 10, 1)
         {
             Body = 301;
 

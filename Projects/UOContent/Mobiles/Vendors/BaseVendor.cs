@@ -11,6 +11,7 @@ using Server.Mobiles;
 using Server.Network;
 using Server.Regions;
 using Server.Logging;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
@@ -23,7 +24,7 @@ namespace Server.Mobiles
         ThighBoots
     }
 
-    public abstract class BaseVendor : BaseCreature, IVendor
+    public abstract class BaseVendor : CustomCreature, IVendor
     {
         private static readonly ILogger logger = LogFactory.GetLogger(typeof(BaseVendor));
         private const int MaxSell = 500;
@@ -59,7 +60,7 @@ namespace Server.Mobiles
             }
         }
 
-        public BaseVendor(string title = null) : base(AIType.AI_Vendor, FightMode.None, 2)
+        public BaseVendor(string title = null) : base(AIType.AI_Vendor, FightMode.None, 2, 1)
         {
             LoadSBInfo();
             Title = title;
@@ -805,10 +806,10 @@ namespace Server.Mobiles
             AddItem(
                 ShoeType switch
                 {
-                    VendorShoeType.Shoes   => new Shoes(GetShoeHue()),
-                    VendorShoeType.Boots   => new Boots(GetShoeHue()),
+                    VendorShoeType.Shoes => new Shoes(GetShoeHue()),
+                    VendorShoeType.Boots => new Boots(GetShoeHue()),
                     VendorShoeType.Sandals => new Sandals(GetShoeHue()),
-                    _                      => new ThighBoots(GetShoeHue()) // ThighBoots
+                    _ => new ThighBoots(GetShoeHue()) // ThighBoots
                 }
             );
 
@@ -1315,13 +1316,13 @@ namespace Server.Mobiles
 
                     var doubled = maxAmount switch
                     {
-                        40  => 1,
-                        80  => 2,
+                        40 => 1,
+                        80 => 2,
                         160 => 3,
                         320 => 4,
                         640 => 5,
                         999 => 6,
-                        _   => 0
+                        _ => 0
                     };
 
                     if (doubled > 0)

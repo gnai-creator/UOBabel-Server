@@ -6,7 +6,7 @@ namespace Server.Mobiles
 {
     [TypeAlias("Server.Mobiles.Bower")]
     [SerializationGenerator(0, false)]
-    public partial class Bowyer : BaseVendor
+    public partial class Bowyer : BaseAICreature
     {
         private readonly List<SBInfo> m_SBInfos = new();
 

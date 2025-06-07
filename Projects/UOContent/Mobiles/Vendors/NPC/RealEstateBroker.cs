@@ -8,7 +8,7 @@ using Server.Targeting;
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class RealEstateBroker : BaseVendor
+    public partial class RealEstateBroker : BaseAICreature
     {
         private readonly List<SBInfo> m_SBInfos = new();
         private DateTime m_NextCheckPack;

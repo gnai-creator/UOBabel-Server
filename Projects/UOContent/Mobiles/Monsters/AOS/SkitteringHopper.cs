@@ -1,12 +1,13 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class SkitteringHopper : BaseCreature
+    public partial class SkitteringHopper : CustomCreature
     {
         [Constructible]
-        public SkitteringHopper() : base(AIType.AI_Melee, FightMode.Aggressor)
+        public SkitteringHopper() : base(AIType.AI_Melee, FightMode.Aggressor, 10, 1)
         {
             Body = 302;
             BaseSoundID = 959;

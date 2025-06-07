@@ -5,7 +5,7 @@ using Server.Items;
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Mage : BaseVendor
+    public partial class Mage : BaseAICreature
     {
         private readonly List<SBInfo> m_SBInfos = new();
 

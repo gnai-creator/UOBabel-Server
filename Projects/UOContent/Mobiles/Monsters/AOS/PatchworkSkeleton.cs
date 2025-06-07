@@ -1,13 +1,14 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class PatchworkSkeleton : BaseCreature
+    public partial class PatchworkSkeleton : CustomCreature
     {
         [Constructible]
-        public PatchworkSkeleton() : base(AIType.AI_Melee)
+        public PatchworkSkeleton() : base(AIType.AI_Melee, FightMode.Closest, 10, 1)
         {
             Body = 309;
             BaseSoundID = 0x48D;

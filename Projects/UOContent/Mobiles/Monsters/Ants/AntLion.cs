@@ -1,14 +1,15 @@
 using ModernUO.Serialization;
 using Server.Engines.Plants;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class AntLion : BaseCreature
+    public partial class AntLion : CustomCreature
     {
         [Constructible]
-        public AntLion() : base(AIType.AI_Melee)
+        public AntLion() : base(AIType.AI_Melee, FightMode.Aggressor, 10, 2)
         {
             Body = 787;
             BaseSoundID = 1006;

@@ -1,12 +1,13 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Devourer : BaseCreature
+    public partial class Devourer : CustomCreature
     {
         [Constructible]
-        public Devourer() : base(AIType.AI_Mage)
+        public Devourer() : base(AIType.AI_Mage, FightMode.Closest, 10, 1)
         {
             Body = 303;
             BaseSoundID = 357;

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class LeatherWorker : BaseVendor
+    public partial class LeatherWorker : BaseAICreature
     {
         private readonly List<SBInfo> m_SBInfos = new();
 

@@ -1,13 +1,14 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Gibberling : BaseCreature
+    public partial class Gibberling : CustomCreature
     {
         [Constructible]
-        public Gibberling() : base(AIType.AI_Melee)
+        public Gibberling() : base(AIType.AI_Melee, FightMode.Closest, 10, 1)
         {
             Body = 307;
             BaseSoundID = 422;

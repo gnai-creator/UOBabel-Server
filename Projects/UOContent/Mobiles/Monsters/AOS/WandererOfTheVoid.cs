@@ -1,13 +1,14 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class WandererOfTheVoid : BaseCreature
+    public partial class WandererOfTheVoid : CustomCreature
     {
         [Constructible]
-        public WandererOfTheVoid() : base(AIType.AI_Mage)
+        public WandererOfTheVoid() : base(AIType.AI_Mage, FightMode.Closest, 10, 1)
         {
             Body = 316;
             BaseSoundID = 377;

@@ -1,13 +1,14 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class DarknightCreeper : BaseCreature
+    public partial class DarknightCreeper : CustomCreature
     {
         [Constructible]
-        public DarknightCreeper() : base(AIType.AI_Mage)
+        public DarknightCreeper() : base(AIType.AI_Mage, FightMode.Closest, 10, 1)
         {
             Name = NameList.RandomName("darknight creeper");
             Body = 313;

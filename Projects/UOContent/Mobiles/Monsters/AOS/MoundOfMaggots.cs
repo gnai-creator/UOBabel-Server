@@ -1,12 +1,13 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class MoundOfMaggots : BaseCreature
+    public partial class MoundOfMaggots : CustomCreature
     {
         [Constructible]
-        public MoundOfMaggots() : base(AIType.AI_Melee)
+        public MoundOfMaggots() : base(AIType.AI_Melee, FightMode.Closest, 10, 1)
         {
             Body = 319;
             BaseSoundID = 898;

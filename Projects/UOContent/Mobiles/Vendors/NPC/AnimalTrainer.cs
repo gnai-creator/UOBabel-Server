@@ -10,7 +10,7 @@ using Server.Targeting;
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class AnimalTrainer : BaseVendor
+    public partial class AnimalTrainer : BaseAICreature
     {
         private readonly List<SBInfo> m_SBInfos = new();
 

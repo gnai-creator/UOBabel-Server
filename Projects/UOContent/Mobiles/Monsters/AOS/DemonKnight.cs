@@ -1,16 +1,17 @@
 using ModernUO.Serialization;
 using System;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class DemonKnight : BaseCreature
+    public partial class DemonKnight : CustomCreature
     {
         private static bool m_InHere;
 
         [Constructible]
-        public DemonKnight() : base(AIType.AI_Mage)
+        public DemonKnight() : base(AIType.AI_Mage, FightMode.Closest, 10, 1)
         {
             Name = NameList.RandomName("demon knight");
             Title = "the Dark Father";
@@ -193,7 +194,7 @@ namespace Server.Mobiles
             return boss switch
             {
                 DemonKnight => 1500 + luck / 5,
-                _           => 750 + luck / 10
+                _ => 750 + luck / 10
             };
         }
 

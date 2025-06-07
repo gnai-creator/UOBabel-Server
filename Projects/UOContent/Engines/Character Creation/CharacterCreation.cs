@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using ModernUO.CodeGeneratedEvents;
 using Server.Accounting;
+using Server.Custom.Mobiles;
 using Server.Items;
 using Server.Logging;
 using Server.Maps;
 using Server.Misc;
 using Server.Mobiles;
 using Server.Network;
+using Server.Custom;
 
 namespace Server.Engines.CharacterCreation;
 
@@ -137,15 +139,15 @@ public static partial class CharacterCreation
         {
             if (pre6000ClientSupport)
             {
-                return [..OldHavenStartingCities, ..TrammelStartingCities];
+                return [.. OldHavenStartingCities, .. TrammelStartingCities];
             }
 
             if (terMerAvailable)
             {
-                return [..NewHavenStartingCities, ..TrammelStartingCities, ..StartingCitiesSA];
+                return [.. NewHavenStartingCities, .. TrammelStartingCities, .. StartingCitiesSA];
             }
 
-            return [..NewHavenStartingCities, ..TrammelStartingCities];
+            return [.. NewHavenStartingCities, .. TrammelStartingCities];
         }
 
         if (availableMaps.Includes(MapSelectionFlags.Felucca))
@@ -189,7 +191,7 @@ public static partial class CharacterCreation
         {
             if (a[i] == null)
             {
-                return a[i] = new PlayerMobile();
+                return a[i] = new CustomPlayer();
             }
         }
 
@@ -769,9 +771,9 @@ public static partial class CharacterCreation
 
         var shirt = raceFlag switch
         {
-            Race.AllowElvesOnly                   => new ElvenShirt(hue),
+            Race.AllowElvesOnly => new ElvenShirt(hue),
             Race.AllowGargoylesOnly when m.Female => new GargishClothChestType2 { Hue = hue },
-            Race.AllowGargoylesOnly               => new GargishClothChestType1 { Hue = hue },
+            Race.AllowGargoylesOnly => new GargishClothChestType1 { Hue = hue },
             // Humans
             _ => (Item)(Utility.Random(3) switch
             {
@@ -792,16 +794,16 @@ public static partial class CharacterCreation
 
         var pants = raceFlag switch
         {
-            Race.AllowElvesOnly                 => new ElvenPants(hue),
+            Race.AllowElvesOnly => new ElvenPants(hue),
             Race.AllowGargoylesOnly when female => new GargishClothLegsType2 { Hue = hue },
-            Race.AllowGargoylesOnly             => new GargishClothLegsType1 { Hue = hue },
+            Race.AllowGargoylesOnly => new GargishClothLegsType1 { Hue = hue },
             // Humans
             _ => (Item)(Utility.RandomBool() switch
             {
-                true when female  => new Skirt(hue),
-                true              => new LongPants(hue),
+                true when female => new Skirt(hue),
+                true => new LongPants(hue),
                 false when female => new Kilt(hue),
-                false             => new ShortPants(hue)
+                false => new ShortPants(hue)
             })
         };
 
@@ -839,16 +841,16 @@ public static partial class CharacterCreation
     {
         Item item = (Utility.Random(8) * (circle + 1)) switch
         {
-            0  => new ClumsyScroll(),
-            1  => new CreateFoodScroll(),
-            2  => new FeeblemindScroll(),
-            3  => new HealScroll(),
-            4  => new MagicArrowScroll(),
-            5  => new NightSightScroll(),
-            6  => new ReactiveArmorScroll(),
-            7  => new WeakenScroll(),
-            8  => new AgilityScroll(),
-            9  => new CunningScroll(),
+            0 => new ClumsyScroll(),
+            1 => new CreateFoodScroll(),
+            2 => new FeeblemindScroll(),
+            3 => new HealScroll(),
+            4 => new MagicArrowScroll(),
+            5 => new NightSightScroll(),
+            6 => new ReactiveArmorScroll(),
+            7 => new WeakenScroll(),
+            8 => new AgilityScroll(),
+            9 => new CunningScroll(),
             10 => new CureScroll(),
             11 => new HarmScroll(),
             12 => new MagicTrapScroll(),
@@ -862,7 +864,7 @@ public static partial class CharacterCreation
             20 => new TelekinesisScroll(),
             21 => new TeleportScroll(),
             22 => new UnlockScroll(),
-            _  => new WallOfStoneScroll()
+            _ => new WallOfStoneScroll()
         };
 
         m.PackItem(item);
@@ -893,44 +895,44 @@ public static partial class CharacterCreation
         raceFlag switch
         {
             Race.AllowElvesOnly when female => new FemaleElvenRobe(hue),
-            Race.AllowElvesOnly             => new MaleElvenRobe(hue),
-            _                               => new Robe(hue)
+            Race.AllowElvesOnly => new MaleElvenRobe(hue),
+            _ => new Robe(hue)
         };
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static Item SwordsWeapon(int raceFlag) =>
         raceFlag switch
         {
-            Race.AllowElvesOnly     => new RuneBlade(),
+            Race.AllowElvesOnly => new RuneBlade(),
             Race.AllowGargoylesOnly => new DreadSword(),
-            _                       => new Katana()
+            _ => new Katana()
         };
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static Item MacingWeapon(int raceFlag) =>
         raceFlag switch
         {
-            Race.AllowElvesOnly     => new DiamondMace(),
+            Race.AllowElvesOnly => new DiamondMace(),
             Race.AllowGargoylesOnly => new DiscMace(),
-            _                       => new Club()
+            _ => new Club()
         };
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static Item FencingWeapon(int raceFlag) =>
         raceFlag switch
         {
-            Race.AllowElvesOnly     => new Leafblade(),
+            Race.AllowElvesOnly => new Leafblade(),
             Race.AllowGargoylesOnly => new BloodBlade(),
-            _                       => new Kryss()
+            _ => new Kryss()
         };
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static Item RangedWeapon(int raceFlag) =>
         raceFlag switch
         {
-            Race.AllowElvesOnly     => new ElvenCompositeLongbow(),
+            Race.AllowElvesOnly => new ElvenCompositeLongbow(),
             Race.AllowGargoylesOnly => new SerpentstoneStaff(),
-            _                       => new Bow()
+            _ => new Bow()
         };
 
     private static void AddSkillItems(this Mobile m, SkillName skill)
@@ -1007,9 +1009,9 @@ public static partial class CharacterCreation
                 {
                     Item staff = raceFlag switch
                     {
-                        Race.AllowElvesOnly     => new WildStaff(),
+                        Race.AllowElvesOnly => new WildStaff(),
                         Race.AllowGargoylesOnly => new GlassStaff(),
-                        _                       => new GnarledStaff()
+                        _ => new GnarledStaff()
                     };
 
                     EquipItem(m, staff);
@@ -1152,9 +1154,9 @@ public static partial class CharacterCreation
                 {
                     Item staff = raceFlag switch
                     {
-                        Race.AllowElvesOnly     => new WildStaff(),
+                        Race.AllowElvesOnly => new WildStaff(),
                         Race.AllowGargoylesOnly => new SerpentstoneStaff(),
-                        _                       => new GnarledStaff()
+                        _ => new GnarledStaff()
                     };
 
                     EquipItem(m, staff);
@@ -1244,7 +1246,7 @@ public static partial class CharacterCreation
                     Item shield = raceFlag switch
                     {
                         Race.AllowGargoylesOnly => new GargishWoodenShield(),
-                        _                       => new WoodenShield()
+                        _ => new WoodenShield()
                     };
                     EquipItem(m, shield);
 
@@ -1325,10 +1327,10 @@ public static partial class CharacterCreation
                 {
                     Item item = raceFlag switch
                     {
-                        Race.AllowElvesOnly                   => new LeafGloves(),
+                        Race.AllowElvesOnly => new LeafGloves(),
                         Race.AllowGargoylesOnly when m.Female => new GargishLeatherArmsType2(),
-                        Race.AllowGargoylesOnly               => new GargishLeatherArmsType1(),
-                        _                                     => new LeatherGloves()
+                        Race.AllowGargoylesOnly => new GargishLeatherArmsType1(),
+                        _ => new LeatherGloves()
                     };
                     EquipItem(m, item);
                     break;

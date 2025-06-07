@@ -5,7 +5,7 @@ using Server.Items;
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Butcher : BaseVendor
+    public partial class Butcher : BaseAICreature
     {
         private readonly List<SBInfo> m_SBInfos = new();
 

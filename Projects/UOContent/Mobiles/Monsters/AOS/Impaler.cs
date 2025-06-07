@@ -1,13 +1,14 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Impaler : BaseCreature
+    public partial class Impaler : CustomCreature
     {
         [Constructible]
-        public Impaler() : base(AIType.AI_Melee)
+        public Impaler() : base(AIType.AI_Melee, FightMode.Closest, 10, 1)
         {
             Name = NameList.RandomName("impaler");
             Body = 306;

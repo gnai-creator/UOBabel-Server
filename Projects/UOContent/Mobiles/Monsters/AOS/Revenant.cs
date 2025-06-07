@@ -1,16 +1,17 @@
 using ModernUO.Serialization;
 using System;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Revenant : BaseCreature
+    public partial class Revenant : CustomCreature
     {
         private readonly DateTime m_ExpireTime;
         private readonly Mobile m_Target;
 
-        public Revenant(Mobile caster, Mobile target, TimeSpan duration) : base(AIType.AI_Melee)
+        public Revenant(Mobile caster, Mobile target, TimeSpan duration) : base(AIType.AI_Melee, FightMode.Closest, 10, 1)
         {
             Body = 400;
             Hue = 1;

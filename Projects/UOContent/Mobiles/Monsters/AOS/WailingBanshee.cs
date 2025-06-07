@@ -1,13 +1,14 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class WailingBanshee : BaseCreature
+    public partial class WailingBanshee : CustomCreature
     {
         [Constructible]
-        public WailingBanshee() : base(AIType.AI_Melee)
+        public WailingBanshee() : base(AIType.AI_Melee, FightMode.Closest, 10, 1)
         {
             Body = 310;
             BaseSoundID = 0x482;

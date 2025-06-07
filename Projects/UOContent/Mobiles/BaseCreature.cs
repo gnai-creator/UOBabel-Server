@@ -1740,10 +1740,10 @@ namespace Server.Mobiles
                         var leather = HideType switch
                         {
                             HideType.Regular => (Item)new Leather(hides),
-                            HideType.Spined  => new SpinedLeather(hides),
-                            HideType.Horned  => new HornedLeather(hides),
-                            HideType.Barbed  => new BarbedLeather(hides),
-                            _                => null
+                            HideType.Spined => new SpinedLeather(hides),
+                            HideType.Horned => new HornedLeather(hides),
+                            HideType.Barbed => new BarbedLeather(hides),
+                            _ => null
                         };
 
                         if (leather != null)
@@ -2268,18 +2268,18 @@ namespace Server.Mobiles
 
             AIObject = newAI switch
             {
-                AIType.AI_Melee   => new MeleeAI(this),
-                AIType.AI_Animal  => new AnimalAI(this),
+                AIType.AI_Melee => new MeleeAI(this),
+                AIType.AI_Animal => new AnimalAI(this),
                 AIType.AI_Berserk => new BerserkAI(this),
-                AIType.AI_Archer  => new ArcherAI(this),
-                AIType.AI_Healer  => new HealerAI(this),
-                AIType.AI_Vendor  => new VendorAI(this),
-                AIType.AI_Mage    => new MageAI(this),
+                AIType.AI_Archer => new ArcherAI(this),
+                AIType.AI_Healer => new HealerAI(this),
+                AIType.AI_Vendor => new VendorAI(this),
+                AIType.AI_Mage => new MageAI(this),
                 AIType.AI_Predator =>
                     // m_AI = new PredatorAI(this);
                     new MeleeAI(this),
                 AIType.AI_Thief => new ThiefAI(this),
-                _               => null
+                _ => null
             };
         }
 
@@ -2438,8 +2438,8 @@ namespace Server.Mobiles
             return acqType switch
             {
                 FightMode.Strongest => m.Skills.Tactics.Value + m.Str, // returns strongest mobile
-                FightMode.Weakest   => -m.Hits,                        // returns weakest mobile
-                _                   => -GetDistanceToSqrt(m)
+                FightMode.Weakest => -m.Hits,                        // returns weakest mobile
+                _ => -GetDistanceToSqrt(m)
             };
         }
 
@@ -3229,8 +3229,8 @@ namespace Server.Mobiles
                 {
                     >= 3000 => topDamage / 16,
                     >= 1000 => topDamage / 8,
-                    >= 200  => topDamage / 4,
-                    _       => topDamage / 2
+                    >= 200 => topDamage / 4,
+                    _ => topDamage / 2
                 };
 
                 for (var i = 0; i < rights.Count; ++i)
@@ -3857,7 +3857,7 @@ namespace Server.Mobiles
                 foreach (var m in pm.AllFollowers)
                 {
                     if (m.Map == master.Map && master.InRange(m, 3) && m is BaseCreature
-                            { Controlled: true, ControlOrder: OrderType.Guard or OrderType.Follow or OrderType.Come } pet &&
+                        { Controlled: true, ControlOrder: OrderType.Guard or OrderType.Follow or OrderType.Come } pet &&
                         pet.ControlMaster == master && (!onlyBonded || pet.IsBonded))
                     {
                         m.MoveToWorld(loc, map);
@@ -3871,7 +3871,7 @@ namespace Server.Mobiles
             foreach (var m in master.GetMobilesInRange(3))
             {
                 if (m is BaseCreature
-                        { Controlled: true, ControlOrder: OrderType.Guard or OrderType.Follow or OrderType.Come } pet &&
+                    { Controlled: true, ControlOrder: OrderType.Guard or OrderType.Follow or OrderType.Come } pet &&
                     pet.ControlMaster == master && (!onlyBonded || pet.IsBonded))
                 {
                     queue.Enqueue(pet);
@@ -4270,12 +4270,12 @@ namespace Server.Mobiles
 
             var types = type switch
             {
-                FoodType.Eggs             => _eggs,
-                FoodType.Fish             => _fish,
-                FoodType.GrainsAndHay     => _grainsAndHay,
-                FoodType.Meat             => _meat,
+                FoodType.Eggs => _eggs,
+                FoodType.Fish => _fish,
+                FoodType.GrainsAndHay => _grainsAndHay,
+                FoodType.Meat => _meat,
                 FoodType.FruitsAndVeggies => _fruitsAndVeggies,
-                FoodType.Gold             => _gold,
+                FoodType.Gold => _gold,
             };
 
             return fed.GetType().InTypeList(types);
@@ -4301,7 +4301,7 @@ namespace Server.Mobiles
                 int stamGain = dropped switch
                 {
                     Gold => amount - 50,
-                    _    => amount * 15 - 50
+                    _ => amount * 15 - 50
                 };
 
                 if (stamGain > 0)

@@ -1,13 +1,14 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class AbysmalHorror : BaseCreature
+    public partial class AbysmalHorror : CustomCreature
     {
         [Constructible]
-        public AbysmalHorror() : base(AIType.AI_Mage)
+        public AbysmalHorror() : base(AIType.AI_Mage, FightMode.Closest, 10, 1)
         {
             Body = 312;
             BaseSoundID = 0x451;

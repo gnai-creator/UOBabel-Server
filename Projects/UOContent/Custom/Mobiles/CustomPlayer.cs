@@ -8,11 +8,22 @@ using UOContent.Custom.Enums;
 using Server.Collections;
 using Server.ContextMenus;
 using UOContent.Custom.ContextMenus;
+using ModernUO.CodeGeneratedEvents;
 
 namespace Server.Custom.Mobiles
 {
     public class CustomPlayer : PlayerMobile
     {
+        [OnEvent(nameof(PlayerLoginEvent))]
+        public static void OnLogin(PlayerMobile from)
+        {
+            if (from is CustomPlayer cp)
+            {
+                cp.OnPlayerLogin(from);
+            }
+        }
+
+        public string PreferredLanguage { get; set; } = "pt";
 
         public string PatreonTier { get; set; } = "";
         public string PatreonStatus { get; set; } = "";
@@ -57,7 +68,7 @@ namespace Server.Custom.Mobiles
             }
         }
 
-        public override void OnLogin(PlayerMobile from)
+        public void OnPlayerLogin(PlayerMobile from)
         {
             if (from is CustomPlayer cp)
             {
@@ -97,7 +108,6 @@ namespace Server.Custom.Mobiles
                    }
                    cp.AtualizarPatreonAsync();
                });
-                base.OnLogin(from);
                 Manager?.OnLogin();
             }
         }
@@ -152,6 +162,12 @@ namespace Server.Custom.Mobiles
         {
             writer.Write(0); // version
             base.Serialize(writer);
+            writer.Write((int)CombatMode);
+            writer.Write(NextCombatModeChange);
+            writer.Write(PatreonTier);
+            writer.Write(PatreonStatus);
+            writer.Write(HasPremium);
+            writer.Write(LastPatreonCheck);
             Manager.Serialize(writer);
         }
 

@@ -1,18 +1,19 @@
 using ModernUO.Serialization;
 using System;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class ShadowKnight : BaseCreature
+    public partial class ShadowKnight : CustomCreature
     {
         private bool m_HasTeleportedAway;
 
         private TimerExecutionToken _soundTimerToken;
 
         [Constructible]
-        public ShadowKnight() : base(AIType.AI_Mage)
+        public ShadowKnight() : base(AIType.AI_Mage, FightMode.Closest, 10, 1)
         {
             Name = NameList.RandomName("shadow knight");
             Title = "the Shadow Knight";

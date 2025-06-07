@@ -1,13 +1,14 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Ravager : BaseCreature
+    public partial class Ravager : CustomCreature
     {
         [Constructible]
-        public Ravager() : base(AIType.AI_Melee)
+        public Ravager() : base(AIType.AI_Melee, FightMode.Closest, 10, 1)
         {
             Body = 314;
             BaseSoundID = 357;

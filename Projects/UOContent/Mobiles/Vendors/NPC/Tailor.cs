@@ -6,7 +6,7 @@ using Server.Engines.BulkOrders;
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Tailor : BaseVendor
+    public partial class Tailor : BaseAICreature
     {
         private readonly List<SBInfo> m_SBInfos = new();
 

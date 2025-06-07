@@ -1,13 +1,14 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class CrystalElemental : BaseCreature
+    public partial class CrystalElemental : CustomCreature
     {
         [Constructible]
-        public CrystalElemental() : base(AIType.AI_Mage)
+        public CrystalElemental() : base(AIType.AI_Mage, FightMode.Closest, 10, 1)
         {
             Body = 300;
             BaseSoundID = 278;

@@ -1,12 +1,13 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class GoreFiend : BaseCreature
+    public partial class GoreFiend : CustomCreature
     {
         [Constructible]
-        public GoreFiend() : base(AIType.AI_Melee)
+        public GoreFiend() : base(AIType.AI_Melee, FightMode.Closest, 10, 1)
         {
             Body = 305;
             BaseSoundID = 224;

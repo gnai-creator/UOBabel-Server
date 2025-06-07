@@ -1,12 +1,13 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class BoneDemon : BaseCreature
+    public partial class BoneDemon : CustomCreature
     {
         [Constructible]
-        public BoneDemon() : base(AIType.AI_Mage)
+        public BoneDemon() : base(AIType.AI_Mage, FightMode.Closest, 10, 1)
         {
             Body = 308;
             BaseSoundID = 0x48D;

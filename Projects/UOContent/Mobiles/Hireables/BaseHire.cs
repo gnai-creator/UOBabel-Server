@@ -4,11 +4,12 @@ using System;
 using System.Collections.Generic;
 using ModernUO.Serialization;
 using Server.Collections;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles;
 
 [SerializationGenerator(0)]
-public partial class BaseHire : BaseCreature
+public partial class BaseHire : CustomCreature
 {
     [SerializableField(0)]
     [SerializedCommandProperty(AccessLevel.GameMaster)]
@@ -38,13 +39,13 @@ public partial class BaseHire : BaseCreature
         }
     }
 
-    public BaseHire(AIType AI) : base(AI, FightMode.Aggressor)
+    public BaseHire(AIType AI) : base(AI, FightMode.Aggressor, 10, 2)
     {
         ControlSlots = 2;
         HoldGold = 8;
     }
 
-    public BaseHire() : base(AIType.AI_Melee, FightMode.Aggressor) => ControlSlots = 2;
+    public BaseHire() : base(AIType.AI_Melee, FightMode.Aggressor, 10, 2) => ControlSlots = 2;
 
     public override bool IsBondable => false;
     public override bool KeepsItemsOnDeath => true;

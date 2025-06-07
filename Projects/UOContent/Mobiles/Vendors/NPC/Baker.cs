@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Baker : BaseVendor
+    public partial class Baker : BaseAICreature
     {
         private readonly List<SBInfo> m_SBInfos = new();
 

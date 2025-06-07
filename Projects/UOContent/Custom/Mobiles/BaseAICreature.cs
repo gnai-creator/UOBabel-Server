@@ -852,11 +852,15 @@ namespace Server.Mobiles
 
         public string GetPlayerLanguage(Mobile mob)
         {
-            // Se for um jogador (PlayerMobile), retorna o idioma salvo; senão, retorna "pt" como padrão
-            if (!string.IsNullOrWhiteSpace(PreferredLanguage))
-                return PreferredLanguage;
+            if (mob is CustomPlayer cp)
+            {
 
+                if (!string.IsNullOrWhiteSpace(cp.PreferredLanguage))
+                    return cp.PreferredLanguage;
+
+            }
             return "pt";
+            // Se for um jogador (PlayerMobile), retorna o idioma salvo; senão, retorna "pt" como padrão
         }
 
 

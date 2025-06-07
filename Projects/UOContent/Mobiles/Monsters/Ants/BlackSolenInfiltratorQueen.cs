@@ -1,13 +1,14 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class BlackSolenInfiltratorQueen : BaseCreature
+    public partial class BlackSolenInfiltratorQueen : CustomCreature
     {
         [Constructible]
-        public BlackSolenInfiltratorQueen() : base(AIType.AI_Melee)
+        public BlackSolenInfiltratorQueen() : base(AIType.AI_Melee, FightMode.Aggressor, 10, 1)
         {
             Body = 807;
             BaseSoundID = 959;
