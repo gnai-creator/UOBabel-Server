@@ -200,35 +200,35 @@ namespace Server.Custom.Mobiles
             writer.Write(PatreonStatus);
             writer.Write(HasPremium);
             writer.Write(LastPatreonCheck);
+            Manager?.Serialize(writer);
             base.Serialize(writer);
-            Manager.Serialize(writer);
         }
 
-        public override void Deserialize(IGenericReader reader)
-        {
-            int version = reader.ReadInt();
-            switch (version)
-            {
-                case 1:
-                    {
-                        PreferredLanguage = reader.ReadString();
-                        goto case 0;
-                    }
-                case 0:
-                    {
-                        CombatMode = (CombatMode)reader.ReadInt();
-                        NextCombatModeChange = reader.ReadDateTime();
-                        PatreonTier = reader.ReadString();
-                        PatreonStatus = reader.ReadString();
-                        HasPremium = reader.ReadBool();
-                        LastPatreonCheck = reader.ReadDateTime();
-                        base.Deserialize(reader); // precisa vir antes do Manager
-                        Manager = new PlayerManager(this);
-                        Manager.Deserialize(reader);
-                        break;
-                    }
-            }
+  public override void Deserialize(IGenericReader reader)
+{
+    int version = reader.ReadInt();
+    switch (version)
+    {
+        case 1:
+            PreferredLanguage = reader.ReadString();
+            goto case 0;
 
-        }
+        case 0:
+            CombatMode = (CombatMode)reader.ReadInt();
+            NextCombatModeChange = reader.ReadDateTime();
+            PatreonTier = reader.ReadString();
+            PatreonStatus = reader.ReadString();
+            HasPremium = reader.ReadBool();
+            LastPatreonCheck = reader.ReadDateTime();
+
+            Manager = new PlayerManager(this);
+            Manager?.Deserialize(reader); // ← deve vir ANTES do base.Deserialize
+
+            base.Deserialize(reader);    // ← agora sim
+
+            break;
+    }
+}
+
     }
 }
