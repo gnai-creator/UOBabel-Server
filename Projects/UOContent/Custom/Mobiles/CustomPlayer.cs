@@ -12,6 +12,7 @@ using ModernUO.CodeGeneratedEvents;
 
 namespace Server.Custom.Mobiles
 {
+
     public class CustomPlayer : PlayerMobile
     {
         [OnEvent(nameof(PlayerLoginEvent))]
@@ -31,6 +32,7 @@ namespace Server.Custom.Mobiles
         public DateTime LastPatreonCheck { get; set; } = DateTime.MinValue;
 
         public CombatMode CombatMode { get; set; } = CombatMode.PvM;
+
         public DateTime NextCombatModeChange { get; set; } = DateTime.MinValue;
 
         public PlayerManager Manager { get; private set; }
@@ -122,6 +124,33 @@ namespace Server.Custom.Mobiles
             }
 
         }
+
+        public override void Damage(int amount, Mobile from, bool informMount = true, bool ignoreEvilOmen = false)
+        {
+            if (from is PlayerMobile attacker && this is PlayerMobile defender)
+            {
+                if (attacker != defender) // ignora auto-dano
+                {
+                    if (attacker is CustomPlayer atk && defender is CustomPlayer def)
+                    {
+                        if (atk.CombatMode == CombatMode.PvP && def.CombatMode == CombatMode.PvP)
+                        {
+                            base.Damage(amount, from); // Permite PvP legítimo
+                            return;
+                        }
+
+                        // Um dos dois não está em PvP
+                        atk.SendMessage(33, "Você não pode atacar um jogador em modo PvM.");
+                        def.SendMessage(33, $"{atk.Name} tentou atacar você, mas você está protegido por estar em PvM.");
+                        return;
+                    }
+                }
+            }
+
+            base.Damage(amount, from, informMount, ignoreEvilOmen); // Dano normal para PvM e NPCs
+        }
+
+
 
         public async Task AtualizarPatreonAsync(bool force = false)
         {
