@@ -9,6 +9,8 @@ using Server.Collections;
 using Server.ContextMenus;
 using UOContent.Custom.ContextMenus;
 using ModernUO.CodeGeneratedEvents;
+using Server.Custom.Gumps;
+using Server.Gumps;
 
 namespace Server.Custom.Mobiles
 {
@@ -74,8 +76,13 @@ namespace Server.Custom.Mobiles
 
         public void OnPlayerLogin(PlayerMobile from)
         {
+
             if (from is CustomPlayer cp)
             {
+                if (string.IsNullOrEmpty(cp.PreferredLanguage))
+                {
+                    cp.SendGump(new LanguageSelectGump());
+                }
 
                 _ = Task.Run(async () =>
                {

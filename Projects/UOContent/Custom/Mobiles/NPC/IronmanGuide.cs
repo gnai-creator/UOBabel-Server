@@ -14,6 +14,7 @@ namespace Server.Custom.NPCs
 
         private DateTime _nextTalkTime;
 
+        [Constructible]
         public IronmanGuide() : base(AIType.AI_Vendor)
         {
             Name = "Hermes";

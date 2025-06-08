@@ -173,7 +173,7 @@ public static partial class CharacterCreation
 
             m.AddItem(pack);
         }
-
+        m.PackItem(new Spellbook(ulong.MaxValue));
         m.PackItem(new RedBook("a book", m.Name, 20, true));
         m.PackItem(new Gold(1000)); // Starting gold can be customized here
         m.PackItem(new Dagger());
