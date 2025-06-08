@@ -1,9 +1,10 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class RottingCorpse : BaseCreature
+    public partial class RottingCorpse : CustomCreature
     {
         [Constructible]
         public RottingCorpse() : base(AIType.AI_Melee)

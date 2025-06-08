@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class KhaldunSummoner : BaseCreature
+    public partial class KhaldunSummoner : CustomCreature
     {
         [Constructible]
         public KhaldunSummoner() : base(AIType.AI_Mage)

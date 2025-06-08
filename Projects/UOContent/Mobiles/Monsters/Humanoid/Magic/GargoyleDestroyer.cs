@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class GargoyleDestroyer : BaseCreature
+    public partial class GargoyleDestroyer : CustomCreature
     {
         [Constructible]
         public GargoyleDestroyer() : base(AIType.AI_Mage)

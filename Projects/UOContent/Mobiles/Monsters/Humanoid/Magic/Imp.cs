@@ -1,9 +1,10 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Imp : BaseCreature
+    public partial class Imp : CustomCreature
     {
         [Constructible]
         public Imp() : base(AIType.AI_Mage)

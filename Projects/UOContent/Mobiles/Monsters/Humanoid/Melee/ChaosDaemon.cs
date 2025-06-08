@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class ChaosDaemon : BaseCreature
+    public partial class ChaosDaemon : CustomCreature
     {
         [Constructible]
         public ChaosDaemon() : base(AIType.AI_Melee)

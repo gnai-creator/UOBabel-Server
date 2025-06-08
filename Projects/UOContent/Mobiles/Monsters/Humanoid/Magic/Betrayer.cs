@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Betrayer : BaseCreature
+    public partial class Betrayer : CustomCreature
     {
         [Constructible]
         public Betrayer() : base(AIType.AI_Mage)

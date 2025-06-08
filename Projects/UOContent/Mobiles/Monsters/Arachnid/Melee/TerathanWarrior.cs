@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Engines.Plants;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class TerathanWarrior : BaseCreature
+    public partial class TerathanWarrior : CustomCreature
     {
         [Constructible]
         public TerathanWarrior() : base(AIType.AI_Melee)

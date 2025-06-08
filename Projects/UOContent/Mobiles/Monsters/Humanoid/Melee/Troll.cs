@@ -1,9 +1,10 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Troll : BaseCreature
+    public partial class Troll : CustomCreature
     {
         [Constructible]
         public Troll() : base(AIType.AI_Melee)

@@ -1,12 +1,13 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class TerathanAvenger : BaseCreature
+    public partial class TerathanAvenger : CustomCreature
     {
         [Constructible]
-        public TerathanAvenger() : base(AIType.AI_Mage)
+        public TerathanAvenger() : base(AIType.AI_Mage, FightMode.Closest, 10, 1)
         {
             Body = 152;
             BaseSoundID = 0x24D;

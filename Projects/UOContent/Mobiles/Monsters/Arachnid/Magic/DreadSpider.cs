@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class DreadSpider : BaseCreature
+    public partial class DreadSpider : CustomCreature
     {
         [Constructible]
         public DreadSpider() : base(AIType.AI_Mage)

@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Engines.Plants;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Titan : BaseCreature
+    public partial class Titan : CustomCreature
     {
         [Constructible]
         public Titan() : base(AIType.AI_Mage)

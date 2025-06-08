@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class HordeMinion : BaseCreature
+    public partial class HordeMinion : CustomCreature
     {
         [Constructible]
         public HordeMinion() : base(AIType.AI_Melee)

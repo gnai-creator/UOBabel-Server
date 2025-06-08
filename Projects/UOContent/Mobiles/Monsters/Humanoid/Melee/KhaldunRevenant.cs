@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using ModernUO.CodeGeneratedEvents;
 using ModernUO.Serialization;
 using Server.Items;
-
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class KhaldunRevenant : BaseCreature
+    public partial class KhaldunRevenant : CustomCreature
     {
         private static readonly HashSet<Mobile> m_Set = new();
         private readonly DateTime m_ExpireTime;

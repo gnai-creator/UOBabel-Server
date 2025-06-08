@@ -1,9 +1,10 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class IceFiend : BaseCreature
+    public partial class IceFiend : CustomCreature
     {
         [Constructible]
         public IceFiend() : base(AIType.AI_Mage)

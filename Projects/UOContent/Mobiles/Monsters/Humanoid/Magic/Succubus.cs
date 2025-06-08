@@ -1,9 +1,10 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Succubus : BaseCreature
+    public partial class Succubus : CustomCreature
     {
         [Constructible]
         public Succubus() : base(AIType.AI_Mage)

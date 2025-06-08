@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class GazerLarva : BaseCreature
+    public partial class GazerLarva : CustomCreature
     {
         [Constructible]
         public GazerLarva() : base(AIType.AI_Melee)

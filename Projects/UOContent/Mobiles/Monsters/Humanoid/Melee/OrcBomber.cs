@@ -2,11 +2,12 @@ using System;
 using ModernUO.Serialization;
 using Server.Items;
 using Server.Misc;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class OrcBomber : BaseCreature
+    public partial class OrcBomber : CustomCreature
     {
         private DateTime m_NextBomb;
         private int m_Thrown;

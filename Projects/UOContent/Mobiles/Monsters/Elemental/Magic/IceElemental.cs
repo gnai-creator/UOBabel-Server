@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class IceElemental : BaseCreature
+    public partial class IceElemental : CustomCreature
     {
         [Constructible]
         public IceElemental() : base(AIType.AI_Mage)

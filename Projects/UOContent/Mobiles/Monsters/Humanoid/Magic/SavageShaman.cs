@@ -4,11 +4,12 @@ using System.Runtime.CompilerServices;
 using Server.Collections;
 using Server.Items;
 using Server.Spells;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class SavageShaman : BaseCreature
+    public partial class SavageShaman : CustomCreature
     {
         [Constructible]
         public SavageShaman() : base(AIType.AI_Mage)

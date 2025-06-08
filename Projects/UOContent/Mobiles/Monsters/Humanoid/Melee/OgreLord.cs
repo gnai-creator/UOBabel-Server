@@ -2,11 +2,12 @@ using ModernUO.Serialization;
 using Server.Ethics;
 using Server.Factions;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class OgreLord : BaseCreature
+    public partial class OgreLord : CustomCreature
     {
         [Constructible]
         public OgreLord() : base(AIType.AI_Melee)

@@ -1,11 +1,12 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
     // TODO: Needs some Spellweaving abilities
-    public partial class ElfBrigand : BaseCreature
+    public partial class ElfBrigand : CustomCreature
     {
         [Constructible]
         public ElfBrigand() : base(AIType.AI_Melee)

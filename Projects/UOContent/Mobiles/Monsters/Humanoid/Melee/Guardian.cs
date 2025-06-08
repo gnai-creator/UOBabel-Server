@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Guardian : BaseCreature
+    public partial class Guardian : CustomCreature
     {
         [Constructible]
         public Guardian() : base(AIType.AI_Archer, FightMode.Aggressor)

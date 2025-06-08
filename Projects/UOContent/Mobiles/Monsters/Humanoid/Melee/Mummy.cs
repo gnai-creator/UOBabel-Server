@@ -1,11 +1,12 @@
 using ModernUO.Serialization;
 using Server.Engines.Plants;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Mummy : BaseCreature
+    public partial class Mummy : CustomCreature
     {
         [Constructible]
         public Mummy() : base(AIType.AI_Melee)

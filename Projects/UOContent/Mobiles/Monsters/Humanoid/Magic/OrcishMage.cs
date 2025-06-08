@@ -1,11 +1,12 @@
 using ModernUO.Serialization;
 using Server.Items;
 using Server.Misc;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class OrcishMage : BaseCreature
+    public partial class OrcishMage : CustomCreature
     {
         [Constructible]
         public OrcishMage() : base(AIType.AI_Mage)

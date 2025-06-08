@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class TerathanDrone : BaseCreature
+    public partial class TerathanDrone : CustomCreature
     {
         [Constructible]
         public TerathanDrone() : base(AIType.AI_Melee)

@@ -1,13 +1,14 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class FrostSpider : BaseCreature
+    public partial class FrostSpider : CustomCreature
     {
         [Constructible]
-        public FrostSpider() : base(AIType.AI_Melee)
+        public FrostSpider() : base(AIType.AI_Melee, FightMode.Closest, 10, 1)
         {
             Body = 20;
             BaseSoundID = 0x388;

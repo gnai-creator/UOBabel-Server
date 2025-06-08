@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Lich : BaseCreature
+    public partial class Lich : CustomCreature
     {
         [Constructible]
         public Lich() : base(AIType.AI_Mage)

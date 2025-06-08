@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class ArcaneDaemon : BaseCreature
+    public partial class ArcaneDaemon : CustomCreature
     {
         [Constructible]
         public ArcaneDaemon() : base(AIType.AI_Mage)

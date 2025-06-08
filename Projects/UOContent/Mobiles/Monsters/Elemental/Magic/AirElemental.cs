@@ -1,12 +1,13 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class AirElemental : BaseCreature
+    public partial class AirElemental : CustomCreature
     {
         [Constructible]
-        public AirElemental() : base(AIType.AI_Mage)
+        public AirElemental() : base(AIType.AI_Mage, FightMode.Closest, 10, 1)
         {
             Body = 13;
             Hue = 0x4001;

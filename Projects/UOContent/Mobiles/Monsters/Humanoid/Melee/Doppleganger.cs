@@ -1,9 +1,10 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Doppleganger : BaseCreature
+    public partial class Doppleganger : CustomCreature
     {
         [Constructible]
         public Doppleganger() : base(AIType.AI_Melee)

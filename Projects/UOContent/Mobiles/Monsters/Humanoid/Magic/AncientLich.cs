@@ -1,9 +1,10 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class AncientLich : BaseCreature
+    public partial class AncientLich : CustomCreature
     {
         [Constructible]
         public AncientLich() : base(AIType.AI_Mage)

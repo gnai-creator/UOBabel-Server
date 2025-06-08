@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Efreet : BaseCreature
+    public partial class Efreet : CustomCreature
     {
         [Constructible]
         public Efreet() : base(AIType.AI_Mage)

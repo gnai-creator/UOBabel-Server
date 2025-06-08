@@ -1,9 +1,10 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Cyclops : BaseCreature
+    public partial class Cyclops : CustomCreature
     {
         [Constructible]
         public Cyclops() : base(AIType.AI_Melee)

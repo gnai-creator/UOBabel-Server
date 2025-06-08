@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Balron : BaseCreature
+    public partial class Balron : CustomCreature
     {
         [Constructible]
         public Balron() : base(AIType.AI_Mage)

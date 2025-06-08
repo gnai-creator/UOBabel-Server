@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Misc;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Ratman : BaseCreature
+    public partial class Ratman : CustomCreature
     {
         [Constructible]
         public Ratman() : base(AIType.AI_Melee)

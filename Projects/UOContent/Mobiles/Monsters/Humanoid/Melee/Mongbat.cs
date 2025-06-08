@@ -1,9 +1,10 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Mongbat : BaseCreature
+    public partial class Mongbat : CustomCreature
     {
         [Constructible]
         public Mongbat() : base(AIType.AI_Melee)

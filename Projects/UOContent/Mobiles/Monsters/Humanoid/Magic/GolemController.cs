@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Items;
-
+using Server.Custom.Mobiles;
+        
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class GolemController : BaseCreature
+    public partial class GolemController : CustomCreature
     {
         [Constructible]
         public GolemController() : base(AIType.AI_Mage)

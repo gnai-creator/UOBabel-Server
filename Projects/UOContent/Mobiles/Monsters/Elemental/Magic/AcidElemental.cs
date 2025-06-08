@@ -1,13 +1,14 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [TypeAlias("Server.Mobiles.ToxicElemental")]
     [SerializationGenerator(0, false)]
-    public partial class AcidElemental : BaseCreature
+    public partial class AcidElemental : CustomCreature
     {
         [Constructible]
-        public AcidElemental() : base(AIType.AI_Mage)
+        public AcidElemental() : base(AIType.AI_Mage, FightMode.Closest, 10, 1)
         {
             Body = 0x9E;
             BaseSoundID = 278;

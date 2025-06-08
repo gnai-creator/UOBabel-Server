@@ -1,9 +1,10 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Shade : BaseCreature
+    public partial class Shade : CustomCreature
     {
         [Constructible]
         public Shade() : base(AIType.AI_Mage)

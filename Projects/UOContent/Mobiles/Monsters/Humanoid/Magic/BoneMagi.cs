@@ -1,11 +1,12 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [TypeAlias("Server.Mobiles.BoneMage")]
     [SerializationGenerator(0, false)]
-    public partial class BoneMagi : BaseCreature
+    public partial class BoneMagi : CustomCreature
     {
         [Constructible]
         public BoneMagi() : base(AIType.AI_Mage)

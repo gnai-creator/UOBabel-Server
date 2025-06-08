@@ -1,13 +1,13 @@
 using ModernUO.Serialization;
 using Server.Items;
-
+using Server.Custom.Mobiles;
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class GiantBlackWidow : BaseCreature
+    public partial class GiantBlackWidow : CustomCreature
     {
         [Constructible]
-        public GiantBlackWidow() : base(AIType.AI_Melee)
+        public GiantBlackWidow() : base(AIType.AI_Melee, FightMode.Closest, 10, 1)
         {
             Body = 0x9D;
             BaseSoundID = 0x388; // TODO: validate

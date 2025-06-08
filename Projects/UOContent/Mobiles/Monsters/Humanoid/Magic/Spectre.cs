@@ -1,9 +1,10 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Spectre : BaseCreature
+    public partial class Spectre : CustomCreature
     {
         [Constructible]
         public Spectre() : base(AIType.AI_Mage)

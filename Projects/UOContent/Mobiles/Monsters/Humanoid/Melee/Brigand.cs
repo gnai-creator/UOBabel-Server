@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Brigand : BaseCreature
+    public partial class Brigand : CustomCreature
     {
         [Constructible]
         public Brigand() : base(AIType.AI_Melee)

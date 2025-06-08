@@ -1,9 +1,10 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class ElderGazer : BaseCreature
+    public partial class ElderGazer : CustomCreature
     {
         [Constructible]
         public ElderGazer() : base(AIType.AI_Mage)

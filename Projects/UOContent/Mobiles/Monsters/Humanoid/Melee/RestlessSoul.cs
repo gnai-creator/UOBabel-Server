@@ -2,11 +2,12 @@ using ModernUO.Serialization;
 using Server.Collections;
 using Server.ContextMenus;
 using Server.Engines.Quests.Haven;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class RestlessSoul : BaseCreature
+    public partial class RestlessSoul : CustomCreature
     {
         [Constructible]
         public RestlessSoul() : base(AIType.AI_Melee)

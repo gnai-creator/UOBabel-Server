@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class SpectralArmour : BaseCreature
+    public partial class SpectralArmour : CustomCreature
     {
         [Constructible]
         public SpectralArmour() : base(AIType.AI_Melee)

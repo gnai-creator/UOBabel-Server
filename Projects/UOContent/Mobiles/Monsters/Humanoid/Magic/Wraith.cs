@@ -1,9 +1,10 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Wraith : BaseCreature
+    public partial class Wraith : CustomCreature
     {
         [Constructible]
         public Wraith() : base(AIType.AI_Mage)

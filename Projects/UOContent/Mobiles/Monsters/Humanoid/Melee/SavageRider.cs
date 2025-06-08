@@ -1,11 +1,12 @@
 using System;
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class SavageRider : BaseCreature
+    public partial class SavageRider : CustomCreature
     {
         [Constructible]
         public SavageRider() : base(AIType.AI_Melee)

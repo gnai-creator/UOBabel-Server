@@ -1,11 +1,12 @@
 using ModernUO.Serialization;
 using Server.Ethics;
 using Server.Factions;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Daemon : BaseCreature
+    public partial class Daemon : CustomCreature
     {
         [Constructible]
         public Daemon() : base(AIType.AI_Mage)
