@@ -202,10 +202,13 @@ namespace Server.Custom.Mobiles
             writer.Write(HasPremium);
             writer.Write(LastPatreonCheck);
             Manager?.Serialize(writer);
+
+
         }
 
         public override void Deserialize(IGenericReader reader)
         {
+            base.Deserialize(reader); // ← AGORA sim, após tudo
             int version = reader.ReadInt();
 
             switch (version)
@@ -228,7 +231,6 @@ namespace Server.Custom.Mobiles
                     break;
             }
 
-            base.Deserialize(reader); // ← AGORA sim, após tudo
         }
 
 
