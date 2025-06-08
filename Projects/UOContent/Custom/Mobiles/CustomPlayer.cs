@@ -160,8 +160,9 @@ namespace Server.Custom.Mobiles
 
         public override void Serialize(IGenericWriter writer)
         {
-            writer.Write(0); // version
+            writer.Write(1); // version
             base.Serialize(writer);
+            writer.Write(PreferredLanguage);
             writer.Write((int)CombatMode);
             writer.Write(NextCombatModeChange);
             writer.Write(PatreonTier);
@@ -177,8 +178,19 @@ namespace Server.Custom.Mobiles
             base.Deserialize(reader); // precisa vir antes do Manager
             switch (version)
             {
+                case 1:
+                    {
+                        PreferredLanguage = reader.ReadString();
+                        break;
+                    }
                 case 0:
                     {
+                        CombatMode = (CombatMode)reader.ReadInt();
+                        NextCombatModeChange = reader.ReadDateTime();
+                        PatreonTier = reader.ReadString();
+                        PatreonStatus = reader.ReadString();
+                        HasPremium = reader.ReadBool();
+                        LastPatreonCheck = reader.ReadDateTime();
                         Manager ??= new PlayerManager(this);
                         Manager.Deserialize(reader);
                         break;

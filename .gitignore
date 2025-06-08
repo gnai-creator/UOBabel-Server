@@ -14,6 +14,7 @@
 /Distribution/Configuration/email-settings.json
 /Distribution/Configuration/throttles.json
 /Distribution/Configuration/tot.json
+/Distribution/Data/NpcMemory/*
 /Distribution/Logs
 /Distribution/Archives
 /Distribution/Backups
