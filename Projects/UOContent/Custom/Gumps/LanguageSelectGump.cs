@@ -3,6 +3,7 @@ using Server.Mobiles;
 using Server.Gumps;
 using Server.Custom.AI;
 using System.Threading.Tasks;
+using Server.Custom.Mobiles;
 
 namespace Server.Custom.Gumps
 {
@@ -62,9 +63,12 @@ namespace Server.Custom.Gumps
         public virtual async Task Confirm(Mobile from, string lang)
         {
             if (from == null) return;
-            from.PreferredLanguage = lang;
-            string traducao = await AITranslator.TranslateAsync("Idioma configurado com sucesso!", "pt", lang);
-            from.SendMessage(traducao);
+            if (from is CustomPlayer player)
+            {
+                player.PreferredLanguage = lang;
+                string traducao = await AITranslator.TranslateAsync("Idioma configurado com sucesso!", "pt", lang);
+                player.SendMessage(traducao);
+            }
         }
 
         public virtual void Refuse(Mobile from)

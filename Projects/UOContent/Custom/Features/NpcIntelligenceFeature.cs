@@ -69,7 +69,7 @@ namespace Server.Custom.Features
                 {
                     if (e.Speech.Contains(creature.Name, StringComparison.OrdinalIgnoreCase))
                     {
-                    // === MEMÓRIA DIRETA MULTILÍNGUE ===
+                        // === MEMÓRIA DIRETA MULTILÍNGUE ===
                         string speechLower = e.Speech.ToLower();
                         string[] triggers = { "lembra de ", "remember ", "do you remember ", "recuerda ", "tu te souviens de ", "помнишь " };
                         string playerLang = GetPlayerLanguage(e.Mobile);
@@ -183,7 +183,7 @@ namespace Server.Custom.Features
                                             break;
                                         case AIService.NpcAction.PEGAR_DINHEIRO:
                                             FalarComEmocao("*pega o dinheiro*", "afeto", playerLang);
-                                        
+
                                             foreach (var item in e.Mobile.Backpack.Items)
                                             {
                                                 if (decision.item_amount == "")
@@ -254,7 +254,7 @@ namespace Server.Custom.Features
                                             break;
                                     }
                                 }
-                            
+
 
                             }
                             catch (Exception ex)
@@ -264,7 +264,8 @@ namespace Server.Custom.Features
                             }
                         }
                     }
-                    else {
+                    else
+                    {
                         creature.SendMessage("Você não tem acesso completo para interagir comigo.");
                     }
                     e.Handled = true;
@@ -278,8 +279,8 @@ namespace Server.Custom.Features
             }
         }
 
-        
-         protected void DarItem(Mobile from, AIService.NpcDecision decision, string playerLang)
+
+        protected void DarItem(Mobile from, AIService.NpcDecision decision, string playerLang)
         {
             // Console.WriteLine($"[BaseAICreature] DarItem: {decision.item_name} - {decision.item_amount}");
             if (decision.item_amount == "")
@@ -303,14 +304,14 @@ namespace Server.Custom.Features
             }
         }
         protected void PegarItem(Mobile from, AIService.NpcDecision decision, string playerLang)
-        { 
+        {
             // Console.WriteLine($"[BaseAICreature] PegarItem: {decision.item_name} - {decision.item_amount}");
             if (decision.item_amount == "")
             {
                 decision.item_amount = "1";
             }
             int amount = int.Parse(decision.item_amount);
-            if ( amount == 0)
+            if (amount == 0)
             {
                 amount = 1;
             }
@@ -375,9 +376,11 @@ namespace Server.Custom.Features
 
         public string GetPlayerLanguage(Mobile mob)
         {
-            // Se for um jogador (PlayerMobile), retorna o idioma salvo; senão, retorna "pt" como padrão
-            if (!string.IsNullOrWhiteSpace(creature.PreferredLanguage))
-                return creature.PreferredLanguage;
+            if (mob is CustomPlayer player)
+            {
+                if (!string.IsNullOrWhiteSpace(player.PreferredLanguage))
+                    return player.PreferredLanguage;
+            }
 
             return "pt";
         }
@@ -385,7 +388,7 @@ namespace Server.Custom.Features
 
         public virtual string GetBackground()
         {
-            
+
             switch (creature.AI)
             {
                 case AIType.AI_Melee:
