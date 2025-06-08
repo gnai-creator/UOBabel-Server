@@ -1,4 +1,6 @@
 using System;
+using Server.Custom.Mobiles;
+using Server.Custom.Features;
 using Server.Factions;
 using Server.Items;
 using Server.Misc;
@@ -126,6 +128,11 @@ namespace Server.Spells.Chivalry
 
         public override bool CheckCast()
         {
+            if (Caster is CustomPlayer cp && cp.Manager.Features.TryGetValue("ironman", out var feature) && feature is IronmanFeature ironman && ironman.IsActive)
+            {
+                Caster.SendMessage(33, "[Ironman] Você não pode usar Sacred Journey enquanto estiver no modo Ironman!");
+                return false;
+            }
             if (!base.CheckCast())
             {
                 return false;

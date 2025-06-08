@@ -6,11 +6,14 @@ using Server.Collections;
 using Server.ContextMenus;
 using Server.Items;
 using Server.Network;
+using Server.Custom.Mobiles;
+using Server.Custom.Features;
+using Server.Custom.AI;
 
 namespace Server.Mobiles;
 
 [SerializationGenerator(0, false)]
-public partial class Banker : BaseAICreature
+public partial class Banker : BaseVendor
 {
     private readonly List<SBInfo> m_SBInfos = new();
 
@@ -433,6 +436,11 @@ public partial class Banker : BaseAICreature
                                 Say(500378); // Thou art a criminal and cannot access thy bank box.
                                 break;
                             }
+                            if (e.Mobile is CustomPlayer cp && cp.Manager.Features.TryGetValue("ironman", out var feature) && feature is IronmanFeature ironman && ironman.IsActive)
+                            {
+                                AITranslator.TranslateTo(e.Mobile, cp.PreferredLanguage, "Você não pode acessar o banco enquanto estiver no modo Ironman!");
+                                break;
+                            }
 
                             e.Mobile.BankBox.Open();
 
@@ -509,11 +517,17 @@ public partial class Banker : BaseAICreature
 
     public override void AddCustomContextEntries(Mobile from, ref PooledRefList<ContextMenuEntry> list)
     {
+        base.AddCustomContextEntries(from, ref list);
+
+        if (from.Alive && from is CustomPlayer cp && cp.Manager.Features.TryGetValue("ironman", out var feature) && feature is IronmanFeature ironman && ironman.IsActive)
+        {
+            return;
+        }
+
         if (from.Alive)
         {
             list.Add(new OpenBankEntry());
         }
 
-        base.AddCustomContextEntries(from, ref list);
     }
 }

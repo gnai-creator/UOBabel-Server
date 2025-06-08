@@ -1,5 +1,7 @@
 using System;
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
+using Server.Custom.Features;
 using Server.Factions;
 using Server.Items;
 using Server.Misc;
@@ -111,6 +113,11 @@ public class GateTravelSpell : MagerySpell, IRecallSpell
 
     public override bool CheckCast()
     {
+        if (Caster is CustomPlayer cp && cp.Manager.Features.TryGetValue("ironman", out var feature) && feature is IronmanFeature ironman && ironman.IsActive)
+        {
+            Caster.SendMessage(33, "[Ironman] Você não pode usar Gate Travel enquanto estiver no modo Ironman!");
+            return false;
+        }
         if (Sigil.ExistsOn(Caster))
         {
             Caster.SendLocalizedMessage(1061632); // You can't do that while carrying the sigil.

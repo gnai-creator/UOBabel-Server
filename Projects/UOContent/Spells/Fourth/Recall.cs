@@ -3,6 +3,8 @@ using Server.Items;
 using Server.Misc;
 using Server.Mobiles;
 using Server.Spells.Necromancy;
+using Server.Custom.Mobiles;
+using Server.Custom.Features;
 
 namespace Server.Spells.Fourth
 {
@@ -134,6 +136,11 @@ namespace Server.Spells.Fourth
 
         public override bool CheckCast()
         {
+            if (Caster is CustomPlayer cp && cp.Manager.Features.TryGetValue("ironman", out var feature) && feature is IronmanFeature ironman && ironman.IsActive)
+            {
+                Caster.SendMessage(33, "[Ironman] Você não pode usar Recall enquanto estiver no modo Ironman!");
+                return false;
+            }
             if (Sigil.ExistsOn(Caster))
             {
                 Caster.SendLocalizedMessage(1061632); // You can't do that while carrying the sigil.
