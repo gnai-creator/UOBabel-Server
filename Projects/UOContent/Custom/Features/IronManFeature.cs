@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Server;
 using Server.Custom.Interfaces;
 using Server.Custom.Mobiles;
@@ -16,25 +17,19 @@ namespace Server.Custom.Features
         public DateTime IronmanStartTime { get; set; } = DateTime.MinValue;
         public TimeSpan IronmanSurvivalTime { get; set; }
 
-        public Dictionary<string, int> IronmanMonsterKills { get; set; } = new Dictionary<string, int>();
-        public Dictionary<string, int> IronmanPlayerKills { get; set; } = new Dictionary<string, int>();
+        public Dictionary<string, int> IronmanMonsterKills { get; set; } = new();
+        public Dictionary<string, int> IronmanPlayerKills { get; set; } = new();
 
         public int IronmanKillStreak { get; set; } = 0;
-
         public double IronmanScoreMultiplier { get; set; } = 1.0;
-
         public string IronmanStartRegion { get; set; } = "Unknown";
-
         public string IronmanCauseOfDeath { get; set; } = "Unknown";
 
-        public List<string> IronmanAchievements { get; set; } = new List<string>();
+        public List<string> IronmanAchievements { get; set; } = new();
 
         public int IronmanPvPDeaths { get; set; } = 0;
-
         public int IronmanPVPKills { get; set; } = 0;
-
         public int IronmanPVMKills { get; set; } = 0;
-
         public int IronmanPVMDeaths { get; set; } = 0;
 
         public IronmanFeature()
@@ -45,6 +40,9 @@ namespace Server.Custom.Features
         public void Initialize(Mobile owner)
         {
             Owner = owner;
+            IronmanMonsterKills ??= new();
+            IronmanPlayerKills ??= new();
+            IronmanAchievements ??= new();
         }
 
         public void OnLogin()
@@ -99,30 +97,35 @@ namespace Server.Custom.Features
             writer.Write(IronmanScore);
             writer.Write(IronmanStartTime);
             writer.Write(IronmanSurvivalTime);
-            int monsterKillsCount = IronmanMonsterKills.Count;
-            writer.Write(monsterKillsCount);
-            foreach (var monsterKill in IronmanMonsterKills)
+
+            var validMonsterKills = IronmanMonsterKills.Where(kv => !string.IsNullOrWhiteSpace(kv.Key)).ToList();
+            writer.Write(validMonsterKills.Count);
+            foreach (var kv in validMonsterKills)
             {
-                writer.Write(monsterKill.Key);
-                writer.Write(monsterKill.Value);
+                writer.Write(kv.Key);
+                writer.Write(kv.Value);
             }
-            int playerKillsCount = IronmanPlayerKills.Count;
-            writer.Write(playerKillsCount);
-            foreach (var playerKill in IronmanPlayerKills)
+
+            var validPlayerKills = IronmanPlayerKills.Where(kv => !string.IsNullOrWhiteSpace(kv.Key)).ToList();
+            writer.Write(validPlayerKills.Count);
+            foreach (var kv in validPlayerKills)
             {
-                writer.Write(playerKill.Key);
-                writer.Write(playerKill.Value);
+                writer.Write(kv.Key);
+                writer.Write(kv.Value);
             }
+
             writer.Write(IronmanKillStreak);
             writer.Write(IronmanScoreMultiplier);
-            writer.Write(IronmanStartRegion);
-            writer.Write(IronmanCauseOfDeath);
-            int achievementsCount = IronmanAchievements.Count;
-            writer.Write(achievementsCount);
-            foreach (var achievement in IronmanAchievements)
+            writer.Write(IronmanStartRegion ?? "Unknown");
+            writer.Write(IronmanCauseOfDeath ?? "Unknown");
+
+            var validAchievements = IronmanAchievements.Where(a => !string.IsNullOrWhiteSpace(a)).ToList();
+            writer.Write(validAchievements.Count);
+            foreach (var achievement in validAchievements)
             {
                 writer.Write(achievement);
             }
+
             writer.Write(IronmanPvPDeaths);
             writer.Write(IronmanPVPKills);
             writer.Write(IronmanPVMKills);
@@ -135,45 +138,54 @@ namespace Server.Custom.Features
             switch (version)
             {
                 case 1:
+                    IronmanScore = reader.ReadInt();
+                    IronmanStartTime = reader.ReadDateTime();
+                    IronmanSurvivalTime = reader.ReadTimeSpan();
+
+                    int monsterKillsCount = reader.ReadInt();
+                    for (int i = 0; i < monsterKillsCount; i++)
                     {
-                        IronmanScore = reader.ReadInt();
-                        IronmanStartTime = reader.ReadDateTime();
-                        IronmanSurvivalTime = reader.ReadTimeSpan();
-                        int monsterKillsCount = reader.ReadInt();
-                        for (int i = 0; i < monsterKillsCount; i++)
+                        string monsterName = reader.ReadString();
+                        int monsterKills = reader.ReadInt();
+                        if (!string.IsNullOrWhiteSpace(monsterName))
                         {
-                            string monsterName = reader.ReadString();
-                            int monsterKills = reader.ReadInt();
                             IronmanMonsterKills[monsterName] = monsterKills;
                         }
-                        int playerKillsCount = reader.ReadInt();
-                        for (int i = 0; i < playerKillsCount; i++)
+                    }
+
+                    int playerKillsCount = reader.ReadInt();
+                    for (int i = 0; i < playerKillsCount; i++)
+                    {
+                        string playerName = reader.ReadString();
+                        int playerKills = reader.ReadInt();
+                        if (!string.IsNullOrWhiteSpace(playerName))
                         {
-                            string playerName = reader.ReadString();
-                            int playerKills = reader.ReadInt();
                             IronmanPlayerKills[playerName] = playerKills;
                         }
-                        IronmanKillStreak = reader.ReadInt();
-                        IronmanScoreMultiplier = reader.ReadDouble();
-                        IronmanStartRegion = reader.ReadString();
-                        IronmanCauseOfDeath = reader.ReadString();
-                        int achievementsCount = reader.ReadInt();
-                        for (int i = 0; i < achievementsCount; i++)
+                    }
+
+                    IronmanKillStreak = reader.ReadInt();
+                    IronmanScoreMultiplier = reader.ReadDouble();
+                    IronmanStartRegion = reader.ReadString() ?? "Unknown";
+                    IronmanCauseOfDeath = reader.ReadString() ?? "Unknown";
+
+                    int achievementsCount = reader.ReadInt();
+                    for (int i = 0; i < achievementsCount; i++)
+                    {
+                        string achievement = reader.ReadString();
+                        if (!string.IsNullOrWhiteSpace(achievement))
                         {
-                            string achievement = reader.ReadString();
                             IronmanAchievements.Add(achievement);
                         }
-                        IronmanPvPDeaths = reader.ReadInt();
-                        IronmanPVPKills = reader.ReadInt();
-                        IronmanPVMKills = reader.ReadInt();
-                        IronmanPVMDeaths = reader.ReadInt();
-                        goto case 0;
                     }
-                case 0:
-                    {
-                        IsActive = reader.ReadBool();
-                        break;
-                    }
+
+                    IronmanPvPDeaths = reader.ReadInt();
+                    IronmanPVPKills = reader.ReadInt();
+                    IronmanPVMKills = reader.ReadInt();
+                    IronmanPVMDeaths = reader.ReadInt();
+
+                    IsActive = reader.ReadBool();
+                    break;
             }
         }
     }
