@@ -1,10 +1,15 @@
 using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Text.Json;
 using Server;
 using Server.Mobiles;
 using Server.Custom.Mobiles;
 using Server.Custom.Features;
 using Server.Custom.AI;
 using System.Threading.Tasks;
+using Server.Gumps;
+using UOContent.Custom.Features.Ironman.Gumps;
 
 namespace Server.Custom.NPCs
 {
@@ -25,6 +30,14 @@ namespace Server.Custom.NPCs
 
             CantWalk = true;
             Direction = Direction.South;
+        }
+
+        private async Task<List<IronmanRankingEntry>> GetRankingAsync()
+        {
+            using var http = new HttpClient();
+            var res = await http.GetStringAsync("https://uobabel.com/api/ironman-ranking");
+            var list = JsonSerializer.Deserialize<List<IronmanRankingEntry>>(res);
+            return list ?? new List<IronmanRankingEntry>();
         }
 
         private async Task HandleMovementAsync(Mobile m, Point3D oldLocation)
@@ -73,6 +86,16 @@ namespace Server.Custom.NPCs
 
                     e.Handled = true;
                 }
+                if (speechTranslated.Contains("ranking") || speechTranslated.Contains("top") || speechTranslated.Contains("melhores"))
+                {
+                    ((Mobile)player).CloseGump<IronmanRankingGump>(); // fecha se já estiver aberto
+                    var ranking = await GetRankingAsync();
+                    ((Mobile)player).SendGump(new IronmanRankingGump((PlayerMobile)player, ranking));
+                    await FalarComEmocao("Aqui está o ranking dos maiores sobreviventes do Ironman!", "empolgado", player.PreferredLanguage);
+                    e.Handled = true;
+                    return;
+                }
+
             }
         }
 
