@@ -191,6 +191,7 @@ namespace Server.Custom.Mobiles
 
         public override void Serialize(IGenericWriter writer)
         {
+            base.Serialize(writer);
             writer.Write(1); // version
             writer.Write(PreferredLanguage);
 
@@ -201,34 +202,35 @@ namespace Server.Custom.Mobiles
             writer.Write(HasPremium);
             writer.Write(LastPatreonCheck);
             Manager?.Serialize(writer);
-            base.Serialize(writer);
         }
 
-  public override void Deserialize(IGenericReader reader)
-{
-    int version = reader.ReadInt();
-    switch (version)
-    {
-        case 1:
-            PreferredLanguage = reader.ReadString();
-            goto case 0;
+        public override void Deserialize(IGenericReader reader)
+        {
+            int version = reader.ReadInt();
 
-        case 0:
-            CombatMode = (CombatMode)reader.ReadInt();
-            NextCombatModeChange = reader.ReadDateTime();
-            PatreonTier = reader.ReadString();
-            PatreonStatus = reader.ReadString();
-            HasPremium = reader.ReadBool();
-            LastPatreonCheck = reader.ReadDateTime();
+            switch (version)
+            {
+                case 1:
+                    PreferredLanguage = reader.ReadString();
+                    goto case 0;
 
-            Manager = new PlayerManager(this);
-            Manager?.Deserialize(reader); // ← deve vir ANTES do base.Deserialize
+                case 0:
+                    CombatMode = (CombatMode)reader.ReadInt();
+                    NextCombatModeChange = reader.ReadDateTime();
+                    PatreonTier = reader.ReadString();
+                    PatreonStatus = reader.ReadString();
+                    HasPremium = reader.ReadBool();
+                    LastPatreonCheck = reader.ReadDateTime();
 
-            base.Deserialize(reader);    // ← agora sim
+                    Manager = new PlayerManager(this);
+                    Manager?.Deserialize(reader);
 
-            break;
-    }
-}
+                    break;
+            }
+
+            base.Deserialize(reader); // ← AGORA sim, após tudo
+        }
+
 
     }
 }
