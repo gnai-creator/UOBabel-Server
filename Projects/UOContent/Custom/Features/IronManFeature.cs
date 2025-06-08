@@ -138,6 +138,7 @@ namespace Server.Custom.Features
             switch (version)
             {
                 case 1:
+                    IsActive = reader.ReadBool();
                     IronmanScore = reader.ReadInt();
                     IronmanStartTime = reader.ReadDateTime();
                     IronmanSurvivalTime = reader.ReadTimeSpan();
@@ -183,8 +184,6 @@ namespace Server.Custom.Features
                     IronmanPVPKills = reader.ReadInt();
                     IronmanPVMKills = reader.ReadInt();
                     IronmanPVMDeaths = reader.ReadInt();
-
-                    IsActive = reader.ReadBool();
                     break;
             }
         }

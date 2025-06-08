@@ -191,8 +191,9 @@ namespace Server.Custom.Mobiles
 
         public override void Serialize(IGenericWriter writer)
         {
+            Manager?.Serialize(writer);
             base.Serialize(writer);
-            writer.Write(1); // version
+            writer.Write(1);
             writer.Write(PreferredLanguage);
 
             writer.Write((int)CombatMode);
@@ -201,14 +202,13 @@ namespace Server.Custom.Mobiles
             writer.Write(PatreonStatus);
             writer.Write(HasPremium);
             writer.Write(LastPatreonCheck);
-            Manager?.Serialize(writer);
-
-
         }
 
         public override void Deserialize(IGenericReader reader)
         {
-            base.Deserialize(reader); // ← AGORA sim, após tudo
+            Manager = new PlayerManager(this);
+            Manager?.Deserialize(reader);
+            base.Deserialize(reader);
             int version = reader.ReadInt();
 
             switch (version)
@@ -224,13 +224,8 @@ namespace Server.Custom.Mobiles
                     PatreonStatus = reader.ReadString();
                     HasPremium = reader.ReadBool();
                     LastPatreonCheck = reader.ReadDateTime();
-
-                    Manager = new PlayerManager(this);
-                    Manager?.Deserialize(reader);
-
                     break;
             }
-
         }
 
 

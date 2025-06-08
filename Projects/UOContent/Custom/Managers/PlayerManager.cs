@@ -71,13 +71,13 @@ namespace Server.Custom.Mobiles
                         IPlayerFeature feature = key switch
                         {
                             "ironman" => new IronmanFeature(),
-                            _ => new ExampleFeature()
+                            _ => null
                         };
 
                         if (feature != null)
                         {
+                            feature.Initialize(Owner); // Initialize before deserializing
                             feature.Deserialize(reader);
-                            feature.Initialize(Owner); // <== ESSENCIAL após desserializar
                             Features[key] = feature;
                         }
                     }
