@@ -57,6 +57,13 @@ namespace Server.Custom.Mobiles
         public override void OnDeath(Container c)
         {
             Manager?.OnDeath();
+
+            var lastKiller = this.LastKiller;
+            if (lastKiller is CustomPlayer lastKillerPlayer && lastKillerPlayer != this)
+            {
+                lastKillerPlayer.Manager?.Features["ironman"]?.OnKill(this, this);
+                this.Manager?.Features["ironman"]?.OnKill(this, lastKillerPlayer);
+            }
             base.OnDeath(c);
         }
 

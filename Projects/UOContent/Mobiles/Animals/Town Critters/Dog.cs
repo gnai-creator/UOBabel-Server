@@ -1,9 +1,10 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Dog : BaseCreature
+    public partial class Dog : CustomCreature
     {
         [Constructible]
         public Dog() : base(AIType.AI_Animal, FightMode.Aggressor)

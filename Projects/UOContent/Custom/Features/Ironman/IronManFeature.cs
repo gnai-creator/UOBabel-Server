@@ -64,8 +64,27 @@ namespace Server.Custom.Features
             {
                 IsActive = false;
                 Console.WriteLine("Ironman morreu.");
+                AtualizaRankingIronmanAsync(new IronmanRankingEntry
+                {
+                    PlayerName = Owner.Name,
+                    Score = IronmanScore,
+                    SurvivalTime = IronmanSurvivalTime.ToString(),
+                    KillPvPKillStreak = IronmanPvPKillStreak,
+                    KillPvMKillStreak = IronmanPvMKillStreak,
+                    Achievements = IronmanAchievements,
+                    CauseOfDeath = IronmanCauseOfDeath,
+                    StartRegion = IronmanStartRegion,
+                    PvPKills = IronmanPVPKills,
+                    PvPDeaths = IronmanPvPDeaths,
+                    PvMKills = IronmanPVMKills,
+                    PvMDeaths = IronmanPVMDeaths,
+                    IsActive = IsActive,
+                    Timestamp = DateTime.UtcNow
+                });
             }
         }
+
+        private DateTime _lastAfkPenalty = DateTime.MinValue;
 
         public void OnThink()
         {
@@ -77,11 +96,16 @@ namespace Server.Custom.Features
 
             if (afkTime > TimeSpan.FromHours(12))
             {
-                IronmanScore -= 10;
-                cp.SendMessage(33, "[Ironman] Você está AFK há muito tempo. Penalidade de -10 pontos.");
+                if ((Core.Now - _lastAfkPenalty) > TimeSpan.FromHours(1)) // só pune 1x por hora!
+                {
+                    IronmanScore -= 10;
+                    cp.SendMessage(33, "[Ironman] Você está AFK há muito tempo. Penalidade de -10 pontos.");
+                    _lastAfkPenalty = Core.Now;
+                }
             }
-            OnKill(Owner.Combatant, Owner);
+            // Não chame OnKill aqui!
         }
+
 
         public void OnKill(Mobile victim, Mobile killer)
         {
@@ -109,32 +133,18 @@ namespace Server.Custom.Features
 
 
                 Console.WriteLine($"[IronmanRanking] Atualizando ranking para {killerPlayer.Name} com score {((IronmanFeature)killerPlayer.Manager.Features["ironman"]).IronmanScore}");
-                AtualizaRankingIronmanAsync(new IronmanRankingEntry
-                {
-                    PlayerName = killerPlayer.Name,
-                    Score = ((IronmanFeature)killerPlayer.Manager.Features["ironman"]).IronmanScore,
-                    SurvivalTime = ((IronmanFeature)killerPlayer.Manager.Features["ironman"]).IronmanSurvivalTime.ToString(),
-                    KillPvPKillStreak = ((IronmanFeature)killerPlayer.Manager.Features["ironman"]).IronmanPvPKillStreak,
-                    KillPvMKillStreak = ((IronmanFeature)killerPlayer.Manager.Features["ironman"]).IronmanPvMKillStreak,
-                    Achievements = ((IronmanFeature)killerPlayer.Manager.Features["ironman"]).IronmanAchievements,
-                    CauseOfDeath = ((IronmanFeature)killerPlayer.Manager.Features["ironman"]).IronmanCauseOfDeath,
-                    StartRegion = ((IronmanFeature)killerPlayer.Manager.Features["ironman"]).IronmanStartRegion,
-                    PvPKills = ((IronmanFeature)killerPlayer.Manager.Features["ironman"]).IronmanPVPKills,
-                    PvPDeaths = ((IronmanFeature)killerPlayer.Manager.Features["ironman"]).IronmanPvPDeaths,
-                    PvMKills = ((IronmanFeature)killerPlayer.Manager.Features["ironman"]).IronmanPVMKills,
-                    PvMDeaths = ((IronmanFeature)killerPlayer.Manager.Features["ironman"]).IronmanPVMDeaths,
-                    IsActive = ((IronmanFeature)killerPlayer.Manager.Features["ironman"]).IsActive,
-                    Timestamp = DateTime.UtcNow
-                });
+
             }
-            else if (killer is CustomPlayer player && victim is Mobile creature)
+            else if (killer is CustomPlayer customPlayer && victim is Mobile creature)
             {
-                ((IronmanFeature)player.Manager.Features["ironman"]).IronmanPVMKills++;
-                ((IronmanFeature)player.Manager.Features["ironman"]).IronmanPvMKillStreak++;
-                ((IronmanFeature)player.Manager.Features["ironman"]).IronmanScoreMultiplier = 1.0 + ((IronmanFeature)player.Manager.Features["ironman"]).IronmanPvMKillStreak * 0.05;
-                ((IronmanFeature)player.Manager.Features["ironman"]).IronmanScore = (int)(creature.Fame * ((IronmanFeature)player.Manager.Features["ironman"]).IronmanScoreMultiplier) / 100;
+                ((IronmanFeature)customPlayer.Manager.Features["ironman"]).IronmanPVMKills++;
+                ((IronmanFeature)customPlayer.Manager.Features["ironman"]).IronmanPvMKillStreak++;
+                ((IronmanFeature)customPlayer.Manager.Features["ironman"]).IronmanScoreMultiplier = 1.0 + ((IronmanFeature)customPlayer.Manager.Features["ironman"]).IronmanPvMKillStreak * 0.05;
+                ((IronmanFeature)customPlayer.Manager.Features["ironman"]).IronmanScore = (int)(creature.Fame * ((IronmanFeature)customPlayer.Manager.Features["ironman"]).IronmanScoreMultiplier) / 100;
 
 
+            }
+            if (killer is CustomPlayer player)
                 AtualizaRankingIronmanAsync(new IronmanRankingEntry
                 {
                     PlayerName = player.Name,
@@ -152,7 +162,6 @@ namespace Server.Custom.Features
                     IsActive = ((IronmanFeature)player.Manager.Features["ironman"]).IsActive,
                     Timestamp = DateTime.UtcNow
                 });
-            }
         }
 
         public static async Task AtualizaRankingIronmanAsync(IronmanRankingEntry entry)
@@ -160,11 +169,12 @@ namespace Server.Custom.Features
             var httpClient = new HttpClient();
             var url = "https://uobabel.com/api/update-ironman-ranking";
             var json = JsonSerializer.Serialize(entry);
+            Console.WriteLine("[IronmanRanking] JSON enviado: " + json);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             // Lê a chave secreta da env
             var serverKey = Environment.GetEnvironmentVariable("IRONMAN_SECRET_KEY") ?? "";
-
+            Console.WriteLine($"[IronmanRanking] Chave secreta: {serverKey}");
             // Adiciona o header corretamente (no HttpClient, não no content)
             httpClient.DefaultRequestHeaders.Add("X-Server-Key", serverKey);
 
