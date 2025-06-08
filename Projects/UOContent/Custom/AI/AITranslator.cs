@@ -66,6 +66,40 @@ namespace Server.Custom.AI
                 return text;
             }
         }
+
+        public static async Task<string> TranslateTo(Mobile m, string tgtLang,string text)
+        {
+            var payload = new
+            {
+                text,
+                tgt_lang = tgtLang
+            };
+
+            var json = JsonSerializer.Serialize(payload);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await httpClient.PostAsync("http://localhost:10100/translate", content);
+                response.EnsureSuccessStatusCode();
+                var responseString = await response.Content.ReadAsStringAsync();
+                using var doc = JsonDocument.Parse(responseString);
+
+                if (doc.RootElement.TryGetProperty("translated", out var txt) && txt.GetString() is string translated)
+                    return translated;
+                else
+                    return text;
+            }
+            catch (TaskCanceledException)
+            {
+                return text;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("TRADUTOR ERRO: " + ex.ToString());
+                return text;
+            }
+        }
     }
 }
 

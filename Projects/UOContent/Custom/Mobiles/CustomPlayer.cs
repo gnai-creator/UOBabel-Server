@@ -198,8 +198,8 @@ namespace Server.Custom.Mobiles
             writer.Write(PatreonStatus);
             writer.Write(HasPremium);
             writer.Write(LastPatreonCheck);
-            Manager.Serialize(writer);
             base.Serialize(writer);
+            Manager.Serialize(writer);
         }
 
         public override void Deserialize(IGenericReader reader)
@@ -220,9 +220,9 @@ namespace Server.Custom.Mobiles
                         PatreonStatus = reader.ReadString();
                         HasPremium = reader.ReadBool();
                         LastPatreonCheck = reader.ReadDateTime();
+                        base.Deserialize(reader); // precisa vir antes do Manager
                         Manager = new PlayerManager(this);
                         Manager.Deserialize(reader);
-                        base.Deserialize(reader); // precisa vir antes do Manager
                         break;
                     }
             }

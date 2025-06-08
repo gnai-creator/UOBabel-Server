@@ -6,6 +6,8 @@ namespace Server.Custom.Interfaces
     {
         void OnLogin();
         void OnDeath();
+        void OnKill(Mobile victim, Mobile killer);
+        void OnThink();
         void Serialize(IGenericWriter writer);
         void Deserialize(IGenericReader reader);
     }

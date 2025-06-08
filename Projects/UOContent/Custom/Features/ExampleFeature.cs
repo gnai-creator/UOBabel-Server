@@ -16,6 +16,16 @@ namespace Server.Custom.Features
             Console.WriteLine("ExampleFeature OnDeath");
         }
 
+        public void OnKill(Mobile victim, Mobile killer)
+        {
+            Console.WriteLine($"ExampleFeature OnKill - Victim: {victim.Name}, Killer: {killer.Name}");
+        }
+
+        public void OnThink()
+        {
+            // Periodic updates can be handled here
+        }
+
         public void Serialize(IGenericWriter writer)
         {
             writer.Write(0); // version
@@ -26,5 +36,4 @@ namespace Server.Custom.Features
             int version = reader.ReadInt();
         }
     }
-
 }

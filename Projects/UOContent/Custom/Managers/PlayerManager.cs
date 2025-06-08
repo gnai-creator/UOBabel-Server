@@ -9,17 +9,18 @@ namespace Server.Custom.Mobiles
     public class PlayerManager
     {
         public Mobile Owner { get; private set; }
-
         public Dictionary<string, IPlayerFeature> Features { get; set; } = new();
+
+        private PlayerFeatureThinkTimer _thinkTimer;
 
         public PlayerManager(Mobile owner)
         {
             Owner = owner;
 
-            // Registra todos os módulos do jogador
-            Features["ironman"] = new IronmanFeature();
-            // Features["pvp"] = new PvpStatsFeature();
-            // Features["rep"] = new ReputationFeature();
+            var ironmanFeature = new IronmanFeature();
+            ironmanFeature.Initialize(owner); // você já chamou aqui
+            Features["ironman"] = ironmanFeature;
+
             Console.WriteLine($"[PlayerManager] Criado: {Owner.Name}");
         }
 
@@ -27,12 +28,20 @@ namespace Server.Custom.Mobiles
         {
             foreach (var feature in Features.Values)
                 feature.OnLogin();
+
+            // Inicia o timer de pensamento
+            _thinkTimer?.Stop();
+            _thinkTimer = new PlayerFeatureThinkTimer((CustomPlayer)Owner, this);
+            _thinkTimer.Start();
         }
 
         public void OnDeath()
         {
             foreach (var feature in Features.Values)
                 feature.OnDeath();
+
+            // Opcional: para o timer ao morrer
+            _thinkTimer?.Stop();
         }
 
         public void Serialize(IGenericWriter writer)
@@ -41,8 +50,8 @@ namespace Server.Custom.Mobiles
             writer.Write(Features.Count);
             foreach (var pair in Features)
             {
-                writer.Write(pair.Key); // Nome
-                pair.Value.Serialize(writer); // Dados
+                writer.Write(pair.Key);
+                pair.Value.Serialize(writer);
             }
         }
 
@@ -52,25 +61,23 @@ namespace Server.Custom.Mobiles
             switch (version)
             {
                 case 0:
+                    int count = reader.ReadInt();
+                    Features = new();
+                    for (int i = 0; i < count; i++)
                     {
-                        int count = reader.ReadInt();
-                        Features = new();
-                        for (int i = 0; i < count; i++)
+                        string key = reader.ReadString();
+                        IPlayerFeature feature = key switch
                         {
-                            string key = reader.ReadString();
-                            IPlayerFeature feature = key switch
-                            {
-                                "ironman" => new IronmanFeature(),
-                                // "pvp" => new PvpStatsFeature(),
-                                _ => new ExampleFeature()
-                            };
-                            feature?.Deserialize(reader);
-                            if (feature != null)
-                                Features[key] = feature;
-                        }
-                        break;
+                            "ironman" => new IronmanFeature(),
+                            _ => new ExampleFeature()
+                        };
+                        feature?.Deserialize(reader);
+                        if (feature != null)
+                            Features[key] = feature;
                     }
+                    break;
             }
         }
     }
+
 }
