@@ -1,9 +1,10 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class FrostOoze : BaseCreature
+    public partial class FrostOoze : CustomCreature
     {
         [Constructible]
         public FrostOoze() : base(AIType.AI_Melee)

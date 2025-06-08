@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles;
 
 [SerializationGenerator(0, false)]
-public partial class HarborMaster : BaseCreature
+public partial class HarborMaster : CustomCreature
 {
     [Constructible]
     public HarborMaster() : base(AIType.AI_Animal, FightMode.None)

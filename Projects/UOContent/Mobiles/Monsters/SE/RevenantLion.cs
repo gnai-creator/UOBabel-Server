@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class RevenantLion : BaseCreature
+    public partial class RevenantLion : CustomCreature
     {
         [Constructible]
         public RevenantLion() : base(AIType.AI_Mage)

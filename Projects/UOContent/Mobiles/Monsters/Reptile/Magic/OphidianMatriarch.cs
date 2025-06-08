@@ -1,9 +1,10 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class OphidianMatriarch : BaseCreature
+    public partial class OphidianMatriarch : CustomCreature
     {
         [Constructible]
         public OphidianMatriarch() : base(AIType.AI_Mage)

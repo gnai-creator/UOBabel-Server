@@ -1,11 +1,12 @@
 using ModernUO.Serialization;
 using System;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class SandVortex : BaseCreature
+    public partial class SandVortex : CustomCreature
     {
         private DateTime m_NextAttack;
 

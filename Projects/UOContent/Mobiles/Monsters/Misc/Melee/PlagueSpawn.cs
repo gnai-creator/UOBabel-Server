@@ -2,11 +2,12 @@ using ModernUO.Serialization;
 using System;
 using Server.Collections;
 using Server.ContextMenus;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class PlagueSpawn : BaseCreature
+    public partial class PlagueSpawn : CustomCreature
     {
         [Constructible]
         public PlagueSpawn(Mobile owner = null) : base(AIType.AI_Melee)

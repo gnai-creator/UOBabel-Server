@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class HellHound : BaseCreature
+    public partial class HellHound : CustomCreature
     {
         [Constructible]
         public HellHound() : base(AIType.AI_Melee)

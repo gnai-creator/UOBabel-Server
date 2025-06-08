@@ -1,9 +1,10 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Slime : BaseCreature
+    public partial class Slime : CustomCreature
     {
         [Constructible]
         public Slime() : base(AIType.AI_Melee)

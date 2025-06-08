@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Pixie : BaseCreature
+    public partial class Pixie : CustomCreature
     {
         [Constructible]
         public Pixie() : base(AIType.AI_Mage, FightMode.Evil)

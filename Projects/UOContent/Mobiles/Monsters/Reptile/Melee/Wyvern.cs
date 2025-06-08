@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Wyvern : BaseCreature
+    public partial class Wyvern : CustomCreature
     {
         [Constructible]
         public Wyvern() : base(AIType.AI_Melee)

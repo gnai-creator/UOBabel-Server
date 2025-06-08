@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Misc;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Lizardman : BaseCreature
+    public partial class Lizardman : CustomCreature
     {
         [Constructible]
         public Lizardman() : base(AIType.AI_Melee)

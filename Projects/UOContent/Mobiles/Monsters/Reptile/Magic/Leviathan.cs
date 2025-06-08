@@ -1,11 +1,12 @@
 using ModernUO.Serialization;
 using System;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Leviathan : BaseCreature
+    public partial class Leviathan : CustomCreature
     {
         [Constructible]
         public Leviathan(Mobile fisher = null) : base(AIType.AI_Mage)

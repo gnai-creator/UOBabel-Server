@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class WhippingVine : BaseCreature
+    public partial class WhippingVine : CustomCreature
     {
         [Constructible]
         public WhippingVine() : base(AIType.AI_Melee)

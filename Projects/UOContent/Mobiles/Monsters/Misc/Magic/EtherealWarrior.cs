@@ -1,11 +1,12 @@
 using ModernUO.Serialization;
 using System;
 using Server.Gumps;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class EtherealWarrior : BaseCreature
+    public partial class EtherealWarrior : CustomCreature
     {
         private static readonly TimeSpan ResurrectDelay = TimeSpan.FromSeconds(2.0);
 

@@ -5,11 +5,12 @@ using Server.Ethics;
 using Server.Factions;
 using Server.Items;
 using Server.Misc;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Wisp : BaseCreature
+    public partial class Wisp : CustomCreature
     {
         [Constructible]
         public Wisp() : base(AIType.AI_Mage, FightMode.Aggressor)

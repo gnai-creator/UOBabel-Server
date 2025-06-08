@@ -2,11 +2,12 @@ using ModernUO.Serialization;
 using System;
 using Server.Engines.Plants;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Kappa : BaseCreature
+    public partial class Kappa : CustomCreature
     {
         [Constructible]
         public Kappa() : base(AIType.AI_Melee)

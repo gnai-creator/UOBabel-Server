@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class CopperElemental : BaseCreature
+    public partial class CopperElemental : CustomCreature
     {
         [Constructible]
         public CopperElemental(int oreAmount = 2) : base(AIType.AI_Melee)

@@ -1,9 +1,10 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class WhiteWyrm : BaseCreature
+    public partial class WhiteWyrm : CustomCreature
     {
         [Constructible]
         public WhiteWyrm() : base(AIType.AI_Mage)

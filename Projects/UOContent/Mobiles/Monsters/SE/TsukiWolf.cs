@@ -1,11 +1,12 @@
 using ModernUO.Serialization;
 using Server.Engines.Plants;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class TsukiWolf : BaseCreature
+    public partial class TsukiWolf : CustomCreature
     {
         [Constructible]
         public TsukiWolf() : base(AIType.AI_Melee)

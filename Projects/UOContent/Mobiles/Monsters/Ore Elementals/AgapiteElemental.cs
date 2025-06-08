@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class AgapiteElemental : BaseCreature
+    public partial class AgapiteElemental : CustomCreature
     {
         [Constructible]
         public AgapiteElemental(int oreAmount = 2) : base(AIType.AI_Melee)

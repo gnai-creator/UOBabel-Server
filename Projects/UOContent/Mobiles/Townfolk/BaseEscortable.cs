@@ -14,11 +14,12 @@ using Server.Misc;
 using Server.Network;
 using Server.Regions;
 using EDI = Server.Mobiles.EscortDestinationInfo;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles;
 
 [SerializationGenerator(2, false)]
-public partial class BaseEscortable : BaseCreature
+public partial class BaseEscortable : CustomCreature
 {
     private static readonly ILogger logger = LogFactory.GetLogger(typeof(BaseEscortable));
 

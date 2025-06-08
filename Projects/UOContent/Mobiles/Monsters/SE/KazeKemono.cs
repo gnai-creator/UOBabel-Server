@@ -1,11 +1,12 @@
 using ModernUO.Serialization;
 using System;
 using System.Collections.Generic;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class KazeKemono : BaseCreature
+    public partial class KazeKemono : CustomCreature
     {
         private static readonly Dictionary<Mobile, ExpireTimer> m_FlurryOfTwigsTable = new();
 

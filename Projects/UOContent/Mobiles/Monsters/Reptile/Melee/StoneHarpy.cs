@@ -1,9 +1,10 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class StoneHarpy : BaseCreature
+    public partial class StoneHarpy : CustomCreature
     {
         [Constructible]
         public StoneHarpy() : base(AIType.AI_Melee)

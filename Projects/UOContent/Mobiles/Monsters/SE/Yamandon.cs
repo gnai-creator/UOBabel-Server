@@ -2,12 +2,13 @@ using ModernUO.Serialization;
 using Server.Collections;
 using Server.Engines.Plants;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [TypeAlias("Server.Mobiles.Yamadon")]
     [SerializationGenerator(0, false)]
-    public partial class Yamandon : BaseCreature
+    public partial class Yamandon : CustomCreature
     {
         [Constructible]
         public Yamandon() : base(AIType.AI_Melee)

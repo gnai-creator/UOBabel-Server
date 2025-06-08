@@ -1,9 +1,10 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Drake : BaseCreature
+    public partial class Drake : CustomCreature
     {
         [Constructible]
         public Drake() : base(AIType.AI_Melee)

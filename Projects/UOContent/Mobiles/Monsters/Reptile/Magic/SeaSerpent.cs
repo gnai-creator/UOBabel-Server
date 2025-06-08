@@ -1,11 +1,12 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [TypeAlias("Server.Mobiles.Seaserpant")]
     [SerializationGenerator(0, false)]
-    public partial class SeaSerpent : BaseCreature
+    public partial class SeaSerpent : CustomCreature
     {
         [Constructible]
         public SeaSerpent() : base(AIType.AI_Mage)

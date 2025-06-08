@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Reaper : BaseCreature
+    public partial class Reaper : CustomCreature
     {
         [Constructible]
         public Reaper() : base(AIType.AI_Mage)

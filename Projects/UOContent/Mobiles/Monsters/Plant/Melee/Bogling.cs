@@ -1,11 +1,12 @@
 using ModernUO.Serialization;
 using Server.Engines.Plants;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Bogling : BaseCreature
+    public partial class Bogling : CustomCreature
     {
         [Constructible]
         public Bogling() : base(AIType.AI_Melee)

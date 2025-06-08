@@ -1,9 +1,10 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Dragon : BaseCreature
+    public partial class Dragon : CustomCreature
     {
         [Constructible]
         public Dragon() : base(AIType.AI_Mage)

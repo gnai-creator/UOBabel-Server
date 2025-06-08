@@ -1,11 +1,12 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [TypeAlias("Server.Mobiles.OphidianAvenger")]
     [SerializationGenerator(0, false)]
-    public partial class OphidianKnight : BaseCreature
+    public partial class OphidianKnight : CustomCreature
     {
         private static readonly string[] m_Names =
         {

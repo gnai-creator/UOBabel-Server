@@ -10,7 +10,7 @@ using Server.Network;
 namespace Server.Mobiles;
 
 [SerializationGenerator(0, false)]
-public partial class Banker : BaseVendor
+public partial class Banker : BaseAICreature
 {
     private readonly List<SBInfo> m_SBInfos = new();
 

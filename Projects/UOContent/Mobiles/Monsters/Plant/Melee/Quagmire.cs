@@ -1,9 +1,10 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Quagmire : BaseCreature
+    public partial class Quagmire : CustomCreature
     {
         [Constructible]
         public Quagmire() : base(AIType.AI_Melee)

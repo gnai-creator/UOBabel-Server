@@ -1,11 +1,12 @@
 using ModernUO.Serialization;
 using System;
 using System.Collections.Generic;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class RaiJu : BaseCreature
+    public partial class RaiJu : CustomCreature
     {
         private static readonly HashSet<Mobile> m_Table = new();
 

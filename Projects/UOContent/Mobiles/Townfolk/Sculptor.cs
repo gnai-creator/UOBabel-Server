@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles;
 
 [SerializationGenerator(0, false)]
-public partial class Sculptor : BaseCreature
+public partial class Sculptor : CustomCreature
 {
     [Constructible]
     public Sculptor() : base(AIType.AI_Animal, FightMode.None)

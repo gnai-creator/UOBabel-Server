@@ -1,11 +1,12 @@
 using ModernUO.Serialization;
 using Server.Engines.Plants;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class RuneBeetle : BaseCreature
+    public partial class RuneBeetle : CustomCreature
     {
         [Constructible]
         public RuneBeetle() : base(AIType.AI_Mage)

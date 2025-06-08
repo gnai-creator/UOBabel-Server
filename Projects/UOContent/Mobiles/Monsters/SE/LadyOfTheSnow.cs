@@ -3,11 +3,12 @@ using System;
 using System.Collections.Generic;
 using Server.Engines.Plants;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class LadyOfTheSnow : BaseCreature
+    public partial class LadyOfTheSnow : CustomCreature
     {
         private static readonly Dictionary<Mobile, ExpireTimer> m_Table = new();
 

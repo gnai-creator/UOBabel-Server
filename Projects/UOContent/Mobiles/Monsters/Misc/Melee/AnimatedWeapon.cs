@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using System;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class AnimatedWeapon : BaseCreature
+    public partial class AnimatedWeapon : CustomCreature
     {
         [Constructible]
         public AnimatedWeapon(Mobile caster, int level) : base(AIType.AI_Melee)

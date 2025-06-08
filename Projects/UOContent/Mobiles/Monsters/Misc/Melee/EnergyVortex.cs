@@ -1,11 +1,12 @@
 using ModernUO.Serialization;
 using System;
 using Server.Collections;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class EnergyVortex : BaseCreature
+    public partial class EnergyVortex : CustomCreature
     {
         [Constructible]
         public EnergyVortex() : base(AIType.AI_Melee)

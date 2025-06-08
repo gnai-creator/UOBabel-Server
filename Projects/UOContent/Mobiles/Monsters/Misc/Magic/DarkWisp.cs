@@ -3,11 +3,12 @@ using System;
 using Server.Ethics;
 using Server.Items;
 using Server.Misc;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class DarkWisp : BaseCreature
+    public partial class DarkWisp : CustomCreature
     {
         [Constructible]
         public DarkWisp() : base(AIType.AI_Mage, FightMode.Aggressor)

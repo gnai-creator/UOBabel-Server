@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles;
 
 [SerializationGenerator(0, false)]
-public partial class Gypsy : BaseCreature
+public partial class Gypsy : CustomCreature
 {
     [Constructible]
     public Gypsy() : base(AIType.AI_Animal, FightMode.None)

@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Items;
-
+using Server.Custom.Mobiles;
+    
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Centaur : BaseCreature
+    public partial class Centaur : CustomCreature
     {
         [Constructible]
         public Centaur() : base(AIType.AI_Melee, FightMode.Aggressor)

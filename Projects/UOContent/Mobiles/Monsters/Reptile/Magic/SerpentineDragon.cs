@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Engines.Plants;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class SerpentineDragon : BaseCreature
+    public partial class SerpentineDragon : CustomCreature
     {
         [Constructible]
         public SerpentineDragon() : base(AIType.AI_Mage, FightMode.Evil)

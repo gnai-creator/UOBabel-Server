@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Engines.Plants;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Oni : BaseCreature
+    public partial class Oni : CustomCreature
     {
         [Constructible]
         public Oni() : base(AIType.AI_Mage)

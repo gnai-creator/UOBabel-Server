@@ -1,9 +1,10 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Harpy : BaseCreature
+    public partial class Harpy : CustomCreature
     {
         [Constructible]
         public Harpy() : base(AIType.AI_Melee)

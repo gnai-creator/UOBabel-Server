@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class EliteNinja : BaseCreature
+    public partial class EliteNinja : CustomCreature
     {
         [Constructible]
         public EliteNinja() : base(AIType.AI_Melee)

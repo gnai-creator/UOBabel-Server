@@ -1,11 +1,12 @@
 using ModernUO.Serialization;
 using System;
 using Server.Collections;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class BladeSpirits : BaseCreature
+    public partial class BladeSpirits : CustomCreature
     {
         [Constructible]
         public BladeSpirits() : base(AIType.AI_Melee)

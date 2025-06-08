@@ -1,11 +1,12 @@
 using ModernUO.Serialization;
 using System;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class VorpalBunny : BaseCreature
+    public partial class VorpalBunny : CustomCreature
     {
         [Constructible]
         public VorpalBunny() : base(AIType.AI_Melee)

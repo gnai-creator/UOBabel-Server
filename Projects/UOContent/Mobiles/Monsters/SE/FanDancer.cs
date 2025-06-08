@@ -1,11 +1,12 @@
 using ModernUO.Serialization;
 using Server.Engines.Plants;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class FanDancer : BaseCreature
+    public partial class FanDancer : CustomCreature
     {
         [Constructible]
         public FanDancer() : base(AIType.AI_Melee)

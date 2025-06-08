@@ -2,11 +2,12 @@ using ModernUO.Serialization;
 using System;
 using Server.Engines.Plants;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class YomotsuWarrior : BaseCreature
+    public partial class YomotsuWarrior : CustomCreature
     {
         [Constructible]
         public YomotsuWarrior() : base(AIType.AI_Melee)

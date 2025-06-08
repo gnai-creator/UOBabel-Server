@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Ronin : BaseCreature
+    public partial class Ronin : CustomCreature
     {
         [Constructible]
         public Ronin() : base(AIType.AI_Melee)

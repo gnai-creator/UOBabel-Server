@@ -1,9 +1,10 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class SwampTentacle : BaseCreature
+    public partial class SwampTentacle : CustomCreature
     {
         [Constructible]
         public SwampTentacle() : base(AIType.AI_Melee)

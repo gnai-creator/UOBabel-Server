@@ -1,9 +1,10 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class SummonedAirElemental : BaseCreature
+    public partial class SummonedAirElemental : CustomCreature
     {
         [Constructible]
         public SummonedAirElemental() : base(AIType.AI_Mage)

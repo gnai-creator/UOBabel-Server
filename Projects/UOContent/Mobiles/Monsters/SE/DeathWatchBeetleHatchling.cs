@@ -1,11 +1,12 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
     [TypeAlias("Server.Mobiles.DeathWatchBeetleHatchling")]
-    public partial class DeathwatchBeetleHatchling : BaseCreature
+    public partial class DeathwatchBeetleHatchling : CustomCreature
     {
         [Constructible]
         public DeathwatchBeetleHatchling() : base(AIType.AI_Melee, Core.ML ? FightMode.Aggressor : FightMode.Closest)

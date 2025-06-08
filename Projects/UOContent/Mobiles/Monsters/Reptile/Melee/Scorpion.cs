@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Scorpion : BaseCreature
+    public partial class Scorpion : CustomCreature
     {
         [Constructible]
         public Scorpion() : base(AIType.AI_Melee)
