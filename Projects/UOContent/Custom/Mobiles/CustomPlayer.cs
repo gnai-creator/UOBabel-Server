@@ -26,7 +26,7 @@ namespace Server.Custom.Mobiles
             }
         }
 
-        public string PreferredLanguage { get; set; } = "pt";
+        public string PreferredLanguage { get; set; } = "";
 
         public string PatreonTier { get; set; } = "";
         public string PatreonStatus { get; set; } = "";
