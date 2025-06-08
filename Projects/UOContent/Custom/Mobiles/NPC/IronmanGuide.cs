@@ -60,14 +60,11 @@ namespace Server.Custom.NPCs
                         }
                         else
                         {
-                            ironman.IsActive = true;
-                            ironman.IronmanStartTime = Core.Now;
-                            ironman.IronmanStartRegion = player.Region?.Name ?? "Desconhecida";
-                            ironman.IronmanScore = 0;
-
+                            ironman.StartRun();
                             player.SendMessage(33, "[Ironman] Você agora está em modo Ironman!");
                             await FalarComEmocao("Você agora está em modo Ironman! Agora, sobreviva!", "afeto", player.PreferredLanguage);
                         }
+
                     }
                     else
                     {
