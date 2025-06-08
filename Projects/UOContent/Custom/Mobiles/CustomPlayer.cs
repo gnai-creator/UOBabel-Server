@@ -161,8 +161,8 @@ namespace Server.Custom.Mobiles
         public override void Serialize(IGenericWriter writer)
         {
             writer.Write(1); // version
-            base.Serialize(writer);
             writer.Write(PreferredLanguage);
+
             writer.Write((int)CombatMode);
             writer.Write(NextCombatModeChange);
             writer.Write(PatreonTier);
@@ -170,12 +170,12 @@ namespace Server.Custom.Mobiles
             writer.Write(HasPremium);
             writer.Write(LastPatreonCheck);
             Manager.Serialize(writer);
+            base.Serialize(writer);
         }
 
         public override void Deserialize(IGenericReader reader)
         {
             int version = reader.ReadInt();
-            base.Deserialize(reader); // precisa vir antes do Manager
             switch (version)
             {
                 case 1:
@@ -193,6 +193,7 @@ namespace Server.Custom.Mobiles
                         LastPatreonCheck = reader.ReadDateTime();
                         Manager ??= new PlayerManager(this);
                         Manager.Deserialize(reader);
+                        base.Deserialize(reader); // precisa vir antes do Manager
                         break;
                     }
             }
