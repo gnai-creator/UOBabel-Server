@@ -9,6 +9,8 @@ using Server.Custom.Mobiles;
 using Server.Items;
 using Server.Custom.Items;
 using Server.Misc;
+using Server.Gumps;
+using Server.Custom.Gumps;
 
 namespace Server.Custom.Features
 {
@@ -380,9 +382,13 @@ namespace Server.Custom.Features
             {
                 if (!string.IsNullOrWhiteSpace(player.PreferredLanguage))
                     return player.PreferredLanguage;
+                else
+                {
+                    mob.SendGump(new LanguageSelectGump());
+                    return player.PreferredLanguage;
+                }
             }
-
-            return "pt";
+            return mob.Language ?? "PTB";
         }
 
 

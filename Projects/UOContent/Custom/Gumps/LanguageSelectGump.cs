@@ -42,11 +42,11 @@ namespace Server.Custom.Gumps
 
             switch (info.ButtonID)
             {
-                case 1: lang = "pt"; break;
-                case 2: lang = "en"; break;
-                case 3: lang = "es"; break;
-                case 4: lang = "fr"; break;
-                case 5: lang = "ru"; break;
+                case 1: lang = "PTB"; break;
+                case 2: lang = "ENU"; break;
+                case 3: lang = "ESN"; break;
+                case 4: lang = "FRA"; break;
+                case 5: lang = "RUS"; break;
             }
 
             if (lang != null)
@@ -85,6 +85,7 @@ namespace Server.Custom.Gumps
         {
             await base.Confirm(from, lang); // salva normalmente
             // Você pode adicionar lógica custom aqui, se quiser
+            from.SendMessage("Idioma configurado com sucesso!");
         }
     }
 }
