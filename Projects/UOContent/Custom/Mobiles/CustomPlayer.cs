@@ -26,6 +26,7 @@ namespace Server.Custom.Mobiles
             }
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
         public string PreferredLanguage { get; set; } = "";
 
         public string PatreonTier { get; set; } = "";

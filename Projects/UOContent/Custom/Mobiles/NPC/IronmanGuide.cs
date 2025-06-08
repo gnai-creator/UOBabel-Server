@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace Server.Custom.NPCs
 {
-    public class IronmanGuide : CustomCreature
+    public class IronmanGuide : BaseAICreature
     {
         public override bool ClickTitle => true;
 
         private DateTime _nextTalkTime;
 
         [Constructible]
-        public IronmanGuide() : base(AIType.AI_Vendor)
+        public IronmanGuide() : base()
         {
             Name = "Hermes";
             Title = "The Guide";
@@ -31,9 +31,7 @@ namespace Server.Custom.NPCs
         {
             if (m is CustomPlayer player && DateTime.UtcNow > _nextTalkTime && InRange(player, 8) && !InRange(oldLocation, 8))
             {
-                var text = await AITranslator.TranslateTo(player, player.PreferredLanguage, "Ei, você! Quer participar do desafio Ironman? Diga 'ironman' ou 'aceito'!");
-                var translated = text.ToString();
-                SayTo(player, translated);
+                await FalarComEmocao("Ei, você! Quer participar do desafio Ironman? Diga 'ironman' ou 'aceito'!", "afeto", player.PreferredLanguage);
                 _nextTalkTime = DateTime.UtcNow + TimeSpan.FromSeconds(30);
             }
         }
@@ -50,7 +48,7 @@ namespace Server.Custom.NPCs
             {
                 string speech = e.Speech.ToLower();
 
-                string speechTranslated = await AITranslator.TranslateTo(player, "pt", speech);
+                string speechTranslated = await AITranslator.TranslateTo(player, player.PreferredLanguage, speech);
 
                 if (speechTranslated.Contains("ironman") || speechTranslated.Contains("quero ser ironman") || speechTranslated.Contains("aceito"))
                 {
@@ -58,9 +56,7 @@ namespace Server.Custom.NPCs
                     {
                         if (ironman.IsActive)
                         {
-                            var text = await AITranslator.TranslateTo(player, player.PreferredLanguage, "Você já está no modo Ironman. Agora, sobreviva!");
-                            var translated = text.ToString();
-                            SayTo(player, translated);
+                            await FalarComEmocao("Você já está no modo Ironman. Agora, sobreviva!", "afeto", player.PreferredLanguage);
                         }
                         else
                         {
@@ -70,9 +66,7 @@ namespace Server.Custom.NPCs
                             ironman.IronmanScore = 0;
 
                             player.SendMessage(33, "[Ironman] Você agora está em modo Ironman!");
-                            var text = await AITranslator.TranslateTo(player, player.PreferredLanguage, "Muito bem. Que a morte seja apenas uma lenda para você...");
-                            var translated = text.ToString();
-                            SayTo(player, translated);
+                            await FalarComEmocao("Você agora está em modo Ironman! Agora, sobreviva!", "afeto", player.PreferredLanguage);
                         }
                     }
                     else

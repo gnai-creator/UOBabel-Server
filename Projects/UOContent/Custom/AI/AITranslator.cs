@@ -56,7 +56,7 @@ namespace Server.Custom.AI
             catch (TaskCanceledException)
             {
                 // Timeout!
-                
+
                 return text;
             }
             catch (Exception ex)
@@ -67,11 +67,12 @@ namespace Server.Custom.AI
             }
         }
 
-        public static async Task<string> TranslateTo(Mobile m, string tgtLang,string text)
+        public static async Task<string> TranslateTo(Mobile m, string tgtLang, string text)
         {
             var payload = new
             {
                 text,
+                src_lang = "pt",
                 tgt_lang = tgtLang
             };
 
@@ -83,6 +84,7 @@ namespace Server.Custom.AI
                 var response = await httpClient.PostAsync("http://localhost:10100/translate", content);
                 response.EnsureSuccessStatusCode();
                 var responseString = await response.Content.ReadAsStringAsync();
+                Console.WriteLine("TRADUTOR: " + responseString);
                 using var doc = JsonDocument.Parse(responseString);
 
                 if (doc.RootElement.TryGetProperty("translated", out var txt) && txt.GetString() is string translated)

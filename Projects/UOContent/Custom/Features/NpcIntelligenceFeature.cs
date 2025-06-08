@@ -388,7 +388,7 @@ namespace Server.Custom.Features
                     return player.PreferredLanguage;
                 }
             }
-            return mob.Language ?? "PTB";
+            return mob.Language ?? "pt";
         }
 
 

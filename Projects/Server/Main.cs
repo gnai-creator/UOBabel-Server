@@ -281,7 +281,7 @@ public static class Core
         var keypress = e.SpecialKey switch
         {
             ConsoleSpecialKey.ControlBreak => "CTRL+BREAK",
-            _                              => "CTRL+C"
+            _ => "CTRL+C"
         };
 
         logger.Information("Detected {Key} pressed.", keypress);
@@ -365,6 +365,7 @@ public static class Core
     public static void Setup(Assembly applicationAssembly, Process process)
     {
         CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+        CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("en-US");
 
         Process = process;
         ApplicationAssembly = applicationAssembly;
