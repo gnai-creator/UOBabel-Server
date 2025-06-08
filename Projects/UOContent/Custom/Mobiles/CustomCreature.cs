@@ -30,6 +30,11 @@ namespace Server.Custom.Mobiles
 
         }
 
+        public CustomCreature(AIType ai, FightMode mode) : base(ai, mode)
+        {
+            CreatureManager = new CreatureManager(this);
+            CreatureManager.RegisterFeature("ai", new NpcIntelligenceFeature(this));
+        }
         public CustomCreature(Serial serial) : base(serial)
         {
             CreatureManager = new CreatureManager(this);
