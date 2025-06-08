@@ -1,9 +1,10 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Llama : BaseCreature
+    public partial class Llama : CustomCreature
     {
         [Constructible]
         public Llama() : base(AIType.AI_Animal, FightMode.Aggressor)

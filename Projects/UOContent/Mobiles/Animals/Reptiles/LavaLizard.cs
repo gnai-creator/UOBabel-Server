@@ -1,11 +1,12 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 using Server.Items;
 
 namespace Server.Mobiles
 {
     [TypeAlias("Server.Mobiles.Lavalizard")]
     [SerializationGenerator(0, false)]
-    public partial class LavaLizard : BaseCreature
+    public partial class LavaLizard : CustomCreature
     {
         [Constructible]
         public LavaLizard() : base(AIType.AI_Melee)

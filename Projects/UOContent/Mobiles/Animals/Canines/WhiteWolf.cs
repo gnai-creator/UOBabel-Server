@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [TypeAlias("Server.Mobiles.Whitewolf")]
     [SerializationGenerator(0, false)]
-    public partial class WhiteWolf : BaseCreature
+    public partial class WhiteWolf : CustomCreature
     {
         [Constructible]
         public WhiteWolf() : base(AIType.AI_Animal, FightMode.Aggressor)

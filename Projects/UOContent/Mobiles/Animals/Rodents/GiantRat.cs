@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [TypeAlias("Server.Mobiles.Giantrat")]
     [SerializationGenerator(0, false)]
-    public partial class GiantRat : BaseCreature
+    public partial class GiantRat : CustomCreature
     {
         [Constructible]
         public GiantRat() : base(AIType.AI_Melee)

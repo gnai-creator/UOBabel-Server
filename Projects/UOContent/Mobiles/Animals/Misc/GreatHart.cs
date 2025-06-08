@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [TypeAlias("Server.Mobiles.Greathart")]
     [SerializationGenerator(0, false)]
-    public partial class GreatHart : BaseCreature
+    public partial class GreatHart : CustomCreature
     {
         [Constructible]
         public GreatHart() : base(AIType.AI_Animal, FightMode.Aggressor)

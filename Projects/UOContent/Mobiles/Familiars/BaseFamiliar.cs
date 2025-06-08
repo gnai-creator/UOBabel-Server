@@ -2,12 +2,13 @@ using System.Collections.Generic;
 using ModernUO.Serialization;
 using Server.Collections;
 using Server.ContextMenus;
+using Server.Custom.Mobiles;
 using Server.Items;
 
 namespace Server.Mobiles;
 
 [SerializationGenerator(0, false)]
-public abstract partial class BaseFamiliar : BaseCreature
+public abstract partial class BaseFamiliar : CustomCreature
 {
     private bool m_LastHidden;
 

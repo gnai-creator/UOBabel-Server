@@ -2,11 +2,12 @@ using ModernUO.Serialization;
 using System;
 using Server.Items;
 using System.Runtime.CompilerServices;
-
+using Server.Custom.Mobiles;
+    
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Sheep : BaseCreature, ICarvable
+    public partial class Sheep : CustomCreature, ICarvable
     {
         [Constructible]
         public Sheep() : base(AIType.AI_Animal, FightMode.Aggressor)

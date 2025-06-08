@@ -4,11 +4,12 @@ using Server.Items;
 using Server.Misc;
 using Server.Multis;
 using Server.Targeting;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles;
 
 [SerializationGenerator(0, false)]
-public abstract partial class BaseMount : BaseCreature, IMount
+public abstract partial class BaseMount : CustomCreature, IMount
 {
     public BaseMount(
         int bodyID,

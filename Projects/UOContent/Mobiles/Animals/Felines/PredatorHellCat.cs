@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [TypeAlias("Server.Mobiles.Preditorhellcat")]
     [SerializationGenerator(0, false)]
-    public partial class PredatorHellCat : BaseCreature
+    public partial class PredatorHellCat : CustomCreature
     {
         [Constructible]
         public PredatorHellCat() : base(AIType.AI_Melee)

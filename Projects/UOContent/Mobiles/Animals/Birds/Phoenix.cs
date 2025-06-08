@@ -1,9 +1,10 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Phoenix : BaseCreature
+    public partial class Phoenix : CustomCreature
     {
         [Constructible]
         public Phoenix() : base(AIType.AI_Mage, FightMode.Aggressor)

@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using System;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Cow : BaseCreature
+    public partial class Cow : CustomCreature
     {
 
         [SerializedCommandProperty(AccessLevel.GameMaster)]

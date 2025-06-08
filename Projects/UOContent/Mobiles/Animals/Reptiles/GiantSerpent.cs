@@ -1,11 +1,12 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 using Server.Items;
 
 namespace Server.Mobiles
 {
     [TypeAlias("Server.Mobiles.Serpant")]
     [SerializationGenerator(0, false)]
-    public partial class GiantSerpent : BaseCreature
+    public partial class GiantSerpent : CustomCreature
     {
         [Constructible]
         public GiantSerpent() : base(AIType.AI_Melee)

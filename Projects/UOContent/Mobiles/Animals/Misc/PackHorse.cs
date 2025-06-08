@@ -2,11 +2,12 @@ using ModernUO.Serialization;
 using Server.Collections;
 using Server.ContextMenus;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class PackHorse : BaseCreature
+    public partial class PackHorse : CustomCreature
     {
         [Constructible]
         public PackHorse() : base(AIType.AI_Animal, FightMode.Aggressor)

@@ -1,10 +1,11 @@
 using ModernUO.Serialization;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Gaman : BaseCreature
+    public partial class Gaman : CustomCreature
     {
         [Constructible]
         public Gaman() : base(AIType.AI_Animal, FightMode.Aggressor)

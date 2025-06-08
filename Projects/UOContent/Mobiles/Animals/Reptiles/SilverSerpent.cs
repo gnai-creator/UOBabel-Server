@@ -1,4 +1,5 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 using Server.Ethics;
 using Server.Factions;
 
@@ -6,7 +7,7 @@ namespace Server.Mobiles
 {
     [TypeAlias("Server.Mobiles.Silverserpant")]
     [SerializationGenerator(0, false)]
-    public partial class SilverSerpent : BaseCreature
+    public partial class SilverSerpent : CustomCreature
     {
         [Constructible]
         public SilverSerpent() : base(AIType.AI_Melee)

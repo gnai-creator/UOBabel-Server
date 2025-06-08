@@ -1,9 +1,10 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Alligator : BaseCreature
+    public partial class Alligator : CustomCreature
     {
         [Constructible]
         public Alligator() : base(AIType.AI_Melee)

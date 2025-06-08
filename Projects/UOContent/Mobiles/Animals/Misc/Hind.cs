@@ -1,9 +1,10 @@
 using ModernUO.Serialization;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Hind : BaseCreature
+    public partial class Hind : CustomCreature
     {
         [Constructible]
         public Hind() : base(AIType.AI_Animal, FightMode.Aggressor)
