@@ -38,9 +38,11 @@ namespace Server.Custom.Features
         public int IronmanPVMKills { get; set; } = 0;
         public int IronmanPVMDeaths { get; set; } = 0;
 
+        private DateTime _lastAfkPenalty = DateTime.MinValue;
+
         public IronmanFeature()
         {
-            IronmanSurvivalTime = Core.Now - IronmanStartTime;
+            IronmanSurvivalTime = TimeSpan.Zero;
         }
 
         public void Initialize(Mobile owner)
@@ -49,6 +51,26 @@ namespace Server.Custom.Features
             IronmanMonsterKills ??= new();
             IronmanPlayerKills ??= new();
             IronmanAchievements ??= new();
+        }
+
+        public void StartRun()
+        {
+            IsActive = true;
+            IronmanStartTime = Core.Now;
+            IronmanSurvivalTime = TimeSpan.Zero;
+            IronmanScore = 0;
+            IronmanPvMKillStreak = 0;
+            IronmanPvPKillStreak = 0;
+            IronmanScoreMultiplier = 1.0;
+            IronmanAchievements.Clear();
+            IronmanPvPDeaths = 0;
+            IronmanPVPKills = 0;
+            IronmanPVMKills = 0;
+            IronmanPVMDeaths = 0;
+            IronmanMonsterKills.Clear();
+            IronmanPlayerKills.Clear();
+            IronmanStartRegion = Owner?.Region?.ToString() ?? "Unknown";
+            IronmanCauseOfDeath = "Unknown";
         }
 
         public void OnLogin()
@@ -63,6 +85,7 @@ namespace Server.Custom.Features
             if (IsActive)
             {
                 IsActive = false;
+                AtualizarSobrevivencia();
                 Console.WriteLine("Ironman morreu.");
                 AtualizaRankingIronmanAsync(new IronmanRankingEntry
                 {
@@ -84,7 +107,13 @@ namespace Server.Custom.Features
             }
         }
 
-        private DateTime _lastAfkPenalty = DateTime.MinValue;
+        public void AtualizarSobrevivencia()
+        {
+            if (IronmanStartTime > DateTime.MinValue)
+                IronmanSurvivalTime = Core.Now - IronmanStartTime;
+            else
+                IronmanSurvivalTime = TimeSpan.Zero;
+        }
 
         public void OnThink()
         {
@@ -96,7 +125,7 @@ namespace Server.Custom.Features
 
             if (afkTime > TimeSpan.FromHours(12))
             {
-                if ((Core.Now - _lastAfkPenalty) > TimeSpan.FromHours(1)) // só pune 1x por hora!
+                if ((Core.Now - _lastAfkPenalty) > TimeSpan.FromHours(1))
                 {
                     IronmanScore -= 10;
                     cp.SendMessage(33, "[Ironman] Você está AFK há muito tempo. Penalidade de -10 pontos.");
@@ -106,9 +135,11 @@ namespace Server.Custom.Features
             // Não chame OnKill aqui!
         }
 
-
         public void OnKill(Mobile victim, Mobile killer)
         {
+            // Atualiza tempo de sobrevivência antes de salvar
+            AtualizarSobrevivencia();
+
             if (killer is CustomPlayer killerPlayer && victim is CustomPlayer victimPlayer)
             {
                 ((IronmanFeature)victimPlayer.Manager.Features["ironman"]).IsActive = false;
@@ -117,7 +148,7 @@ namespace Server.Custom.Features
                 ((IronmanFeature)victimPlayer.Manager.Features["ironman"]).IronmanPvPKillStreak = 0;
                 ((IronmanFeature)victimPlayer.Manager.Features["ironman"]).IronmanCauseOfDeath = killerPlayer.Name;
                 ((IronmanFeature)victimPlayer.Manager.Features["ironman"]).IronmanStartRegion = victimPlayer.Region.ToString();
-                ((IronmanFeature)victimPlayer.Manager.Features["ironman"]).IronmanSurvivalTime = Core.Now - ((IronmanFeature)victimPlayer.Manager.Features["ironman"]).IronmanStartTime;
+                ((IronmanFeature)victimPlayer.Manager.Features["ironman"]).AtualizarSobrevivencia();
                 ((IronmanFeature)victimPlayer.Manager.Features["ironman"]).IronmanAchievements = new List<string>();
                 ((IronmanFeature)victimPlayer.Manager.Features["ironman"]).IronmanScore = 0;
                 ((IronmanFeature)victimPlayer.Manager.Features["ironman"]).IronmanStartTime = Core.Now;
@@ -129,11 +160,7 @@ namespace Server.Custom.Features
                 int killerScore = (int)(victimPlayer.Fame * ((IronmanFeature)victimPlayer.Manager.Features["ironman"]).IronmanScoreMultiplier) / 100;
                 ((IronmanFeature)killerPlayer.Manager.Features["ironman"]).IronmanScore += killerScore;
 
-
-
-
                 Console.WriteLine($"[IronmanRanking] Atualizando ranking para {killerPlayer.Name} com score {((IronmanFeature)killerPlayer.Manager.Features["ironman"]).IronmanScore}");
-
             }
             else if (killer is CustomPlayer customPlayer && victim is Mobile creature)
             {
@@ -141,8 +168,6 @@ namespace Server.Custom.Features
                 ((IronmanFeature)customPlayer.Manager.Features["ironman"]).IronmanPvMKillStreak++;
                 ((IronmanFeature)customPlayer.Manager.Features["ironman"]).IronmanScoreMultiplier = 1.0 + ((IronmanFeature)customPlayer.Manager.Features["ironman"]).IronmanPvMKillStreak * 0.05;
                 ((IronmanFeature)customPlayer.Manager.Features["ironman"]).IronmanScore = (int)(creature.Fame * ((IronmanFeature)customPlayer.Manager.Features["ironman"]).IronmanScoreMultiplier) / 100;
-
-
             }
             if (killer is CustomPlayer player)
                 AtualizaRankingIronmanAsync(new IronmanRankingEntry
@@ -175,7 +200,6 @@ namespace Server.Custom.Features
             // Lê a chave secreta da env
             var serverKey = Environment.GetEnvironmentVariable("IRONMAN_SECRET_KEY") ?? "";
             Console.WriteLine($"[IronmanRanking] Chave secreta: {serverKey}");
-            // Adiciona o header corretamente (no HttpClient, não no content)
             httpClient.DefaultRequestHeaders.Add("X-Server-Key", serverKey);
 
             try
@@ -191,8 +215,6 @@ namespace Server.Custom.Features
                 Console.WriteLine($"[IronmanRanking] Erro: {ex.Message}");
             }
         }
-
-
 
         public void Serialize(IGenericWriter writer)
         {
