@@ -11,6 +11,15 @@ namespace Server.Custom.Mobiles
         public Mobile Owner { get; private set; }
         public Dictionary<string, IPlayerFeature> Features { get; set; } = new();
 
+        public static readonly Dictionary<string, Func<IPlayerFeature>> FeatureFactories =
+            new Dictionary<string, Func<IPlayerFeature>>
+            {
+            { "ironman", () => new IronmanFeature() },
+                // { "pets", () => new PetFeature() },
+                // { "dungeonrun", () => new DungeonRunFeature() },
+                // ... adicione mais
+            };
+
         private PlayerFeatureThinkTimer _thinkTimer;
 
         public PlayerManager(Mobile owner)
@@ -18,17 +27,22 @@ namespace Server.Custom.Mobiles
             Owner = owner;
         }
 
-        public void InitializeDefaults()
+        public void EnsureAllFeatures()
         {
-            var ironmanFeature = new IronmanFeature();
-            ironmanFeature.Initialize(Owner);
-            Features["ironman"] = ironmanFeature;
-
-            Console.WriteLine($"[PlayerManager] Inicializado para {Owner.Name}");
+            foreach (var pair in FeatureFactories)
+            {
+                if (!Features.ContainsKey(pair.Key))
+                {
+                    var feature = pair.Value();
+                    feature.Initialize(Owner);
+                    Features[pair.Key] = feature;
+                }
+            }
         }
 
         public void OnLogin()
         {
+            EnsureAllFeatures();
             foreach (var feature in Features.Values)
                 feature.OnLogin();
 
@@ -68,11 +82,7 @@ namespace Server.Custom.Mobiles
                     for (int i = 0; i < count; i++)
                     {
                         string key = reader.ReadString();
-                        IPlayerFeature feature = key switch
-                        {
-                            "ironman" => new IronmanFeature(),
-                            _ => null
-                        };
+                        IPlayerFeature feature = FeatureFactories.ContainsKey(key) ? FeatureFactories[key]() : null;
 
                         if (feature != null)
                         {

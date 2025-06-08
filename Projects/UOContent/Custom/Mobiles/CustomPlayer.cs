@@ -15,16 +15,13 @@ using Server.Custom.Features;
 
 namespace Server.Custom.Mobiles
 {
-
     public class CustomPlayer : PlayerMobile
     {
         [OnEvent(nameof(PlayerLoginEvent))]
         public static void OnLogin(PlayerMobile from)
         {
             if (from is CustomPlayer cp)
-            {
-                cp.OnPlayerLogin(from);
-            }
+                cp.OnPlayerLogin();
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -43,16 +40,13 @@ namespace Server.Custom.Mobiles
 
         public CustomPlayer() : base()
         {
-
             Manager = new PlayerManager(this);
-            Manager.InitializeDefaults();
             Console.WriteLine($"[CustomPlayer] Criado: {this.Name}");
         }
 
         public CustomPlayer(Serial serial) : base(serial)
         {
             Manager = new PlayerManager(this);
-            Manager.InitializeDefaults();
         }
 
         public override void OnDeath(Container c)
@@ -62,8 +56,10 @@ namespace Server.Custom.Mobiles
             var lastKiller = this.LastKiller;
             if (lastKiller is CustomPlayer lastKillerPlayer && lastKillerPlayer != this)
             {
-                lastKillerPlayer.Manager?.Features["ironman"]?.OnKill(this, this);
-                this.Manager?.Features["ironman"]?.OnKill(this, lastKillerPlayer);
+                if (lastKillerPlayer.Manager?.Features.TryGetValue("ironman", out var ironmanKiller) == true)
+                    (ironmanKiller as IronmanFeature)?.OnKill(this, this);
+                if (this.Manager?.Features.TryGetValue("ironman", out var ironmanVictim) == true)
+                    (ironmanVictim as IronmanFeature)?.OnKill(this, lastKillerPlayer);
             }
             base.OnDeath(c);
         }
@@ -73,123 +69,102 @@ namespace Server.Custom.Mobiles
             get
             {
                 int baseLuck = AosAttributes.GetValue(this, AosAttribute.Luck);
-
                 if (CombatMode == CombatMode.PvM)
                 {
                     return (int)(baseLuck * 0.5); // -50%
                 }
-
                 return baseLuck;
             }
         }
 
-        public void OnPlayerLogin(PlayerMobile from)
+        public void OnPlayerLogin()
         {
-
-            if (from is CustomPlayer cp)
+            if (string.IsNullOrEmpty(this.PreferredLanguage))
             {
-                if (string.IsNullOrEmpty(cp.PreferredLanguage))
-                {
-                    cp.SendGump(new LanguageSelectGump());
-                }
-
-                _ = Task.Run(async () =>
-               {
-                   try
-                   {
-                       string loginUO = cp.Account?.Username;
-
-                       if (!string.IsNullOrEmpty(loginUO))
-                       {
-                           var patreonInfo = await PatreonChecker.GetTierInfoAsync(loginUO);
-
-                           if (patreonInfo != null)
-                           {
-                               cp.PatreonTier = patreonInfo.tier;
-                               cp.HasPremium = !string.IsNullOrWhiteSpace(cp.PatreonTier);
-                               cp.PatreonStatus = patreonInfo.patronStatus;
-                               cp.SendMessage($"[Patreon] Acesso confirmado: Status {cp.PatreonStatus}");
-                               cp.SendMessage("Bem-vindo, patrono! Você tem acesso completo.");
-
-                           }
-                           else
-                           {
-                               cp.PatreonTier = "";
-                               cp.HasPremium = false;
-                               cp.PatreonStatus = "";
-                               cp.SendMessage("[Patreon] Acesso não encontrado.");
-                               cp.SendMessage("Bem-vindo, visitante! Você não tem acesso completo.");
-                           }
-                       }
-                   }
-                   catch (Exception ex)
-                   {
-                       Console.WriteLine($"[PatreonChecker] Erro: {ex.Message}");
-                   }
-                   cp.AtualizarPatreonAsync();
-               });
-                Manager?.OnLogin();
+                this.SendGump(new LanguageSelectGump());
             }
-        }
 
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    string loginUO = this.Account?.Username;
+                    if (!string.IsNullOrEmpty(loginUO))
+                    {
+                        var patreonInfo = await PatreonChecker.GetTierInfoAsync(loginUO);
+                        if (patreonInfo != null)
+                        {
+                            this.PatreonTier = patreonInfo.tier;
+                            this.HasPremium = !string.IsNullOrWhiteSpace(this.PatreonTier);
+                            this.PatreonStatus = patreonInfo.patronStatus;
+                            this.SendMessage($"[Patreon] Acesso confirmado: Status {this.PatreonStatus}");
+                            this.SendMessage("Bem-vindo, patrono! Você tem acesso completo.");
+                        }
+                        else
+                        {
+                            this.PatreonTier = "";
+                            this.HasPremium = false;
+                            this.PatreonStatus = "";
+                            this.SendMessage("[Patreon] Acesso não encontrado.");
+                            this.SendMessage("Bem-vindo, visitante! Você não tem acesso completo.");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[PatreonChecker] Erro: {ex.Message}");
+                }
+                this.AtualizarPatreonAsync();
+            });
+            Manager?.OnLogin();
+        }
 
         public override void GetContextMenuEntries(Mobile from, ref PooledRefList<ContextMenuEntry> list)
         {
             base.GetContextMenuEntries(from, ref list);
-
             if (from == this && from is CustomPlayer player)
             {
                 list.Add(new ToggleCombatModeEntry(player));
             }
-
         }
 
         public override void Damage(int amount, Mobile from, bool informMount = true, bool ignoreEvilOmen = false)
         {
             if (from is PlayerMobile attacker && this is PlayerMobile defender)
             {
-                if (attacker != defender) // ignora auto-dano
+                if (attacker != defender)
                 {
                     if (attacker is CustomPlayer atk && defender is CustomPlayer def)
                     {
                         if (atk.CombatMode == CombatMode.PvP && def.CombatMode == CombatMode.PvP)
                         {
-                            base.Damage(amount, from); // Permite PvP legítimo
+                            base.Damage(amount, from);
                             return;
                         }
-
-                        // Um dos dois não está em PvP
                         atk.SendMessage(33, "Você não pode atacar um jogador em modo PvM.");
                         def.SendMessage(33, $"{atk.Name} tentou atacar você, mas você está protegido por estar em PvM.");
                         return;
                     }
                 }
             }
-
-            base.Damage(amount, from, informMount, ignoreEvilOmen); // Dano normal para PvM e NPCs
+            base.Damage(amount, from, informMount, ignoreEvilOmen);
         }
-
-
 
         public async Task AtualizarPatreonAsync(bool force = false)
         {
             if (!force && (DateTime.UtcNow - LastPatreonCheck).TotalHours < 24)
                 return;
-
             try
             {
                 string loginUO = Account?.Username;
                 if (string.IsNullOrEmpty(loginUO))
                     return;
-
                 var patreonInfo = await PatreonChecker.GetTierInfoAsync(loginUO);
-
                 if (patreonInfo != null)
                 {
                     PatreonTier = patreonInfo.tier;
                     HasPremium = !string.IsNullOrWhiteSpace(PatreonTier);
                     LastPatreonCheck = DateTime.UtcNow;
-
                     SendMessage($"[Patreon] Atualizado: Tier {PatreonTier}");
                 }
                 else
@@ -212,7 +187,6 @@ namespace Server.Custom.Mobiles
             base.Serialize(writer);
             writer.Write(1);
             writer.Write(PreferredLanguage);
-
             writer.Write((int)CombatMode);
             writer.Write(NextCombatModeChange);
             writer.Write(PatreonTier);
@@ -227,13 +201,11 @@ namespace Server.Custom.Mobiles
             Manager?.Deserialize(reader);
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
             switch (version)
             {
                 case 1:
                     PreferredLanguage = reader.ReadString();
                     goto case 0;
-
                 case 0:
                     CombatMode = (CombatMode)reader.ReadInt();
                     NextCombatModeChange = reader.ReadDateTime();
@@ -244,7 +216,5 @@ namespace Server.Custom.Mobiles
                     break;
             }
         }
-
-
     }
 }
