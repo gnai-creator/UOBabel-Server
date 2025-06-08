@@ -18,7 +18,7 @@ namespace Server
     {
 
 
-        public const int NumberOfSkills = 3 ;       // Number of skills you want the player to add
+        public const int NumberOfSkills = 3;       // Number of skills you want the player to add
         private const int SkillCapValue = 700;      // Players Skill cap value
         private int m_SelectionsMade;
         private List<SkillName> m_SelectedSkills;
@@ -36,17 +36,16 @@ namespace Server
             }
         }
 
-        private SkillBook  m_SkillBook;
+        private SkillBook m_SkillBook;
 
         public SkillPickGump(SkillBook book, int selectionsMade, List<SkillName> selectedSkills) : base(0, 0)
         {
-            m_SelectedSkills = [..selectedSkills]; // Deep copy the list to avoid modifying the original list
-            m_SelectedSkills = selectedSkills;
+            m_SelectedSkills = selectedSkills != null ? [.. selectedSkills] : [];
 
-            this.Closable=true;
-            this.Disposable=true;
-            this.Draggable=true;
-            this.Resizable=true;
+            this.Closable = true;
+            this.Disposable = true;
+            this.Draggable = true;
+            this.Resizable = true;
 
             m_SkillBook = book;
             m_SelectionsMade = selectionsMade;
@@ -395,7 +394,7 @@ namespace Server
             }
         }
 
-        public SkillBook( Serial serial ) : base( serial )
+        public SkillBook(Serial serial) : base(serial)
         {
         }
 
