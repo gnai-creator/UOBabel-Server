@@ -181,7 +181,7 @@ namespace Server.Custom.Mobiles
                 case 1:
                     {
                         PreferredLanguage = reader.ReadString();
-                        break;
+                        goto case 0;
                     }
                 case 0:
                     {
@@ -191,7 +191,7 @@ namespace Server.Custom.Mobiles
                         PatreonStatus = reader.ReadString();
                         HasPremium = reader.ReadBool();
                         LastPatreonCheck = reader.ReadDateTime();
-                        Manager ??= new PlayerManager(this);
+                        Manager = new PlayerManager(this);
                         Manager.Deserialize(reader);
                         base.Deserialize(reader); // precisa vir antes do Manager
                         break;

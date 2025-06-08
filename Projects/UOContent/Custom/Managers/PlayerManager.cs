@@ -62,7 +62,7 @@ namespace Server.Custom.Mobiles
                             {
                                 "ironman" => new IronmanFeature(),
                                 // "pvp" => new PvpStatsFeature(),
-                                _ => null
+                                _ => new ExampleFeature()
                             };
                             feature?.Deserialize(reader);
                             if (feature != null)
