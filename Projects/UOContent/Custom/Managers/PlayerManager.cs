@@ -16,12 +16,15 @@ namespace Server.Custom.Mobiles
         public PlayerManager(Mobile owner)
         {
             Owner = owner;
+        }
 
+        public void InitializeDefaults()
+        {
             var ironmanFeature = new IronmanFeature();
-            ironmanFeature.Initialize(owner); // você já chamou aqui
+            ironmanFeature.Initialize(Owner);
             Features["ironman"] = ironmanFeature;
 
-            Console.WriteLine($"[PlayerManager] Criado: {Owner.Name}");
+            Console.WriteLine($"[PlayerManager] Inicializado para {Owner.Name}");
         }
 
         public void OnLogin()
@@ -29,7 +32,6 @@ namespace Server.Custom.Mobiles
             foreach (var feature in Features.Values)
                 feature.OnLogin();
 
-            // Inicia o timer de pensamento
             _thinkTimer?.Stop();
             _thinkTimer = new PlayerFeatureThinkTimer((CustomPlayer)Owner, this);
             _thinkTimer.Start();
@@ -40,7 +42,6 @@ namespace Server.Custom.Mobiles
             foreach (var feature in Features.Values)
                 feature.OnDeath();
 
-            // Opcional: para o timer ao morrer
             _thinkTimer?.Stop();
         }
 
@@ -58,6 +59,7 @@ namespace Server.Custom.Mobiles
         public void Deserialize(IGenericReader reader)
         {
             int version = reader.ReadInt();
+
             switch (version)
             {
                 case 0:
@@ -71,13 +73,16 @@ namespace Server.Custom.Mobiles
                             "ironman" => new IronmanFeature(),
                             _ => new ExampleFeature()
                         };
-                        feature?.Deserialize(reader);
+
                         if (feature != null)
+                        {
+                            feature.Deserialize(reader);
+                            feature.Initialize(Owner); // <== ESSENCIAL após desserializar
                             Features[key] = feature;
+                        }
                     }
                     break;
             }
         }
     }
-
 }

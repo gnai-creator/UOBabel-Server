@@ -41,12 +41,14 @@ namespace Server.Custom.Mobiles
         {
 
             Manager = new PlayerManager(this);
+            Manager.InitializeDefaults();
             Console.WriteLine($"[CustomPlayer] Criado: {this.Name}");
         }
 
         public CustomPlayer(Serial serial) : base(serial)
         {
             Manager = new PlayerManager(this);
+            Manager.InitializeDefaults();
         }
 
         public override void OnDeath(Container c)

@@ -6,6 +6,13 @@ namespace Server.Custom.Features
 {
     public class ExampleFeature : IPlayerFeature
     {
+        private Mobile Owner { get; set; }
+
+        public void Initialize(Mobile owner)
+        {
+            Owner = owner;
+        }
+
         public void OnLogin()
         {
             Console.WriteLine("ExampleFeature OnLogin");
