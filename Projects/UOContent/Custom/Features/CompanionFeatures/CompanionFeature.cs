@@ -116,6 +116,7 @@ namespace Server.Custom.Companions
         public override void OnInteract(Mobile player)
         {
             // Exemplo: menu de contexto ou click direito
+            Owner.PublicOverheadMessage(Server.MessageType.Regular, 1151, false, "Como posso ajudar?");
             Owner.PublicOverheadMessage(MessageType.Regular, 1151, false, $"Nível {Level} | Felicidade {Happiness}% | Humor {Mood}");
         }
 
@@ -162,6 +163,7 @@ namespace Server.Custom.Companions
 
         public override void Serialize(IGenericWriter writer)
         {
+            writer.Write(0); // version
             writer.Write(1); // version
             writer.Write(CompanionName);
             writer.Write(Personality);
