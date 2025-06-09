@@ -723,7 +723,19 @@ namespace Server.Mobiles
                                             break;
                                         case AIService.NpcAction.ATACAR:
                                             this.FalarComEmocao("*rosna e se prepara para atacar*", "raiva", playerLang);
-                                            this.Combatant = e.Mobile;
+                                            Mobile target = null;
+                                            if (!string.IsNullOrWhiteSpace(decision.target))
+                                            {
+                                                foreach (var mob in GetMobilesInRange(5))
+                                                {
+                                                    if (mob.Name.InsensitiveEquals(decision.target))
+                                                    {
+                                                        target = mob;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                            this.Combatant = target ?? e.Mobile;
                                             break;
 
                                         case AIService.NpcAction.ROTINA:
