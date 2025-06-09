@@ -5,7 +5,7 @@ using Server.Mobiles;
 namespace Server.Custom.Companions
 {
     [SerializationGenerator(0, false)]
-    public class ComRat : CustomCreature
+    public partial class ComRat : CustomCreature
     {
         [Constructible]
         public ComRat() : base(AIType.AI_Animal, FightMode.Aggressor)
