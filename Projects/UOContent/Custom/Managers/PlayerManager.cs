@@ -14,7 +14,8 @@ namespace Server.Custom.Mobiles
         public static readonly Dictionary<string, Func<IPlayerFeature>> FeatureFactories =
             new Dictionary<string, Func<IPlayerFeature>>
             {
-            { "ironman", () => new IronmanFeature() },
+                { "ironman", () => new IronmanFeature() },
+                { "dropboost", () => new DropBoostFeature() },
                 // { "pets", () => new PetFeature() },
                 // { "dungeonrun", () => new DungeonRunFeature() },
                 // ... adicione mais

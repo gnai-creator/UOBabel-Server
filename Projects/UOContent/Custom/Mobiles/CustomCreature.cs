@@ -21,6 +21,8 @@ namespace Server.Custom.Mobiles
     {
         public CreatureManager CreatureManager { get; private set; }
 
+        protected double m_KillersDropMultiplier = 1.0;
+
         [CommandProperty(AccessLevel.GameMaster)]
         public int EnrageDamageThreshold { get; set; } = 21;
 
@@ -109,6 +111,85 @@ namespace Server.Custom.Mobiles
             }
 
             base.OnDamage(amount, from, willKill);
+        }
+
+        protected double GetKillerDropMultiplier()
+        {
+            var rights = GetLootingRights(DamageEntries, HitsMax);
+            DamageStore highest = null;
+
+            for (var i = 0; i < rights.Count; ++i)
+            {
+                var ds = rights[i];
+
+                if (ds.m_HasRight && (highest == null || ds.m_Damage > highest.m_Damage))
+                {
+                    highest = ds;
+                }
+            }
+
+            if (highest?.m_Mobile is CustomPlayer cp &&
+                cp.Manager.Features.TryGetValue("dropboost", out var f) &&
+                f is DropBoostFeature boost && boost.IsActive)
+            {
+                return boost.Multiplier;
+            }
+
+            return 1.0;
+        }
+
+        public override void GenerateLoot(bool spawning)
+        {
+            m_Spawning = spawning;
+
+            if (!spawning)
+            {
+                m_KillersLuck = LootPack.GetLuckChanceForKiller(this);
+                m_KillersDropMultiplier = GetKillerDropMultiplier();
+            }
+
+            base.GenerateLoot();
+
+            if (m_Paragon)
+            {
+                if (Fame < 1250)
+                {
+                    AddLoot(LootPack.Meager);
+                }
+                else if (Fame < 2500)
+                {
+                    AddLoot(LootPack.Average);
+                }
+                else if (Fame < 5000)
+                {
+                    AddLoot(LootPack.Rich);
+                }
+                else if (Fame < 10000)
+                {
+                    AddLoot(LootPack.FilthyRich);
+                }
+                else
+                {
+                    AddLoot(LootPack.UltraRich);
+                }
+            }
+
+            m_Spawning = false;
+            m_KillersLuck = 0;
+            m_KillersDropMultiplier = 1.0;
+        }
+
+        public override void AddLoot(LootPack pack)
+        {
+            if (Summoned)
+            {
+                return;
+            }
+
+            var backpack = Backpack ?? new Backpack { Movable = false };
+            AddItem(backpack);
+
+            pack.Generate(this, backpack, m_Spawning, m_KillersLuck, m_KillersDropMultiplier);
         }
 
         public override void Serialize(IGenericWriter writer)

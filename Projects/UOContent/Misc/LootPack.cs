@@ -115,7 +115,7 @@ namespace Server
 
         public static bool CheckLuck(int chance) => chance > Utility.Random(10000);
 
-        public void Generate(Mobile from, Container cont, bool spawning, int luckChance)
+        public void Generate(Mobile from, Container cont, bool spawning, int luckChance, double dropMultiplier = 1.0)
         {
             if (cont == null)
             {
@@ -128,7 +128,8 @@ namespace Server
             {
                 var entry = m_Entries[i];
 
-                var shouldAdd = entry.Chance > Utility.Random(10000);
+                var effectiveChance = Math.Min(10000, (int)(entry.Chance * dropMultiplier));
+                var shouldAdd = effectiveChance > Utility.Random(10000);
 
                 if (!shouldAdd && checkLuck)
                 {
@@ -136,7 +137,7 @@ namespace Server
 
                     if (CheckLuck(luckChance))
                     {
-                        shouldAdd = entry.Chance > Utility.Random(10000);
+                        shouldAdd = effectiveChance > Utility.Random(10000);
                     }
                 }
 
