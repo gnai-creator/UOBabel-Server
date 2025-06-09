@@ -92,6 +92,22 @@ brew install icu4c libdeflate zstd argon2
 - Follow the [publish](https://github.com/modernuo/ModernUO#publishing-builds) instructions
 - Run `ModernUO.exe` or `dotnet ModernUO.dll` from the `Distribution` directory on the
 
+## Custom Features
+The **UOContent/Custom** folder contains example features ready to be extended:
+
+- **CompanionFeature** &ndash; basic companion system that reacts to speech and
+  remembers interactions through the `MemoryFeature`.
+- **MemoryFeature** &ndash; provides persistent memory storage for creatures.
+- **NpcIntelligenceFeature** &ndash; integrates memory and AI services so NPCs
+  can respond dynamically.
+- **RageFeature** &ndash; temporary rage mode for creatures with visual effects
+  and stat bonuses.
+- **DropBoostFeature** &ndash; allows adjusting loot drop rates for players.
+- **IronmanFeature** &ndash; tracks survival runs and posts results to the Ironman
+  ranking API.
+- **ExampleFeature** and **PlayerFeatureThinkTimer** demonstrate how to create
+  custom player features.
+
 ## Troubleshooting / FAQ
 - See [FAQ](./FAQ.md)
 
