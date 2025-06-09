@@ -2,7 +2,7 @@ using System.Runtime.CompilerServices;
 
 namespace Server.Mobiles;
 
-public class VendorAI : BaseAI
+public class VendorAI : CustomBaseAI
 {
     // Guards! A villan attacks me!
     // Guards! Help!

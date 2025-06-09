@@ -9,7 +9,7 @@
 
 namespace Server.Mobiles;
 
-public class AnimalAI : BaseAI
+public class AnimalAI : CustomBaseAI
 {
     public AnimalAI(BaseCreature m) : base(m)
     {

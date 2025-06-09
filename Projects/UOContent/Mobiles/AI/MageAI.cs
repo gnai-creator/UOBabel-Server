@@ -13,7 +13,7 @@ using Server.Targeting;
 
 namespace Server.Mobiles;
 
-public class MageAI : BaseAI
+public class MageAI : CustomBaseAI
 {
     private const double HealChance = 0.10;     // 10% chance to heal at gm magery
     private const double TeleportChance = 0.05; // 5% chance to teleport at gm magery

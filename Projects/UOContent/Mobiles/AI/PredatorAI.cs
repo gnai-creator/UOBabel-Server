@@ -1,6 +1,6 @@
 namespace Server.Mobiles;
 
-public class PredatorAI : BaseAI
+public class PredatorAI : CustomBaseAI
 {
     public PredatorAI(BaseCreature m) : base(m)
     {

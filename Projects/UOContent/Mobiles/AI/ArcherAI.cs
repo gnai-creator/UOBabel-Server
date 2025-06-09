@@ -3,7 +3,7 @@ using Server.Items;
 
 namespace Server.Mobiles;
 
-public class ArcherAI : BaseAI
+public class ArcherAI : CustomBaseAI
 {
     public ArcherAI(BaseCreature m) : base(m)
     {

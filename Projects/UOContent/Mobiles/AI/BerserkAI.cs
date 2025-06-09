@@ -1,6 +1,6 @@
 namespace Server.Mobiles;
 
-public class BerserkAI : BaseAI
+public class BerserkAI : CustomBaseAI
 {
     public BerserkAI(BaseCreature m) : base(m)
     {
