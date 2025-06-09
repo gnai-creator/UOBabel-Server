@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Mobiles;
 
-public class MeleeAI : BaseAI
+public class MeleeAI : CustomBaseAI
 {
     public MeleeAI(BaseCreature m) : base(m)
     {

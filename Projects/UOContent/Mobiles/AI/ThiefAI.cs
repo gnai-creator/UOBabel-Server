@@ -3,7 +3,7 @@ using Server.Items;
 
 namespace Server.Mobiles;
 
-public class ThiefAI : BaseAI
+public class ThiefAI : CustomBaseAI
 {
     private Item m_toDisarm;
 

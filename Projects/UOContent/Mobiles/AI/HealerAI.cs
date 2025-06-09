@@ -7,7 +7,7 @@ using Server.Targeting;
 
 namespace Server.Mobiles;
 
-public class HealerAI : BaseAI
+public class HealerAI : CustomBaseAI
 {
     private static readonly NeedDelegate m_Cure = NeedCure;
     private static readonly NeedDelegate m_GHeal = NeedGHeal;

@@ -253,12 +253,9 @@ namespace Server.Custom.Features
 
         protected void FugaPorSpeech(Mobile from, AIService.NpcDecision decision, string playerLang)
         {
-            Mobile target = null;
-            if (Owner.Combatant != null)
+            if (Owner.AIObject != null)
             {
-                target = Owner.Combatant;
-                Owner.AIObject.DoActionFlee();
-
+                Owner.AIObject.Action = ActionType.Flee;
             }
         }
 
