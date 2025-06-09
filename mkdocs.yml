@@ -69,6 +69,7 @@ markdown_extensions:
 # Pages
 nav:
   - Home: 'index.md'
+  - 'Repository overview': 'repository-overview.md'
   - 'Get Started':
     - 'installation.md'
     - 'building-server.md'
