@@ -163,7 +163,6 @@ namespace Server.Custom.Companions
 
         public override void Serialize(IGenericWriter writer)
         {
-            writer.Write(0); // version
             writer.Write(1); // version
             writer.Write(CompanionName);
             writer.Write(Personality);
