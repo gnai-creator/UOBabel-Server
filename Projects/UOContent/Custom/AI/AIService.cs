@@ -70,6 +70,10 @@ namespace Server.Services.AI
             SEGUIR,
             MONTAR_CAVALO,
             DESMONTAR_CAVALO,
+            MOVER_PARA,
+            MOVER_PARA_CAVALO,
+            MOVER_PARA_AUTOR,
+            FUGIR,
         }
 
         public static string GetNpcActionString(NpcAction action) => action switch

@@ -193,50 +193,22 @@ namespace Server.Custom.Features
                                             break;
                                         case AIService.NpcAction.MONTAR_CAVALO:
                                             break;
+                                        case AIService.NpcAction.DESMONTAR_CAVALO:
+                                            break;
+                                        case AIService.NpcAction.MOVER_PARA:
+                                            break;
+                                        case AIService.NpcAction.MOVER_PARA_CAVALO:
+                                            break;
+                                        case AIService.NpcAction.MOVER_PARA_AUTOR:
+                                            break;
+                                        case AIService.NpcAction.FUGIR:
+                                            await FalarComEmocao("*fugiu*", "medo", playerLang);
+                                            FugaPorSpeech(e.Mobile, decision, playerLang);
+                                            break;
                                         case AIService.NpcAction.PEGAR_DINHEIRO:
-                                            await FalarComEmocao("*pega o dinheiro*", "afeto", playerLang);
-                                            foreach (var item in e.Mobile.Backpack.Items)
-                                            {
-                                                if (decision.item_amount == "")
-                                                    decision.item_amount = "1";
-                                                if (item is Gold gold && decision.item_amount != "")
-                                                {
-                                                    if (gold.Amount >= int.Parse(decision.item_amount))
-                                                    {
-                                                        gold.Amount -= int.Parse(decision.item_amount);
-                                                        creature.AddToBackpack(new Gold(int.Parse(decision.item_amount)));
-                                                        break;
-                                                    }
-                                                    else
-                                                    {
-                                                        await FalarComEmocao("*não tem dinheiro suficiente*", "raiva", playerLang);
-                                                        break;
-                                                    }
-                                                }
-                                            }
-                                            break;
+                                            goto case AIService.NpcAction.PEGAR_ITEM;
                                         case AIService.NpcAction.DAR_DINHEIRO:
-                                            await FalarComEmocao("*oferece uma pequena quantia*", "afeto", playerLang);
-                                            foreach (var item in creature.Backpack.Items)
-                                            {
-                                                if (decision.item_amount == "")
-                                                    decision.item_amount = "1";
-                                                if (item is Gold gold && decision.item_amount != "")
-                                                {
-                                                    if (gold.Amount >= int.Parse(decision.item_amount))
-                                                    {
-                                                        gold.Amount -= int.Parse(decision.item_amount);
-                                                        e.Mobile.AddToBackpack(new Gold(int.Parse(decision.item_amount)));
-                                                        break;
-                                                    }
-                                                    else
-                                                    {
-                                                        await FalarComEmocao("*não tem dinheiro suficiente*", "raiva", playerLang);
-                                                        break;
-                                                    }
-                                                }
-                                            }
-                                            break;
+                                            goto case AIService.NpcAction.DAR_ITEM;
                                         case AIService.NpcAction.PEGAR_ITEM:
                                             await FalarComEmocao("*pega o item*", "afeto", playerLang);
                                             PegarItem(e.Mobile, decision, playerLang);
@@ -247,19 +219,7 @@ namespace Server.Custom.Features
                                             break;
                                         case AIService.NpcAction.ATACAR:
                                             await FalarComEmocao("*rosna e se prepara para atacar*", "raiva", playerLang);
-                                            Mobile target = null;
-                                            if (!string.IsNullOrWhiteSpace(decision.target))
-                                            {
-                                                foreach (var mob in creature.GetMobilesInRange(5))
-                                                {
-                                                    if (mob.Name.InsensitiveEquals(decision.target))
-                                                    {
-                                                        target = mob;
-                                                        break;
-                                                    }
-                                                }
-                                            }
-                                            creature.Combatant = target ?? e.Mobile;
+                                            AtacarPorSpeech(e.Mobile, decision, playerLang);
                                             break;
                                         case AIService.NpcAction.ROTINA:
                                             await FalarComEmocao("*retoma seu posto habitual*", "afeto", playerLang);
@@ -288,6 +248,37 @@ namespace Server.Custom.Features
                 string playerLang = GetPlayerLanguage(e.Mobile);
                 await FalarComEmocao("Houve uma falha na minha memória", "raiva", playerLang);
                 Console.WriteLine($"[OnSpeech ERROR] {ex}");
+            }
+        }
+
+        protected void FugaPorSpeech(Mobile from, AIService.NpcDecision decision, string playerLang)
+        {
+            Mobile target = null;
+            if (Owner.Combatant != null)
+            {
+                target = Owner.Combatant;
+                Owner.AIObject.DoActionFlee();
+
+            }
+        }
+
+        protected void AtacarPorSpeech(Mobile from, AIService.NpcDecision decision, string playerLang)
+        {
+            Mobile target = null;
+            if (!string.IsNullOrWhiteSpace(decision.target))
+            {
+                foreach (var mob in from.GetMobilesInRange(10))
+                {
+                    if (mob.Name.InsensitiveEquals(decision.target))
+                    {
+                        target = mob;
+                        break;
+                    }
+                }
+            }
+            if (target != null)
+            {
+                Owner.Combatant = target;
             }
         }
 
