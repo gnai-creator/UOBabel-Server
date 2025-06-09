@@ -247,7 +247,19 @@ namespace Server.Custom.Features
                                             break;
                                         case AIService.NpcAction.ATACAR:
                                             await FalarComEmocao("*rosna e se prepara para atacar*", "raiva", playerLang);
-                                            creature.Combatant = e.Mobile;
+                                            Mobile target = null;
+                                            if (!string.IsNullOrWhiteSpace(decision.target))
+                                            {
+                                                foreach (var mob in creature.GetMobilesInRange(5))
+                                                {
+                                                    if (mob.Name.InsensitiveEquals(decision.target))
+                                                    {
+                                                        target = mob;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                            creature.Combatant = target ?? e.Mobile;
                                             break;
                                         case AIService.NpcAction.ROTINA:
                                             await FalarComEmocao("*retoma seu posto habitual*", "afeto", playerLang);
