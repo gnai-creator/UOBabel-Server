@@ -1,6 +1,9 @@
 using ModernUO.Serialization;
 using Server.Custom.Mobiles;
 using Server.Mobiles;
+using Server.ContextMenus;
+using Server.Custom.Features.CompanionFeatures;
+using Server.Collections;
 
 namespace Server.Custom.Companions
 {
@@ -29,6 +32,12 @@ namespace Server.Custom.Companions
 
         public ComRat(Serial serial) : base(serial)
         {
+        }
+
+        public override void GetContextMenuEntries(Mobile from, ref PooledRefList<ContextMenuEntry> list)
+        {
+            base.GetContextMenuEntries(from, ref list);
+            list.Add(new CompanionStatusEntry(this));
         }
 
         public override void Serialize(IGenericWriter writer)
