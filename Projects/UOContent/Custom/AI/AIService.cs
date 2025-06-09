@@ -86,6 +86,13 @@ namespace Server.Services.AI
             NpcAction.ATACAR => "atacar",
             NpcAction.ROTINA => "voltar à rotina",
             NpcAction.DIZER => "Say",
+            NpcAction.SEGUIR => "seguir",
+            NpcAction.MONTAR_CAVALO => "montar cavalo",
+            NpcAction.DESMONTAR_CAVALO => "desmontar cavalo",
+            NpcAction.MOVER_PARA => "mover para",
+            NpcAction.MOVER_PARA_CAVALO => "mover para cavalo",
+            NpcAction.MOVER_PARA_AUTOR => "mover para autor",
+            NpcAction.FUGIR => "fugir",
             _ => throw new ArgumentOutOfRangeException(nameof(action))
         };
 
