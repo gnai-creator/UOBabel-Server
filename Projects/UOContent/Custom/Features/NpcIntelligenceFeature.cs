@@ -25,9 +25,19 @@ namespace Server.Custom.Features
 
         public override void Initialize()
         {
-            if (Owner is CustomCreature cc &&
-                cc.CreatureManager.Features.TryGetValue("memory", out var feat))
-                memory = (MemoryFeature)feat;
+            if (Owner is CustomCreature cc)
+            {
+                if (cc.CreatureManager.Features.TryGetValue("memory", out var feat))
+                {
+                    memory = (MemoryFeature)feat;
+                }
+                else if (Owner is BaseCreature bc)
+                {
+                    memory = new MemoryFeature(bc);
+                    memory.Initialize();
+                    cc.CreatureManager.Features["memory"] = memory;
+                }
+            }
         }
 
         public override void OnThink() { }
