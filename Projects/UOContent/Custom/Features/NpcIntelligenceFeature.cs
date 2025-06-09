@@ -26,10 +26,10 @@ namespace Server.Custom.Features
         public override void Initialize()
         {
             // Garante que Owner está setado (feito pelo CreatureManager)
-            if (Owner is BaseCreature creature)
+            if (Owner is BaseCreature)
             {
-                memory = new NpcMemory(creature.Serial.ToString());
-                memory.Load();
+                // defer memory creation until the NPC interacts with a player
+                memory = null;
             }
         }
 
@@ -58,8 +58,11 @@ namespace Server.Custom.Features
                 _nextAllowedSpeech = DateTime.UtcNow.AddSeconds(3);
 
                 var speechType = SpeechType;
-                memory ??= new NpcMemory(creature.Serial.ToString());
-                memory.Load();
+                if (memory == null)
+                {
+                    memory = new NpcMemory(creature.Serial.ToString());
+                    memory.Load();
+                }
 
                 if (speechType?.OnSpeech(creature, e.Mobile, e.Speech) == true)
                 {
@@ -448,10 +451,10 @@ namespace Server.Custom.Features
 
         public override void Deserialize(IGenericReader reader)
         {
-            if (Owner is BaseCreature creature)
+            if (Owner is BaseCreature)
             {
-                memory = new NpcMemory(creature.Serial.ToString());
-                memory.Load();
+                // memory will be loaded lazily on first interaction
+                memory = null;
             }
         }
     }
