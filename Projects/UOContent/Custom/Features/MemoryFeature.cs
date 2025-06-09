@@ -74,7 +74,7 @@ namespace Server.Custom.Features
 
         public override void OnSpeech(SpeechEventArgs e)
         {
-            // Pode armazenar interações relevantes
+            AddMemory($"{e.Mobile.Name}: \"{e.Speech}\"");
         }
 
         public override void OnThink() { }

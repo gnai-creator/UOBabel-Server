@@ -21,6 +21,9 @@ namespace Server.Custom.Mobiles
     {
         public CreatureManager CreatureManager { get; private set; }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int EnrageDamageThreshold { get; set; } = 50;
+
         // Construtor base
         private void InitCreatureManager()
         {
@@ -87,6 +90,25 @@ namespace Server.Custom.Mobiles
             if (Combatant != null)
                 CreatureManager?.OnCombat(Combatant);
             base.OnCombatantChange();
+        }
+
+        public override void OnSpeech(SpeechEventArgs e)
+        {
+            CreatureManager?.OnSpeech(e);
+            base.OnSpeech(e);
+        }
+
+        public override void OnDamage(int amount, Mobile from, bool willKill)
+        {
+            if (amount > EnrageDamageThreshold)
+            {
+                if (CreatureManager?.Features.TryGetValue("rage", out var feature) == true && feature is RageFeature rf)
+                {
+                    rf.TriggerEnrage();
+                }
+            }
+
+            base.OnDamage(amount, from, willKill);
         }
 
         public override void Serialize(IGenericWriter writer)
