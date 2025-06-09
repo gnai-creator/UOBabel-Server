@@ -3,6 +3,10 @@ using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;
 using Server.Targeting;
+using Server.Custom.Features.CompanionFeatures.Gumps;
+using Server.Custom.Mobiles;
+using Server.Custom.Features.CompanionFeatures;
+using Server.Custom.Companions;
 
 namespace Server.SkillHandlers
 {
@@ -63,6 +67,10 @@ namespace Server.SkillHandlers
                 else
                 {
                     from.SendGump(new AnimalLoreGump(c));
+                    if (c is CustomCreature customCreature)
+                    {
+                        from.SendGump(new CompanionStatusGump(from as PlayerMobile, customCreature, customCreature.CreatureManager?.Features["companion"] as CompanionFeature));
+                    }
                 }
             }
         }
