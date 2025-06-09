@@ -90,6 +90,11 @@ public unsafe class UnmanagedDataReader : IGenericReader
             return "".Intern();
         }
 
+        if (length > _size - Position)
+        {
+            throw new OutOfMemoryException();
+        }
+
         var str = TextEncoding.GetString(new ReadOnlySpan<byte>(_ptr + Position, length), _encoding);
         Position += length;
         return intern ? str.Intern() : str;
