@@ -3244,6 +3244,7 @@ namespace Server.Mobiles
             return rights;
         }
 
+
         public virtual void OnKilledBy(Mobile mob)
         {
             if (GivesMLMinorArtifact)

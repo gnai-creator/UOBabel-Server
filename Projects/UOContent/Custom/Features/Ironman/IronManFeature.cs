@@ -56,6 +56,7 @@ namespace Server.Custom.Features
         public void StartRun()
         {
             IsActive = true;
+            UpdateDropBoost(true);
             IronmanStartTime = Core.Now;
             IronmanSurvivalTime = TimeSpan.Zero;
             IronmanScore = 0;
@@ -78,6 +79,7 @@ namespace Server.Custom.Features
         public void StopRun()
         {
             IsActive = false;
+            UpdateDropBoost(false);
             IronmanStartTime = DateTime.MinValue;
             IronmanSurvivalTime = TimeSpan.Zero;
             IronmanScore = 0;
@@ -107,6 +109,7 @@ namespace Server.Custom.Features
             if (IsActive)
             {
                 IsActive = false;
+                UpdateDropBoost(false);
                 AtualizarSobrevivencia();
                 Console.WriteLine("Ironman morreu.");
                 AtualizaRankingIronmanAsync(new IronmanRankingEntry
@@ -135,6 +138,16 @@ namespace Server.Custom.Features
                 IronmanSurvivalTime = Core.Now - IronmanStartTime;
             else
                 IronmanSurvivalTime = TimeSpan.Zero;
+        }
+
+        private void UpdateDropBoost(bool active)
+        {
+            if (Owner is CustomPlayer cp &&
+                cp.Manager.Features.TryGetValue("dropboost", out var feat) &&
+                feat is DropBoostFeature boost)
+            {
+                boost.IsActive = active;
+            }
         }
 
         public void OnThink()
