@@ -28,6 +28,9 @@ namespace Server.Custom.Features
 
         public override void Initialize()
         {
+            if (string.IsNullOrWhiteSpace(MemoryId) && Owner is BaseCreature bc)
+                MemoryId = bc.Serial.ToString();
+
             Load();
         }
 
