@@ -69,14 +69,25 @@ namespace Server.Custom.Mobiles
             get
             {
                 int baseLuck = AosAttributes.GetValue(this, AosAttribute.Luck);
+
                 if (CombatMode == CombatMode.PvM)
                 {
-                    return (int)(baseLuck * 0.5); // -50%
-                }
-                return baseLuck;
-            }
+                    if (Manager?.Features.TryGetValue("ironman", out var f) == true && f is IronmanFeature ironman && ironman.IsActive)
+                    {
+                        return (int)(baseLuck * 1.75); // Ironman não perde sorte
+                    }
 
+                    return (int)(baseLuck * 1.5); // PvM comum - penalidade
+                }
+                else if (Manager?.Features.TryGetValue("ironman", out var f) == true && f is IronmanFeature ironman && ironman.IsActive)
+                {
+                    return (int)(baseLuck * 2.5); // Ironman não perde sorte
+                }
+
+                return (int)(baseLuck * 2.0); // PvP sem penalidade
+            }
         }
+
 
         public void OnPlayerLogin()
         {

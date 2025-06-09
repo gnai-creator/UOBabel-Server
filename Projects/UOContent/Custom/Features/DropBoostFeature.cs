@@ -1,6 +1,9 @@
 using System;
 using Server;
 using Server.Custom.Interfaces;
+using Server.Network;
+using Server.Mobiles;
+
 
 namespace Server.Custom.Features
 {
@@ -9,28 +12,19 @@ namespace Server.Custom.Features
         private Mobile Owner { get; set; }
 
         public bool IsActive { get; set; } = false;
-        public double Multiplier { get; set; } = 100.0;
+        public double Multiplier { get; set; } = 1.0;
+
+        public double ClampedMultiplier => Math.Clamp(Multiplier, 0.01, 100.0);
 
         public void Initialize(Mobile owner)
         {
             Owner = owner;
         }
 
-        public void OnLogin()
-        {
-        }
-
-        public void OnDeath()
-        {
-        }
-
-        public void OnKill(Mobile victim, Mobile killer)
-        {
-        }
-
-        public void OnThink()
-        {
-        }
+        public void OnLogin() { }
+        public void OnDeath() { }
+        public void OnKill(Mobile victim, Mobile killer) { }
+        public void OnThink() { }
 
         public void Serialize(IGenericWriter writer)
         {

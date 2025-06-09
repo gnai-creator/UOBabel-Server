@@ -6,7 +6,15 @@
       "version": "2.12.20",
       "commands": [
         "ModernUOSchemaGenerator"
-      ]
+      ],
+      "rollForward": false
+    },
+    "csharpier": {
+      "version": "1.0.2",
+      "commands": [
+        "csharpier"
+      ],
+      "rollForward": false
     }
   }
 }

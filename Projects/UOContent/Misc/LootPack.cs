@@ -130,6 +130,7 @@ namespace Server
 
                 var effectiveChance = Math.Min(10000, (int)(entry.Chance * dropMultiplier));
                 var shouldAdd = effectiveChance > Utility.Random(10000);
+                Console.WriteLine($"Chance: {entry.Chance}, Multiplier: {dropMultiplier}, Effective: {effectiveChance}");
 
                 if (!shouldAdd && checkLuck)
                 {

@@ -24,7 +24,7 @@ namespace Server.Custom.Mobiles
         protected double m_KillersDropMultiplier = 1.0;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int EnrageDamageThreshold { get; set; } = 21;
+        public int EnrageDamageThreshold { get; set; } = 18;
 
         // Construtor base
         private void InitCreatureManager()

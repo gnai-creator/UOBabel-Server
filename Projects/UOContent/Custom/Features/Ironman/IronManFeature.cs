@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 using Server;
+using Server.Custom.Features.Ironman;
 using Server.Custom.Interfaces;
 using Server.Custom.Mobiles;
 using Server.Ethics;
-using System.Text.Json;
-using System.Net.Http;
-using System.Text;
-using Server.Custom.Features.Ironman;
-using System.Threading.Tasks;
 
 namespace Server.Custom.Features
 {
@@ -72,8 +72,6 @@ namespace Server.Custom.Features
             IronmanPlayerKills.Clear();
             IronmanStartRegion = Owner?.Region?.ToString() ?? "Unknown";
             IronmanCauseOfDeath = "Unknown";
-  
-
         }
 
         public void StopRun()
@@ -112,23 +110,25 @@ namespace Server.Custom.Features
                 UpdateDropBoost(false);
                 AtualizarSobrevivencia();
                 Console.WriteLine("Ironman morreu.");
-                AtualizaRankingIronmanAsync(new IronmanRankingEntry
-                {
-                    PlayerName = Owner.Name,
-                    Score = IronmanScore,
-                    SurvivalTime = IronmanSurvivalTime.ToString(),
-                    KillPvPKillStreak = IronmanPvPKillStreak,
-                    KillPvMKillStreak = IronmanPvMKillStreak,
-                    Achievements = IronmanAchievements,
-                    CauseOfDeath = IronmanCauseOfDeath,
-                    StartRegion = IronmanStartRegion,
-                    PvPKills = IronmanPVPKills,
-                    PvPDeaths = IronmanPvPDeaths,
-                    PvMKills = IronmanPVMKills,
-                    PvMDeaths = IronmanPVMDeaths,
-                    IsActive = IsActive,
-                    Timestamp = DateTime.UtcNow
-                });
+                AtualizaRankingIronmanAsync(
+                    new IronmanRankingEntry
+                    {
+                        PlayerName = Owner.Name,
+                        Score = IronmanScore,
+                        SurvivalTime = IronmanSurvivalTime.ToString(),
+                        KillPvPKillStreak = IronmanPvPKillStreak,
+                        KillPvMKillStreak = IronmanPvMKillStreak,
+                        Achievements = IronmanAchievements,
+                        CauseOfDeath = IronmanCauseOfDeath,
+                        StartRegion = IronmanStartRegion,
+                        PvPKills = IronmanPVPKills,
+                        PvPDeaths = IronmanPvPDeaths,
+                        PvMKills = IronmanPVMKills,
+                        PvMDeaths = IronmanPVMDeaths,
+                        IsActive = IsActive,
+                        Timestamp = DateTime.UtcNow,
+                    }
+                );
             }
         }
 
@@ -147,8 +147,44 @@ namespace Server.Custom.Features
                 feat is DropBoostFeature boost)
             {
                 boost.IsActive = active;
+
+                if (active)
+                {
+                    // Base multiplier
+                    double multiplier = 1.0;
+
+                    // Recompensa exponencial ao killstreak
+                    if (IronmanPvMKillStreak > 0)
+                        multiplier += Math.Pow(IronmanPvMKillStreak, 1.15) / 50.0; // curva exponencial
+
+                    AtualizarSobrevivencia();
+
+                    if (IronmanSurvivalTime.TotalHours >= 1)
+                        multiplier += 0.5;
+                    if (IronmanSurvivalTime.TotalHours >= 3)
+                        multiplier += 0.5;
+                    if (IronmanSurvivalTime.TotalHours >= 6)
+                        multiplier += 1.0;
+
+                    // Bonus por sorte (mínimo +1.1 garantido)
+                    int baseLuck = AosAttributes.GetValue(cp, AosAttribute.Luck);
+                    double luckFactor = Math.Max(1.1, baseLuck / 100.0); // mínimo de +1.1
+                    multiplier += luckFactor;
+
+                    // Clamped between 1x and 10x
+                    boost.Multiplier = Math.Clamp(multiplier, 1.0, 10.0);
+                }
+                else
+                {
+                    boost.Multiplier = 1.0;
+                }
+
+                Console.WriteLine($"[Ironman] Drop boost atualizado para {cp.Name}: {boost.Multiplier}x");
             }
         }
+
+
+
 
         public void OnThink()
         {
@@ -181,7 +217,8 @@ namespace Server.Custom.Features
                 ((IronmanFeature)victimPlayer.Manager.Features["ironman"]).IronmanPvMKillStreak = 0;
                 ((IronmanFeature)victimPlayer.Manager.Features["ironman"]).IronmanPvPKillStreak = 0;
                 ((IronmanFeature)victimPlayer.Manager.Features["ironman"]).IronmanCauseOfDeath = killerPlayer.Name;
-                ((IronmanFeature)victimPlayer.Manager.Features["ironman"]).IronmanStartRegion = victimPlayer.Region.ToString();
+                ((IronmanFeature)victimPlayer.Manager.Features["ironman"]).IronmanStartRegion =
+                    victimPlayer.Region.ToString();
                 ((IronmanFeature)victimPlayer.Manager.Features["ironman"]).AtualizarSobrevivencia();
                 ((IronmanFeature)victimPlayer.Manager.Features["ironman"]).IronmanAchievements = new List<string>();
                 ((IronmanFeature)victimPlayer.Manager.Features["ironman"]).IronmanScore = 0;
@@ -190,37 +227,48 @@ namespace Server.Custom.Features
 
                 ((IronmanFeature)killerPlayer.Manager.Features["ironman"]).IronmanPVPKills++;
                 ((IronmanFeature)killerPlayer.Manager.Features["ironman"]).IronmanPvPKillStreak++;
-                ((IronmanFeature)victimPlayer.Manager.Features["ironman"]).IronmanScoreMultiplier = 1.0 + ((IronmanFeature)victimPlayer.Manager.Features["ironman"]).IronmanPvPKillStreak * 0.05;
-                int killerScore = (int)(victimPlayer.Fame * ((IronmanFeature)victimPlayer.Manager.Features["ironman"]).IronmanScoreMultiplier) / 100;
+                ((IronmanFeature)victimPlayer.Manager.Features["ironman"]).IronmanScoreMultiplier =
+                    1.0 + ((IronmanFeature)victimPlayer.Manager.Features["ironman"]).IronmanPvPKillStreak * 0.05;
+                int killerScore =
+                    (int)(
+                        victimPlayer.Fame * ((IronmanFeature)victimPlayer.Manager.Features["ironman"]).IronmanScoreMultiplier
+                    ) / 100;
                 ((IronmanFeature)killerPlayer.Manager.Features["ironman"]).IronmanScore += killerScore;
 
-                Console.WriteLine($"[IronmanRanking] Atualizando ranking para {killerPlayer.Name} com score {((IronmanFeature)killerPlayer.Manager.Features["ironman"]).IronmanScore}");
+                Console.WriteLine(
+                    $"[IronmanRanking] Atualizando ranking para {killerPlayer.Name} com score {((IronmanFeature)killerPlayer.Manager.Features["ironman"]).IronmanScore}"
+                );
             }
             else if (killer is CustomPlayer customPlayer && victim is Mobile creature)
             {
                 ((IronmanFeature)customPlayer.Manager.Features["ironman"]).IronmanPVMKills++;
                 ((IronmanFeature)customPlayer.Manager.Features["ironman"]).IronmanPvMKillStreak++;
-                ((IronmanFeature)customPlayer.Manager.Features["ironman"]).IronmanScoreMultiplier = 1.0 + ((IronmanFeature)customPlayer.Manager.Features["ironman"]).IronmanPvMKillStreak * 0.05;
-                ((IronmanFeature)customPlayer.Manager.Features["ironman"]).IronmanScore = (int)(creature.Fame * ((IronmanFeature)customPlayer.Manager.Features["ironman"]).IronmanScoreMultiplier) / 100;
+                ((IronmanFeature)customPlayer.Manager.Features["ironman"]).IronmanScoreMultiplier =
+                    1.0 + ((IronmanFeature)customPlayer.Manager.Features["ironman"]).IronmanPvMKillStreak * 0.05;
+                ((IronmanFeature)customPlayer.Manager.Features["ironman"]).IronmanScore =
+                    (int)(creature.Fame * ((IronmanFeature)customPlayer.Manager.Features["ironman"]).IronmanScoreMultiplier)
+                    / 100;
             }
             if (killer is CustomPlayer player)
-                AtualizaRankingIronmanAsync(new IronmanRankingEntry
-                {
-                    PlayerName = player.Name,
-                    Score = ((IronmanFeature)player.Manager.Features["ironman"]).IronmanScore,
-                    SurvivalTime = ((IronmanFeature)player.Manager.Features["ironman"]).IronmanSurvivalTime.ToString(),
-                    KillPvPKillStreak = ((IronmanFeature)player.Manager.Features["ironman"]).IronmanPvPKillStreak,
-                    KillPvMKillStreak = ((IronmanFeature)player.Manager.Features["ironman"]).IronmanPvMKillStreak,
-                    Achievements = ((IronmanFeature)player.Manager.Features["ironman"]).IronmanAchievements,
-                    CauseOfDeath = ((IronmanFeature)player.Manager.Features["ironman"]).IronmanCauseOfDeath,
-                    StartRegion = ((IronmanFeature)player.Manager.Features["ironman"]).IronmanStartRegion,
-                    PvPKills = ((IronmanFeature)player.Manager.Features["ironman"]).IronmanPVPKills,
-                    PvPDeaths = ((IronmanFeature)player.Manager.Features["ironman"]).IronmanPvPDeaths,
-                    PvMKills = ((IronmanFeature)player.Manager.Features["ironman"]).IronmanPVMKills,
-                    PvMDeaths = ((IronmanFeature)player.Manager.Features["ironman"]).IronmanPVMDeaths,
-                    IsActive = ((IronmanFeature)player.Manager.Features["ironman"]).IsActive,
-                    Timestamp = DateTime.UtcNow
-                });
+                AtualizaRankingIronmanAsync(
+                    new IronmanRankingEntry
+                    {
+                        PlayerName = player.Name,
+                        Score = ((IronmanFeature)player.Manager.Features["ironman"]).IronmanScore,
+                        SurvivalTime = ((IronmanFeature)player.Manager.Features["ironman"]).IronmanSurvivalTime.ToString(),
+                        KillPvPKillStreak = ((IronmanFeature)player.Manager.Features["ironman"]).IronmanPvPKillStreak,
+                        KillPvMKillStreak = ((IronmanFeature)player.Manager.Features["ironman"]).IronmanPvMKillStreak,
+                        Achievements = ((IronmanFeature)player.Manager.Features["ironman"]).IronmanAchievements,
+                        CauseOfDeath = ((IronmanFeature)player.Manager.Features["ironman"]).IronmanCauseOfDeath,
+                        StartRegion = ((IronmanFeature)player.Manager.Features["ironman"]).IronmanStartRegion,
+                        PvPKills = ((IronmanFeature)player.Manager.Features["ironman"]).IronmanPVPKills,
+                        PvPDeaths = ((IronmanFeature)player.Manager.Features["ironman"]).IronmanPvPDeaths,
+                        PvMKills = ((IronmanFeature)player.Manager.Features["ironman"]).IronmanPVMKills,
+                        PvMDeaths = ((IronmanFeature)player.Manager.Features["ironman"]).IronmanPVMDeaths,
+                        IsActive = ((IronmanFeature)player.Manager.Features["ironman"]).IsActive,
+                        Timestamp = DateTime.UtcNow,
+                    }
+                );
         }
 
         public static async Task AtualizaRankingIronmanAsync(IronmanRankingEntry entry)

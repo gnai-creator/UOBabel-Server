@@ -18,5 +18,25 @@
     "Timestamp": "2025-06-09T02:57:34.1812178Z",
     "Content": "sapo: \u0022ranking\u0022",
     "Emocao": "neutra"
+  },
+  {
+    "Timestamp": "2025-06-09T06:12:55.2386661Z",
+    "Content": "Entrou em combate com Sapo.",
+    "Emocao": "raiva"
+  },
+  {
+    "Timestamp": "2025-06-09T06:12:55.2389455Z",
+    "Content": "Entrou em combate com Sapo.",
+    "Emocao": "raiva"
+  },
+  {
+    "Timestamp": "2025-06-09T06:13:18.8767198Z",
+    "Content": "Morreu em combate!",
+    "Emocao": "medo"
+  },
+  {
+    "Timestamp": "2025-06-09T06:13:18.8768724Z",
+    "Content": "Companion morreu!",
+    "Emocao": "medo"
   }
 ]
