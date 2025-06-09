@@ -150,7 +150,7 @@ namespace Server.Custom.Mobiles
 
             base.GenerateLoot();
 
-            if (m_Paragon)
+            if (IsParagon)
             {
                 if (Fame < 1250)
                 {
