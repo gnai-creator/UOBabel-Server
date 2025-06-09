@@ -137,7 +137,7 @@ namespace Server.Custom.Features
                                 background = GetBackground() ?? "",
                                 location = creature.Location.ToString() ?? "",
                                 mood = "neutro",
-                                item_amount = creature.Backpack.GetAmount(typeof(Gold)).ToString() ?? "0",
+                                item_amount = creature.Backpack?.GetAmount(typeof(Gold)).ToString() ?? "0",
                                 item_name = "",
                                 memory = memory?.GetRecentMemories() ?? new List<string>(),
                                 nearby_npcs = nearbyNpcsList ?? new List<AIService.NearbyNPC>(),
