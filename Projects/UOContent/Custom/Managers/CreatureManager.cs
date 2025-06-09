@@ -104,6 +104,10 @@ namespace Server.Custom.Mobiles
                     Features[key] = feature;
                 }
             }
+
+            // Garantir que todas as novas features sejam registradas
+            // mesmo que não existam no save anterior
+            EnsureAllFeatures();
         }
     }
 }
