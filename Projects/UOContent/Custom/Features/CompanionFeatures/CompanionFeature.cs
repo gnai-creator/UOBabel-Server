@@ -75,13 +75,14 @@ namespace Server.Custom.Companions
         public override void OnSpeech(SpeechEventArgs e)
         {
             // Exemplo: responde se chamado pelo nome do companion
-            if (e.Speech.Contains(CompanionName, StringComparison.OrdinalIgnoreCase))
+            if (e.Speech.Contains(CompanionName, StringComparison.OrdinalIgnoreCase) && e.Mobile == Owner?.ControlMaster)
             {
                 // Registra comando na memória e histórico
                 Memory?.AddMemory($"Dono falou: \"{e.Speech}\"", "afeto");
                 CommandHistory.Add($"{DateTime.UtcNow:HH:mm} {e.Mobile.Name}: {e.Speech}");
                 Owner.PublicOverheadMessage(Server.MessageType.Regular, 1161, false, $"Estou ouvindo, {e.Mobile.Name}!");
             }
+            base.OnSpeech(e);
         }
 
         public override void OnThink()

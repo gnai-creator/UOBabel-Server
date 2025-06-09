@@ -60,7 +60,8 @@ namespace Server.Mobiles
         Release, // "(Name) release"  Releases pet back into the wild (removes "tame" status).
         Stay,    // "(All/Name) stay" All or the specified pet(s) will stop and stay in current spot.
         Stop,    // "(All/Name) stop Cancels any current orders to attack, guard or follow.
-        Transfer // "(Name) transfer" Transfers complete ownership to targeted player.
+        Transfer, // "(Name) transfer" Transfers complete ownership to targeted player.
+        Flee,
     }
 
     [Flags]
@@ -2496,12 +2497,12 @@ namespace Server.Mobiles
                 {
                     AIObject.OnAggressiveAction(aggressor);
                 }
-                else
-                {
-                    DebugSay("I'm being attacked but my master told me not to fight.");
-                    Warmode = false;
-                    return;
-                }
+                // else
+                // {
+                //     DebugSay("I'm being attacked but my master told me not to fight.");
+                //     Warmode = false;
+                //     return;
+                // }
             }
 
             StopFlee();

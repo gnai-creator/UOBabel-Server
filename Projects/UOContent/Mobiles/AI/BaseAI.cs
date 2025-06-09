@@ -37,7 +37,9 @@ public enum ActionType
     Guard,
     Flee,
     Backoff,
-    Interact
+    Interact,
+    Follow,
+    Unknown
 }
 
 public abstract class BaseAI
@@ -1096,20 +1098,20 @@ public abstract class BaseAI
     public virtual bool Obey() =>
         !m_Mobile.Deleted && m_Mobile.ControlOrder switch
         {
-            OrderType.None     => DoOrderNone(),
-            OrderType.Come     => DoOrderCome(),
-            OrderType.Drop     => DoOrderDrop(),
-            OrderType.Friend   => DoOrderFriend(),
+            OrderType.None => DoOrderNone(),
+            OrderType.Come => DoOrderCome(),
+            OrderType.Drop => DoOrderDrop(),
+            OrderType.Friend => DoOrderFriend(),
             OrderType.Unfriend => DoOrderUnfriend(),
-            OrderType.Guard    => DoOrderGuard(),
-            OrderType.Attack   => DoOrderAttack(),
-            OrderType.Patrol   => DoOrderPatrol(),
-            OrderType.Release  => DoOrderRelease(),
-            OrderType.Stay     => DoOrderStay(),
-            OrderType.Stop     => DoOrderStop(),
-            OrderType.Follow   => DoOrderFollow(),
+            OrderType.Guard => DoOrderGuard(),
+            OrderType.Attack => DoOrderAttack(),
+            OrderType.Patrol => DoOrderPatrol(),
+            OrderType.Release => DoOrderRelease(),
+            OrderType.Stay => DoOrderStay(),
+            OrderType.Stop => DoOrderStop(),
+            OrderType.Follow => DoOrderFollow(),
             OrderType.Transfer => DoOrderTransfer(),
-            _                  => false
+            _ => false
         };
 
     public virtual void OnCurrentOrderChanged()
@@ -2041,14 +2043,14 @@ public abstract class BaseAI
         // Linear interpolated
         var movementSpeed = moveSpeed switch
         {
-            >= 1.0   => 1.8 * moveSpeed,
-            >= 0.5   => 1.05 + (moveSpeed - 0.5) * 1.5,
-            >= 0.4   => 0.85 + (moveSpeed - 0.4) * 2,
-            >= 0.3   => 0.6 + (moveSpeed - 0.3) * 2.5,
-            >= 0.2   => 0.3 + (moveSpeed - 0.2) * 3,
-            >= 0.1   => 0.125 + (moveSpeed - 0.1) * 1.75,
+            >= 1.0 => 1.8 * moveSpeed,
+            >= 0.5 => 1.05 + (moveSpeed - 0.5) * 1.5,
+            >= 0.4 => 0.85 + (moveSpeed - 0.4) * 2,
+            >= 0.3 => 0.6 + (moveSpeed - 0.3) * 2.5,
+            >= 0.2 => 0.3 + (moveSpeed - 0.2) * 3,
+            >= 0.1 => 0.125 + (moveSpeed - 0.1) * 1.75,
             >= 0.075 => 0.05 + (moveSpeed - 0.075) * 3,
-            _        => 0.0375 // 30 ticks, 37.5ms
+            _ => 0.0375 // 30 ticks, 37.5ms
         };
 
         if (isPassive)
@@ -3252,7 +3254,7 @@ public abstract class BaseAI
     public static class AIMovementTimerPool
     {
         private const int _poolSize = 1024;
-        private static readonly Queue<AIMovementTimer> _pool = new (_poolSize);
+        private static readonly Queue<AIMovementTimer> _pool = new(_poolSize);
 
         public static void Configure()
         {

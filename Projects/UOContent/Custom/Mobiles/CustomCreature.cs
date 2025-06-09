@@ -138,6 +138,8 @@ namespace Server.Custom.Mobiles
             return 1.0;
         }
 
+        
+
         public override void GenerateLoot(bool spawning)
         {
             m_Spawning = spawning;

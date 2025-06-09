@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Server.Mobiles;
 using Server.Services.AI;
 using Server.Items;
+using Server.Custom.Mobiles;
 
 namespace Server.Mobiles
 {
@@ -37,7 +38,7 @@ namespace Server.Mobiles
                 npc_id = m_Mobile.Serial.ToString(),
                 name = m_Mobile.Name,
                 role = m_Mobile.Title ?? "npc",
-                background = $"Você está com {m_Mobile.Hits/m_Mobile.HitsMax*100}% de vida e fugindo de {m_Mobile.Combatant?.Name ?? "um inimigo"}.",
+                background = $"Você está com {m_Mobile.Hits / m_Mobile.HitsMax * 100}% de vida e fugindo de {m_Mobile.Combatant?.Name ?? "um inimigo"}.",
                 location = m_Mobile.Location.ToString(),
                 mood = "neutro",
                 item_amount = m_Mobile.Backpack?.GetAmount(typeof(Gold)).ToString() ?? "0",
@@ -65,7 +66,82 @@ namespace Server.Mobiles
 
             if (_decisionTask == null || _decisionTask.IsCompleted)
             {
-                _decisionTask = DecideActionAsync();
+
+                if (Action == ActionType.Follow)
+                {
+                    if (m_Mobile.ControlMaster is CustomPlayer player)
+                    {
+                        if (player.HasPremium)
+                        {
+                            _decisionTask = DecideActionAsync($"você está seguindo {m_Mobile.ControlMaster.Name}. Decida sua ação.");
+                        }
+                    }
+                }
+                else if (Action == ActionType.Wander)
+                {
+                    if (m_Mobile.ControlMaster is CustomPlayer player)
+                    {
+                        if (player.HasPremium)
+                        {
+                            _decisionTask = DecideActionAsync($"você está vagando por {m_Mobile.Region.Name}. Decida sua ação.");
+                        }
+                    }
+                }
+                else if (Action == ActionType.Combat)
+                {
+                    if (m_Mobile.ControlMaster is CustomPlayer player)
+                    {
+                        if (player.HasPremium)
+                        {
+                            _decisionTask = DecideActionAsync($"você está lutando com {m_Mobile.Combatant?.Name ?? "um inimigo"}. Decida sua ação.");
+                        }
+                    }
+                }
+                else if (Action == ActionType.Flee)
+                {
+                    if (m_Mobile.ControlMaster is CustomPlayer player)
+                    {
+                        if (player.HasPremium)
+                        {
+                            _decisionTask = DecideActionAsync($"você está fugindo de {m_Mobile.Combatant?.Name ?? "um inimigo"}. Decida sua ação.");
+                        }
+                    }
+                }
+                else if (Action == ActionType.Guard)
+                {
+                    if (m_Mobile.ControlMaster is CustomPlayer player)
+                    {
+                        if (player.HasPremium)
+                        {
+                            _decisionTask = DecideActionAsync($"você está guardando {m_Mobile.Combatant?.Name ?? "um inimigo"}. Decida sua ação.");
+                        }
+                    }
+                }
+                else if (Action == ActionType.Interact)
+                {
+                    if (m_Mobile.ControlMaster is CustomPlayer player)
+                    {
+                        if (player.HasPremium)
+                        {
+                            _decisionTask = DecideActionAsync($"você está interagindo com {m_Mobile.FocusMob?.Name ?? "um objeto"}. Decida sua ação.");
+                        }
+                    }
+                }
+                else if (Action == ActionType.Backoff)
+                {
+                    if (m_Mobile.ControlMaster is CustomPlayer player)
+                    {
+                        if (player.HasPremium)
+                        {
+                            _decisionTask = DecideActionAsync($"você está se afastando de {m_Mobile.Combatant?.Name ?? "um inimigo"}. Decida sua ação.");
+                        }
+                    }
+                }
+
+                else
+                {
+                    _decisionTask = DecideActionAsync($"Decida sua ação.");
+                }
             }
 
             return base.Think();
@@ -82,14 +158,14 @@ namespace Server.Mobiles
             return base.CheckFlee();
         }
 
-        private async Task DecideActionAsync()
+        private async Task DecideActionAsync(string background)
         {
             var state = new AIService.FullNPCState
             {
                 npc_id = m_Mobile.Serial.ToString(),
                 name = m_Mobile.Name,
                 role = m_Mobile.Title ?? "npc",
-                background = $"Vida: {m_Mobile.Hits}/{m_Mobile.HitsMax}",
+                background = $"Com {m_Mobile.Hits}/{m_Mobile.HitsMax * 100}% de vida, {background}",
                 location = m_Mobile.Location.ToString(),
                 mood = "neutro",
                 item_amount = m_Mobile.Backpack?.GetAmount(typeof(Gold)).ToString() ?? "0",
@@ -132,6 +208,24 @@ namespace Server.Mobiles
                 case AIService.NpcAction.ROTINA:
                     _forceFlee = false;
                     Action = ActionType.Guard;
+                    break;
+                case AIService.NpcAction.MOVER_PARA:
+                    Action = ActionType.Wander;
+                    break;
+                case AIService.NpcAction.MOVER_PARA_CAVALO:
+                    Action = ActionType.Wander;
+                    break;
+                case AIService.NpcAction.MOVER_PARA_AUTOR:
+                    Action = ActionType.Follow;
+                    break;
+                case AIService.NpcAction.DIZER:
+                    Action = ActionType.Interact;
+                    break;
+                case AIService.NpcAction.SEGUIR:
+                    Action = ActionType.Follow;
+                    break;
+                default:
+                    Action = ActionType.Unknown;
                     break;
             }
         }

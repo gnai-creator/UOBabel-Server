@@ -190,6 +190,8 @@ namespace Server.Custom.Features
                                     {
                                         case AIService.NpcAction.SEGUIR:
                                             await FalarComEmocao("*segue o jogador*", "afeto", playerLang);
+                                            Owner.AIObject.Action = ActionType.Follow;
+                                            Owner.ControlOrder = OrderType.Follow;
                                             break;
                                         case AIService.NpcAction.MONTAR_CAVALO:
                                             break;
@@ -203,7 +205,8 @@ namespace Server.Custom.Features
                                             break;
                                         case AIService.NpcAction.FUGIR:
                                             await FalarComEmocao("*fugiu*", "medo", playerLang);
-                                            FugaPorSpeech(e.Mobile, decision, playerLang);
+                                            Owner.AIObject.Action = ActionType.Flee;
+                                            Owner.ControlOrder = OrderType.Flee;
                                             break;
                                         case AIService.NpcAction.PEGAR_DINHEIRO:
                                             goto case AIService.NpcAction.PEGAR_ITEM;
@@ -216,6 +219,10 @@ namespace Server.Custom.Features
                                         case AIService.NpcAction.DAR_ITEM:
                                             await FalarComEmocao("*oferece o item*", "afeto", playerLang);
                                             DarItem(e.Mobile, decision, playerLang);
+                                            // TODO: Add beggingskill check to give item
+                                            // if (e.Mobile.Skills[SkillName.Begging].Value < 100)
+
+
                                             break;
                                         case AIService.NpcAction.ATACAR:
                                             await FalarComEmocao("*rosna e se prepara para atacar*", "raiva", playerLang);
@@ -223,6 +230,7 @@ namespace Server.Custom.Features
                                             break;
                                         case AIService.NpcAction.ROTINA:
                                             await FalarComEmocao("*retoma seu posto habitual*", "afeto", playerLang);
+                                            Owner.AIObject.Action = ActionType.Guard;
                                             break;
                                         default:
                                             break;
@@ -251,13 +259,7 @@ namespace Server.Custom.Features
             }
         }
 
-        protected void FugaPorSpeech(Mobile from, AIService.NpcDecision decision, string playerLang)
-        {
-            if (Owner.AIObject != null)
-            {
-                Owner.AIObject.Action = ActionType.Flee;
-            }
-        }
+
 
         protected void AtacarPorSpeech(Mobile from, AIService.NpcDecision decision, string playerLang)
         {
@@ -276,6 +278,11 @@ namespace Server.Custom.Features
             if (target != null)
             {
                 Owner.Combatant = target;
+                Owner.FocusMob = target;
+                Owner.AIObject.Action = ActionType.Combat;
+                Owner.AIObject.DoActionCombat();
+                Owner.AIObject.OnAggressiveAction(target);
+                Owner.ControlOrder = OrderType.Attack;
             }
         }
 
