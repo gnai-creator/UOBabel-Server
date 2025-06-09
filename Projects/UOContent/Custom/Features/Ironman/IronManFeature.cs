@@ -71,6 +71,28 @@ namespace Server.Custom.Features
             IronmanPlayerKills.Clear();
             IronmanStartRegion = Owner?.Region?.ToString() ?? "Unknown";
             IronmanCauseOfDeath = "Unknown";
+  
+
+        }
+
+        public void StopRun()
+        {
+            IsActive = false;
+            IronmanStartTime = DateTime.MinValue;
+            IronmanSurvivalTime = TimeSpan.Zero;
+            IronmanScore = 0;
+            IronmanPvMKillStreak = 0;
+            IronmanPvPKillStreak = 0;
+            IronmanScoreMultiplier = 1.0;
+            IronmanAchievements.Clear();
+            IronmanPvPDeaths = 0;
+            IronmanPVPKills = 0;
+            IronmanPVMKills = 0;
+            IronmanPVMDeaths = 0;
+            IronmanMonsterKills.Clear();
+            IronmanPlayerKills.Clear();
+            IronmanStartRegion = "Unknown";
+            IronmanCauseOfDeath = "Unknown";
         }
 
         public void OnLogin()
@@ -132,7 +154,6 @@ namespace Server.Custom.Features
                     _lastAfkPenalty = Core.Now;
                 }
             }
-            // Não chame OnKill aqui!
         }
 
         public void OnKill(Mobile victim, Mobile killer)

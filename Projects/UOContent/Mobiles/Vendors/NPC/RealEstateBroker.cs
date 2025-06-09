@@ -8,7 +8,7 @@ using Server.Targeting;
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class RealEstateBroker : BaseAICreature
+    public partial class RealEstateBroker : BaseAIVendor
     {
         private readonly List<SBInfo> m_SBInfos = new();
         private DateTime m_NextCheckPack;
@@ -126,27 +126,27 @@ namespace Server.Mobiles
         {
             var price = deed switch
             {
-                SmallBrickHouseDeed           => 43800,
-                StonePlasterHouseDeed         => 43800,
-                FieldStoneHouseDeed           => 43800,
-                WoodHouseDeed                 => 43800,
-                WoodPlasterHouseDeed          => 43800,
-                ThatchedRoofCottageDeed       => 43800,
-                BrickHouseDeed                => 144500,
-                TwoStoryWoodPlasterHouseDeed  => 192400,
+                SmallBrickHouseDeed => 43800,
+                StonePlasterHouseDeed => 43800,
+                FieldStoneHouseDeed => 43800,
+                WoodHouseDeed => 43800,
+                WoodPlasterHouseDeed => 43800,
+                ThatchedRoofCottageDeed => 43800,
+                BrickHouseDeed => 144500,
+                TwoStoryWoodPlasterHouseDeed => 192400,
                 TwoStoryStonePlasterHouseDeed => 192400,
-                TowerDeed                     => 433200,
-                KeepDeed                      => 665200,
-                CastleDeed                    => 1022800,
-                LargePatioDeed                => 152800,
-                LargeMarbleDeed               => 192800,
-                SmallTowerDeed                => 88500,
-                LogCabinDeed                  => 97800,
-                SandstonePatioDeed            => 90900,
-                VillaDeed                     => 136500,
-                StoneWorkshopDeed             => 60600,
-                MarbleWorkshopDeed            => 60300,
-                _                             => 0
+                TowerDeed => 433200,
+                KeepDeed => 665200,
+                CastleDeed => 1022800,
+                LargePatioDeed => 152800,
+                LargeMarbleDeed => 192800,
+                SmallTowerDeed => 88500,
+                LogCabinDeed => 97800,
+                SandstonePatioDeed => 90900,
+                VillaDeed => 136500,
+                StoneWorkshopDeed => 60600,
+                MarbleWorkshopDeed => 60300,
+                _ => 0
             };
 
             return AOS.Scale(price, 80); // refunds 80% of the purchase price

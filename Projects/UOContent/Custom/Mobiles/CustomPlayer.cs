@@ -75,6 +75,7 @@ namespace Server.Custom.Mobiles
                 }
                 return baseLuck;
             }
+
         }
 
         public void OnPlayerLogin()

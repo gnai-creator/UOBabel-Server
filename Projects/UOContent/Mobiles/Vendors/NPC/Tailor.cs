@@ -6,7 +6,7 @@ using Server.Engines.BulkOrders;
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Tailor : BaseAICreature
+    public partial class Tailor : BaseAIVendor
     {
         private readonly List<SBInfo> m_SBInfos = new();
 
@@ -38,7 +38,7 @@ namespace Server.Mobiles
                 {
                     >= 70.1 => TimeSpan.FromHours(6.0),
                     >= 50.1 => TimeSpan.FromHours(2.0),
-                    _       => TimeSpan.FromHours(1.0)
+                    _ => TimeSpan.FromHours(1.0)
                 };
 
                 if (theirSkill >= 70.1 && (theirSkill - 40.0) / 300.0 > Utility.RandomDouble())

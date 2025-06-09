@@ -6,7 +6,7 @@ using Server.Items;
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Scribe : BaseAICreature
+    public partial class Scribe : BaseAIVendor
     {
         public static readonly TimeSpan ShushDelay = TimeSpan.FromMinutes(1);
         private readonly List<SBInfo> m_SBInfos = new();

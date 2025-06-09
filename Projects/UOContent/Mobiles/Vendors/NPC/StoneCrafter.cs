@@ -5,7 +5,7 @@ namespace Server.Mobiles
 {
     [TypeAlias("Server.Mobiles.GargoyleStonecrafter")]
     [SerializationGenerator(0, false)]
-    public partial class StoneCrafter : BaseAICreature
+    public partial class StoneCrafter : BaseAIVendor
     {
         private readonly List<SBInfo> m_SBInfos = new();
 

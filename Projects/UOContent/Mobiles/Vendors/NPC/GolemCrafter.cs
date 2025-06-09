@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class GolemCrafter : BaseAICreature
+    public partial class GolemCrafter : BaseAIVendor
     {
         private readonly List<SBInfo> m_SBInfos = new();
 

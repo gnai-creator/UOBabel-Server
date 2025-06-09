@@ -8,7 +8,7 @@ using Server.Network;
 namespace Server.Mobiles;
 
 [SerializationGenerator(0, false)]
-public partial class CustomHairstylist : BaseAICreature
+public partial class CustomHairstylist : BaseAIVendor
 {
     private static readonly HairstylistBuyInfo[] _sellList =
     [
@@ -475,7 +475,7 @@ public class ChangeHairstyleGump : DynamicGump
             else if (!_facialHair)
             {
                 builder.AddRadio(40 + (xTable + 1) * offsetWidth, 240, 208, 209, false, i);
-                builder. AddHtmlLocalized(60 + (xTable + 1) * offsetWidth, 240, 85, 35, 1011064); // Bald
+                builder.AddHtmlLocalized(60 + (xTable + 1) * offsetWidth, 240, 85, 35, 1011064); // Bald
             }
             else
             {

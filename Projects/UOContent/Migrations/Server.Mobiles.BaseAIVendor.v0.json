@@ -1,0 +1,30 @@
+{
+  "version": 0,
+  "type": "Server.Mobiles.BaseAIVendor",
+  "properties": [
+    {
+      "name": "NextHirePay",
+      "type": "System.DateTime",
+      "rule": "PrimitiveTypeMigrationRule",
+      "ruleArguments": [
+        "DeltaTime"
+      ]
+    },
+    {
+      "name": "IsHired",
+      "type": "bool",
+      "rule": "PrimitiveTypeMigrationRule",
+      "ruleArguments": [
+        ""
+      ]
+    },
+    {
+      "name": "HoldGold",
+      "type": "int",
+      "rule": "PrimitiveTypeMigrationRule",
+      "ruleArguments": [
+        ""
+      ]
+    }
+  ]
+}

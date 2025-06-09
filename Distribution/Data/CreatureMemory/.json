@@ -1,0 +1,42 @@
+[
+  {
+    "Timestamp": "2025-06-08T23:54:57.4981461Z",
+    "Content": "Entrou em combate com sapo.",
+    "Emocao": "raiva"
+  },
+  {
+    "Timestamp": "2025-06-08T23:54:57.4989934Z",
+    "Content": "Entrou em combate com sapo.",
+    "Emocao": "raiva"
+  },
+  {
+    "Timestamp": "2025-06-08T23:55:27.8298468Z",
+    "Content": "Morreu em combate!",
+    "Emocao": "medo"
+  },
+  {
+    "Timestamp": "2025-06-08T23:55:27.8301646Z",
+    "Content": "Companion morreu!",
+    "Emocao": "medo"
+  },
+  {
+    "Timestamp": "2025-06-09T00:01:26.4549004Z",
+    "Content": "Entrou em combate com sapo.",
+    "Emocao": "raiva"
+  },
+  {
+    "Timestamp": "2025-06-09T00:01:26.4553599Z",
+    "Content": "Entrou em combate com sapo.",
+    "Emocao": "raiva"
+  },
+  {
+    "Timestamp": "2025-06-09T00:01:49.1818698Z",
+    "Content": "Morreu em combate!",
+    "Emocao": "medo"
+  },
+  {
+    "Timestamp": "2025-06-09T00:01:49.1820001Z",
+    "Content": "Companion morreu!",
+    "Emocao": "medo"
+  }
+]

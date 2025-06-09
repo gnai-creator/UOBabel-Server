@@ -13,7 +13,7 @@ using UOContent.Custom.Features.Ironman.Gumps;
 
 namespace Server.Custom.NPCs
 {
-    public class IronmanGuide : BaseAICreature
+    public class IronmanGuide : BaseAIVendor
     {
         public override bool ClickTitle => true;
 
@@ -69,13 +69,13 @@ namespace Server.Custom.NPCs
                     {
                         if (ironman.IsActive)
                         {
-                            await FalarComEmocao("Você já está no modo Ironman. Agora, sobreviva!", "afeto", player.PreferredLanguage);
+                            await FalarComEmocao("Você já está no modo Ironman, mas se quiser sair, diga 'ironman off.'. Agora, sobreviva!", "afeto", player.PreferredLanguage);
                         }
                         else
                         {
                             ironman.StartRun();
                             player.SendMessage(33, "[Ironman] Você agora está em modo Ironman!");
-                            await FalarComEmocao("Você agora está em modo Ironman! Agora, sobreviva!", "afeto", player.PreferredLanguage);
+                            await FalarComEmocao("Você agora está em modo Ironman! Agora, sobreviva! Você pode sair do modo Ironman digitando 'ironman off.'.", "afeto", player.PreferredLanguage);
                         }
 
                     }
@@ -86,6 +86,22 @@ namespace Server.Custom.NPCs
 
                     e.Handled = true;
                 }
+                if (speechTranslated.Contains("ironman off"))
+                {
+                    if (player.Manager.Features.TryGetValue("ironman", out var feature) && feature is IronmanFeature ironman)
+                    {
+                        ironman.StopRun();
+                        player.SendMessage(33, "[Ironman] Você saiu do modo Ironman!");
+                        await FalarComEmocao("Você saiu do modo Ironman! Agora, sobreviva!", "afeto", player.PreferredLanguage);
+                    }
+                    else
+                    {
+                        SayTo(player, "Houve um erro ao desativar seu modo Ironman. Avise um administrador.");
+                    }
+
+                    e.Handled = true;
+                }
+
                 if (speechTranslated.Contains("ranking") || speechTranslated.Contains("top") || speechTranslated.Contains("melhores"))
                 {
                     ((Mobile)player).CloseGump<IronmanRankingGump>(); // fecha se já estiver aberto

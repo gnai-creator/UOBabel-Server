@@ -5,7 +5,7 @@ using Server.Items;
 namespace Server.Mobiles
 {
     [SerializationGenerator(0, false)]
-    public partial class Fisherman : BaseAICreature
+    public partial class Fisherman : BaseAIVendor
     {
         private readonly List<SBInfo> m_SBInfos = new();
 

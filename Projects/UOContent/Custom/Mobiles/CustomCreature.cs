@@ -11,44 +11,58 @@ using System.Collections.Generic;
 
 namespace Server.Custom.Mobiles
 {
-
     public enum NpcRole
     {
-
         Vendor,
         Hireable
     }
+
     public class CustomCreature : BaseCreature
     {
         public CreatureManager CreatureManager { get; private set; }
 
-        public CustomCreature(AIType ai, FightMode mode, int perceptionRange, int fightRange)
-        : base(ai, mode, perceptionRange, fightRange)
+        // Construtor base
+        private void InitCreatureManager()
         {
             CreatureManager = new CreatureManager(this);
-            CreatureManager.RegisterFeature("ai", new NpcIntelligenceFeature(this));
-
+            CreatureManager.EnsureAllFeatures();
         }
+
+        public CustomCreature(AIType ai, FightMode mode, int perceptionRange, int fightRange)
+            : base(ai, mode, perceptionRange, fightRange)
+        {
+            InitCreatureManager();
+        }
+
         public CustomCreature(AIType ai) : base(ai)
         {
-            CreatureManager = new CreatureManager(this);
-            CreatureManager.RegisterFeature("ai", new NpcIntelligenceFeature(this));
+            InitCreatureManager();
         }
+
         public CustomCreature(AIType ai, FightMode mode) : base(ai, mode)
         {
-            CreatureManager = new CreatureManager(this);
-            CreatureManager.RegisterFeature("ai", new NpcIntelligenceFeature(this));
+            InitCreatureManager();
         }
+
         public CustomCreature(AIType ai, FightMode mode, int perceptionRange) : base(ai, mode, perceptionRange)
         {
-            CreatureManager = new CreatureManager(this);
-            CreatureManager.RegisterFeature("ai", new NpcIntelligenceFeature(this));
+            InitCreatureManager();
         }
+
         public CustomCreature(Serial serial) : base(serial)
         {
-            CreatureManager = new CreatureManager(this);
-            CreatureManager.RegisterFeature("ai", new NpcIntelligenceFeature(this));
+            InitCreatureManager();
         }
+
+        public void Enrage()
+        {
+            if (CreatureManager?.Features.TryGetValue("rage", out var rageFeature) == true)
+            {
+                if (rageFeature is RageFeature rf)
+                    rf.TriggerEnrage();
+            }
+        }
+
 
         public override void OnThink()
         {
@@ -60,11 +74,11 @@ namespace Server.Custom.Mobiles
         {
             CreatureManager?.OnDeath();
             var lastKiller = this.LastKiller;
-            if (lastKiller is CustomPlayer player)
+            if (lastKiller is CustomPlayer player &&
+                player.Manager?.Features.TryGetValue("ironman", out var ironmanFeature) == true)
             {
-                player.Manager?.Features["ironman"]?.OnKill(this, player);
+                (ironmanFeature as dynamic)?.OnKill(this, player);
             }
-            
             base.OnDeath(c);
         }
 
@@ -72,7 +86,6 @@ namespace Server.Custom.Mobiles
         {
             if (Combatant != null)
                 CreatureManager?.OnCombat(Combatant);
-
             base.OnCombatantChange();
         }
 

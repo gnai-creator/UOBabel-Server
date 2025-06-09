@@ -8,7 +8,7 @@ using Server.Items;
 namespace Server.Mobiles;
 
 [SerializationGenerator(3, false)]
-public abstract partial class BaseHealer : BaseAICreature
+public abstract partial class BaseHealer : BaseAIVendor
 {
     private static readonly TimeSpan ResurrectDelay = TimeSpan.FromSeconds(2.0);
 

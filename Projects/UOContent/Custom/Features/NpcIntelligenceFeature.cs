@@ -14,39 +14,42 @@ using Server.Custom.Gumps;
 
 namespace Server.Custom.Features
 {
-    public class NpcIntelligenceFeature : ICreatureFeature
+    public class NpcIntelligenceFeature : CreatureFeatureBase
     {
-        private BaseCreature creature;
         private NpcMemory memory;
-
         private DateTime _nextAllowedSpeech;
 
         public virtual InhumanSpeech SpeechType => null;
 
-        public NpcIntelligenceFeature(BaseCreature creature)
+        public NpcIntelligenceFeature() { }
+
+        public override void Initialize()
         {
-            this.creature = creature;
-            memory = new NpcMemory(creature.Serial.ToString());
-            memory.Load();
+            // Garante que Owner está setado (feito pelo CreatureManager)
+            if (Owner is BaseCreature creature)
+            {
+                memory = new NpcMemory(creature.Serial.ToString());
+                memory.Load();
+            }
         }
 
-        public void OnThink()
+        public override void OnThink() { }
+
+        public override void OnDeath()
         {
-            // Atualizações periódicas futuras
+            memory?.Save();
         }
 
-        public void OnDeath()
-        {
-            memory.Save();
-        }
-
-        public void OnCombat(Mobile combatant)
+        public override void OnCombat(Mobile combatant)
         {
             // Handle combat events here
         }
 
-        public async void OnSpeech(SpeechEventArgs e)
+        public override async void OnSpeech(SpeechEventArgs e)
         {
+            if (Owner is not BaseCreature creature)
+                return;
+
             try
             {
                 if (DateTime.UtcNow < _nextAllowedSpeech)
@@ -55,7 +58,7 @@ namespace Server.Custom.Features
                 _nextAllowedSpeech = DateTime.UtcNow.AddSeconds(3);
 
                 var speechType = SpeechType;
-                var memory = new NpcMemory(creature.Serial.ToString());
+                memory ??= new NpcMemory(creature.Serial.ToString());
                 memory.Load();
 
                 if (speechType?.OnSpeech(creature, e.Mobile, e.Speech) == true)
@@ -85,7 +88,7 @@ namespace Server.Custom.Features
                                 {
                                     string resultado = memory.SearchMemory(termo);
                                     string emocao = DetectarEmocao(resultado);
-                                    FalarComEmocao(resultado, emocao, playerLang);
+                                    await FalarComEmocao(resultado, emocao, playerLang);
                                 }
                                 catch (Exception ex)
                                 {
@@ -161,13 +164,12 @@ namespace Server.Custom.Features
                                     }
 
                                     string emocao = DetectarEmocao(resposta);
-                                    FalarComEmocao(resposta, emocao, playerLang);
+                                    await FalarComEmocao(resposta, emocao, playerLang);
                                 }
                                 else
                                 {
-                                    FalarComEmocao("*permanece em silencio*", "neutra", playerLang);
+                                    await FalarComEmocao("*permanece em silencio*", "neutra", playerLang);
                                 }
-
 
                                 Console.WriteLine($"[IAService] Ação: {actionType}");
 
@@ -175,23 +177,17 @@ namespace Server.Custom.Features
                                 {
                                     switch (actionType)
                                     {
-
                                         case AIService.NpcAction.SEGUIR:
-                                            FalarComEmocao("*segue o jogador*", "afeto", playerLang);
+                                            await FalarComEmocao("*segue o jogador*", "afeto", playerLang);
                                             break;
-
                                         case AIService.NpcAction.MONTAR_CAVALO:
-                                            // creature.Say("*sobe rapidamente em seu cavalo*");
                                             break;
                                         case AIService.NpcAction.PEGAR_DINHEIRO:
-                                            FalarComEmocao("*pega o dinheiro*", "afeto", playerLang);
-
+                                            await FalarComEmocao("*pega o dinheiro*", "afeto", playerLang);
                                             foreach (var item in e.Mobile.Backpack.Items)
                                             {
                                                 if (decision.item_amount == "")
-                                                {
                                                     decision.item_amount = "1";
-                                                }
                                                 if (item is Gold gold && decision.item_amount != "")
                                                 {
                                                     if (gold.Amount >= int.Parse(decision.item_amount))
@@ -202,21 +198,18 @@ namespace Server.Custom.Features
                                                     }
                                                     else
                                                     {
-                                                        FalarComEmocao("*não tem dinheiro suficiente*", "raiva", playerLang);
+                                                        await FalarComEmocao("*não tem dinheiro suficiente*", "raiva", playerLang);
                                                         break;
                                                     }
                                                 }
                                             }
                                             break;
-
                                         case AIService.NpcAction.DAR_DINHEIRO:
-                                            FalarComEmocao("*oferece uma pequena quantia*", "afeto", playerLang);
+                                            await FalarComEmocao("*oferece uma pequena quantia*", "afeto", playerLang);
                                             foreach (var item in creature.Backpack.Items)
                                             {
                                                 if (decision.item_amount == "")
-                                                {
                                                     decision.item_amount = "1";
-                                                }
                                                 if (item is Gold gold && decision.item_amount != "")
                                                 {
                                                     if (gold.Amount >= int.Parse(decision.item_amount))
@@ -227,41 +220,35 @@ namespace Server.Custom.Features
                                                     }
                                                     else
                                                     {
-                                                        FalarComEmocao("*não tem dinheiro suficiente*", "raiva", playerLang);
+                                                        await FalarComEmocao("*não tem dinheiro suficiente*", "raiva", playerLang);
                                                         break;
                                                     }
                                                 }
                                             }
                                             break;
-
                                         case AIService.NpcAction.PEGAR_ITEM:
-                                            FalarComEmocao("*pega o item*", "afeto", playerLang);
+                                            await FalarComEmocao("*pega o item*", "afeto", playerLang);
                                             PegarItem(e.Mobile, decision, playerLang);
                                             break;
-
                                         case AIService.NpcAction.DAR_ITEM:
-                                            FalarComEmocao("*oferece o item*", "afeto", playerLang);
+                                            await FalarComEmocao("*oferece o item*", "afeto", playerLang);
                                             DarItem(e.Mobile, decision, playerLang);
                                             break;
                                         case AIService.NpcAction.ATACAR:
-                                            FalarComEmocao("*rosna e se prepara para atacar*", "raiva", playerLang);
+                                            await FalarComEmocao("*rosna e se prepara para atacar*", "raiva", playerLang);
                                             creature.Combatant = e.Mobile;
                                             break;
-
                                         case AIService.NpcAction.ROTINA:
-                                            FalarComEmocao("*retoma seu posto habitual*", "afeto", playerLang);
+                                            await FalarComEmocao("*retoma seu posto habitual*", "afeto", playerLang);
                                             break;
-
                                         default:
                                             break;
                                     }
                                 }
-
-
                             }
                             catch (Exception ex)
                             {
-                                FalarComEmocao("Desculpe, não consegui processar isso.", "raiva", playerLang);
+                                await FalarComEmocao("Desculpe, não consegui processar isso.", "raiva", playerLang);
                                 Console.WriteLine($"[IAService] Erro ao decidir ação: {ex}");
                             }
                         }
@@ -276,11 +263,10 @@ namespace Server.Custom.Features
             catch (Exception ex)
             {
                 string playerLang = GetPlayerLanguage(e.Mobile);
-                FalarComEmocao("Houve uma falha na minha memória", "raiva", playerLang);
+                await FalarComEmocao("Houve uma falha na minha memória", "raiva", playerLang);
                 Console.WriteLine($"[OnSpeech ERROR] {ex}");
             }
         }
-
 
         protected void DarItem(Mobile from, AIService.NpcDecision decision, string playerLang)
         {
@@ -322,7 +308,7 @@ namespace Server.Custom.Features
             {
                 if (ite.GetType() == item.GetType())
                 {
-                    creature.AddToBackpack(item);
+                    Owner.AddToBackpack(item);
                     ite.Delete();
                     FalarComEmocao("*pega o item*", "afeto", playerLang);
                     break;
@@ -371,7 +357,7 @@ namespace Server.Custom.Features
                     break;
             }
 
-            creature.PublicOverheadMessage(Server.MessageType.Regular, hue, false, texto);
+            Owner.PublicOverheadMessage(Server.MessageType.Regular, hue, false, texto);
         }
 
 
@@ -395,7 +381,7 @@ namespace Server.Custom.Features
         public virtual string GetBackground()
         {
 
-            switch (creature.AI)
+            switch (Owner.AI)
             {
                 case AIType.AI_Melee:
                     return "Um guerreiro experiente, mestre no combate corpo a corpo e defensor dos inocentes.";
@@ -455,32 +441,18 @@ namespace Server.Custom.Features
 
             return "neutra";
         }
-
-        private AIService.FullNPCState BuildState(BaseCreature npc, Mobile player, string input)
+        public override void Serialize(IGenericWriter writer)
         {
-            return new AIService.FullNPCState
+            memory?.Save();
+        }
+
+        public override void Deserialize(IGenericReader reader)
+        {
+            if (Owner is BaseCreature creature)
             {
-                npc_id = npc.Serial.ToString(),
-                name = npc.Name,
-                player_input = input,
-                player_name = player.Name,
-                mood = "neutro",
-                memory = memory.GetRecentMemories(),
-                location = npc.Location.ToString(),
-                nearby_npcs = new(),
-                item_name = "",
-                item_amount = "0"
-            };
-        }
-
-        public void Serialize(IGenericWriter writer)
-        {
-            memory.Save();
-        }
-
-        public void Deserialize(IGenericReader reader)
-        {
-            memory.Load();
+                memory = new NpcMemory(creature.Serial.ToString());
+                memory.Load();
+            }
         }
     }
 }

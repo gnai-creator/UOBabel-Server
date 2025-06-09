@@ -23,7 +23,7 @@ namespace Server.Mobiles
     }
 
     [SerializationGenerator(0)]
-    public partial class BaseAICreature : BaseVendor, IHireable
+    public partial class BaseAIVendor : BaseVendor, IHireable
     {
         public NpcRole CurrentRole { get; private set; } = NpcRole.Vendor;
         private NpcRole OriginalRole { get; set; } = NpcRole.Vendor;
@@ -349,7 +349,7 @@ namespace Server.Mobiles
                 {
                     var hire = queue.Dequeue();
 
-                    if (hire is BaseAICreature aiCreature)
+                    if (hire is BaseAIVendor aiCreature)
                     {
                         aiCreature.GetOwner(); // Sets owner to null
                         aiCreature.Say(503235); // I regret nothing!
@@ -396,7 +396,7 @@ namespace Server.Mobiles
 
 
 
-        public BaseAICreature(string title = null) : base(title)
+        public BaseAIVendor(string title = null) : base(title)
         {
             AI = AIType.AI_Vendor;
             FightMode = FightMode.None;
@@ -408,7 +408,7 @@ namespace Server.Mobiles
             hireable.HoldGold = 8;
         }
 
-        public BaseAICreature(Serial serial) : base(serial)
+        public BaseAIVendor(Serial serial) : base(serial)
         {
             OriginalRole = CurrentRole;
             ControlSlots = 2;

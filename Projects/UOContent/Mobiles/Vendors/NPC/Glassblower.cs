@@ -6,7 +6,7 @@ namespace Server.Mobiles
     [TypeAlias("Server.Mobiles.GargoyleAlchemist")]
 
     [SerializationGenerator(0, false)]
-    public partial class Glassblower : BaseAICreature
+    public partial class Glassblower : BaseAIVendor
     {
         private readonly List<SBInfo> m_SBInfos = new();
 
