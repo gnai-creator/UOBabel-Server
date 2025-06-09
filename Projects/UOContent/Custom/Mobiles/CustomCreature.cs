@@ -148,34 +148,8 @@ namespace Server.Custom.Mobiles
                 m_KillersDropMultiplier = GetKillerDropMultiplier();
             }
 
-            base.GenerateLoot();
+            base.GenerateLoot(spawning);
 
-            if (IsParagon)
-            {
-                if (Fame < 1250)
-                {
-                    AddLoot(LootPack.Meager);
-                }
-                else if (Fame < 2500)
-                {
-                    AddLoot(LootPack.Average);
-                }
-                else if (Fame < 5000)
-                {
-                    AddLoot(LootPack.Rich);
-                }
-                else if (Fame < 10000)
-                {
-                    AddLoot(LootPack.FilthyRich);
-                }
-                else
-                {
-                    AddLoot(LootPack.UltraRich);
-                }
-            }
-
-            m_Spawning = false;
-            m_KillersLuck = 0;
             m_KillersDropMultiplier = 1.0;
         }
 
