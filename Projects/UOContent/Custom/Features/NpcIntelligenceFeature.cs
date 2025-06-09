@@ -86,7 +86,8 @@ namespace Server.Custom.Features
 
                                 try
                                 {
-                                    string resultado = memory.SearchMemory(termo);
+                                    string resultado = memory?.SearchMemory(termo) ??
+                                        "Nao consigo me lembrar disso.";
                                     string emocao = DetectarEmocao(resultado);
                                     await FalarComEmocao(resultado, emocao, playerLang);
                                 }
@@ -128,7 +129,7 @@ namespace Server.Custom.Features
                                 mood = "neutro",
                                 item_amount = creature.Backpack.GetAmount(typeof(Gold)).ToString() ?? "0",
                                 item_name = "",
-                                memory = memory.GetRecentMemories() ?? new List<string>(),
+                                memory = memory?.GetRecentMemories() ?? new List<string>(),
                                 nearby_npcs = nearbyNpcsList ?? new List<AIService.NearbyNPC>(),
                                 player_input = e.Speech.ToLower(),
                                 player_name = e.Mobile.Name
@@ -150,9 +151,9 @@ namespace Server.Custom.Features
                                     }
                                 }
 
-                                memory.AddMemory($"Interagiu com {e.Mobile.Name}, que disse: \"{e.Speech}\"");
+                                memory?.AddMemory($"Interagiu com {e.Mobile.Name}, que disse: \"{e.Speech}\"");
                                 if (!string.IsNullOrWhiteSpace(decision.say))
-                                    memory.AddMemory($"Respondeu: \"{decision.say}\"");
+                                    memory?.AddMemory($"Respondeu: \"{decision.say}\"");
 
                                 if (!string.IsNullOrWhiteSpace(decision.say))
                                 {
