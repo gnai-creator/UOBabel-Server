@@ -12,6 +12,7 @@ using Server.Custom.AI;
 using Server.Custom.Items;
 using UOContent.Custom.Patreon;
 using Server.Custom.Mobiles;
+using Server.Custom.Features;
 
 namespace Server.Mobiles
 {
@@ -515,8 +516,14 @@ namespace Server.Mobiles
                 _nextAllowedSpeech = DateTime.UtcNow.AddSeconds(3);
 
                 var speechType = SpeechType;
-                var memory = new NpcMemory(this.Serial.ToString());
-                memory.Load();
+                MemoryFeature memFeature = null;
+                if (this is CustomCreature cc &&
+                    cc.CreatureManager.Features.TryGetValue("memory", out var feat))
+                {
+                    memFeature = (MemoryFeature)feat;
+                    memFeature.MemoryId = $"{Serial}-{e.Mobile.Serial}";
+                    memFeature.Load();
+                }
 
                 if (speechType?.OnSpeech(this, e.Mobile, e.Speech) == true)
                 {
@@ -551,14 +558,14 @@ namespace Server.Mobiles
                                 string playerLang = GetPlayerLanguage(e.Mobile);
                                 try
                                 {
-                                    string resultado = memory.SearchMemory(termo);
+                                    string resultado = memFeature?.SearchMemory(termo) ?? string.Empty;
                                     string emocao = DetectarEmocao(resultado);
                                     FalarComEmocao(resultado, emocao, playerLang);
                                 }
                                 catch (Exception ex)
                                 {
                                     this.Say("Algo deu errado com minhas memórias.");
-                                    Console.WriteLine($"[NpcMemory] ERRO ao buscar por '{termo}': {ex.Message}");
+                                    Console.WriteLine($"[MemoryFeature] ERRO ao buscar por '{termo}': {ex.Message}");
                                 }
 
                                 e.Handled = true;
@@ -593,7 +600,7 @@ namespace Server.Mobiles
                                 mood = "neutro",
                                 item_amount = Backpack.GetAmount(typeof(Gold)).ToString() ?? "0",
                                 item_name = "",
-                                memory = memory.GetRecentMemories() ?? new List<string>(),
+                                memory = memFeature?.GetRecentMemories() ?? new List<string>(),
                                 nearby_npcs = nearbyNpcsList ?? new List<AIService.NearbyNPC>(),
                                 player_input = e.Speech.ToLower(),
                                 player_name = e.Mobile.Name
@@ -616,9 +623,9 @@ namespace Server.Mobiles
                                     }
                                 }
 
-                                memory.AddMemory($"Interagiu com {e.Mobile.Name}, que disse: \"{e.Speech}\"");
+                                memFeature?.AddMemory($"Interagiu com {e.Mobile.Name}, que disse: \"{e.Speech}\"");
                                 if (!string.IsNullOrWhiteSpace(decision.say))
-                                    memory.AddMemory($"Respondeu: \"{decision.say}\"");
+                                    memFeature?.AddMemory($"Respondeu: \"{decision.say}\"");
 
                                 if (!string.IsNullOrWhiteSpace(decision.say))
                                 {

@@ -16,7 +16,7 @@ namespace Server.Custom.Features
 {
     public class NpcIntelligenceFeature : CreatureFeatureBase
     {
-        private NpcMemory memory;
+        private MemoryFeature memory;
         private DateTime _nextAllowedSpeech;
 
         public virtual InhumanSpeech SpeechType => null;
@@ -25,12 +25,9 @@ namespace Server.Custom.Features
 
         public override void Initialize()
         {
-            // Garante que Owner está setado (feito pelo CreatureManager)
-            if (Owner is BaseCreature)
-            {
-                // defer memory creation until the NPC interacts with a player
-                memory = null;
-            }
+            if (Owner is CustomCreature cc &&
+                cc.CreatureManager.Features.TryGetValue("memory", out var feat))
+                memory = (MemoryFeature)feat;
         }
 
         public override void OnThink() { }
@@ -58,9 +55,9 @@ namespace Server.Custom.Features
                 _nextAllowedSpeech = DateTime.UtcNow.AddSeconds(3);
 
                 var speechType = SpeechType;
-                if (memory == null)
+                if (memory != null)
                 {
-                    memory = new NpcMemory(creature.Serial.ToString());
+                    memory.MemoryId = $"{creature.Serial}-{e.Mobile.Serial}";
                     memory.Load();
                 }
 
@@ -96,7 +93,7 @@ namespace Server.Custom.Features
                                 catch (Exception ex)
                                 {
                                     creature.Say("Algo deu errado com minhas memórias.");
-                                    Console.WriteLine($"[NpcMemory] ERRO ao buscar por '{termo}': {ex.Message}");
+                                    Console.WriteLine($"[MemoryFeature] ERRO ao buscar por '{termo}': {ex.Message}");
                                 }
 
                                 e.Handled = true;
