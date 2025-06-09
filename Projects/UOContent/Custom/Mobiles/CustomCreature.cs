@@ -22,7 +22,7 @@ namespace Server.Custom.Mobiles
         public CreatureManager CreatureManager { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int EnrageDamageThreshold { get; set; } = 50;
+        public int EnrageDamageThreshold { get; set; } = 21;
 
         // Construtor base
         private void InitCreatureManager()
