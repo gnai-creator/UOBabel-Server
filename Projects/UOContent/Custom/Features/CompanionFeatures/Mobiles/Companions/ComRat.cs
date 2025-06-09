@@ -21,7 +21,7 @@ namespace Server.Custom.Companions
             SetHits(15);
             SetDamage(2, 4);
 
-            Tamable = false;
+            Tamable = true;
             ControlSlots = 1;
         }
 
