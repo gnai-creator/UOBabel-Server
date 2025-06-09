@@ -1,22 +1,22 @@
 [
   {
-    "Timestamp": "2025-06-09T02:02:48.7261929Z",
-    "Content": "Entrou em combate com sapo.",
-    "Emocao": "raiva"
+    "Timestamp": "2025-06-09T02:41:11.8412014Z",
+    "Content": "sapo: \u0022Aceito\u0022",
+    "Emocao": "neutra"
   },
   {
-    "Timestamp": "2025-06-09T02:02:48.7264349Z",
-    "Content": "Entrou em combate com sapo.",
-    "Emocao": "raiva"
+    "Timestamp": "2025-06-09T02:57:16.5109299Z",
+    "Content": "sapo: \u0022ironman off\u0022",
+    "Emocao": "neutra"
   },
   {
-    "Timestamp": "2025-06-09T02:03:00.6698959Z",
-    "Content": "Morreu em combate!",
-    "Emocao": "medo"
+    "Timestamp": "2025-06-09T02:57:22.2414606Z",
+    "Content": "sapo: \u0022bank\u0022",
+    "Emocao": "neutra"
   },
   {
-    "Timestamp": "2025-06-09T02:03:00.6700195Z",
-    "Content": "Companion morreu!",
-    "Emocao": "medo"
+    "Timestamp": "2025-06-09T02:57:34.1812178Z",
+    "Content": "sapo: \u0022ranking\u0022",
+    "Emocao": "neutra"
   }
 ]
