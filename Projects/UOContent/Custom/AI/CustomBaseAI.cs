@@ -34,7 +34,7 @@ namespace Server.Mobiles
                 npc_id = m_Mobile.Serial.ToString(),
                 name = m_Mobile.Name,
                 role = m_Mobile.Title ?? "npc",
-                background = string.Empty,
+                background = $"Você está com {m_Mobile.Hits/m_Mobile.HitsMax*100}% de vida e fugindo de {m_Mobile.Combatant?.Name ?? "um inimigo"}.",
                 location = m_Mobile.Location.ToString(),
                 mood = "neutro",
                 item_amount = m_Mobile.Backpack?.GetAmount(typeof(Gold)).ToString() ?? "0",
@@ -45,7 +45,7 @@ namespace Server.Mobiles
                 player_name = string.Empty
             };
 
-            var decision = await AIService.DecideNpcActionNewAsync(state);
+            var decision = await AIService.DecideNpcActionAsync(state);
             if (decision != null && decision.type != AIService.GetNpcActionString(AIService.NpcAction.FUGIR))
             {
                 _forceFlee = false;

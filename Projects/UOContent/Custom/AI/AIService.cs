@@ -212,45 +212,8 @@ namespace Server.Services.AI
                 };
             }
         }
+        
     }
 }
-        public static async Task<NpcDecision> DecideNpcActionNewAsync(FullNPCState state)
-        {
-            var json = JsonSerializer.Serialize(state);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            try
-            {
-                var response = await httpClient.PostAsync("http://localhost:10000/npc/decide/new", content);
-                response.EnsureSuccessStatusCode();
-
-                var responseString = await response.Content.ReadAsStringAsync();
-                return JsonSerializer.Deserialize<NpcDecision>(responseString);
-            }
-            catch (TaskCanceledException)
-            {
-                return new NpcDecision
-                {
-                    type = GetNpcActionString(NpcAction.NENHUMA),
-                    target = "",
-                    say = "Estou pensando demais no momento...",
-                    item_amount = "0",
-                    item_name = "",
-                    details = "timeout"
-                };
-            }
-            catch (Exception ex)
-            {
-                return new NpcDecision
-                {
-                    type = GetNpcActionString(NpcAction.NENHUMA),
-                    target = "",
-                    say = ex.Message,
-                    item_amount = "0",
-                    details = ex.Message
-                };
-            }
-        }
-    }
-}
 
