@@ -128,7 +128,7 @@ namespace Server.Custom.Features
                 ApplyRageBuffs(bc);
             }
 
-            Owner?.PublicOverheadMessage(Server.MessageType.Regular, RageHue, false, "*ENTRA EM FÚRIA!*");
+            // Owner?.PublicOverheadMessage(Server.MessageType.Regular, RageHue, false, "*ENTRA EM FÚRIA!*");
         }
 
         private void CalmDown()

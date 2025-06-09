@@ -18,7 +18,7 @@ namespace Server
     {
 
 
-        public const int NumberOfSkills = 3;       // Number of skills you want the player to add
+        public const int NumberOfSkills = 5;       // Number of skills you want the player to add
         private const int SkillCapValue = 700;      // Players Skill cap value
         private int m_SelectionsMade;
         private List<SkillName> m_SelectedSkills;
@@ -171,28 +171,25 @@ namespace Server
 
         private void AdjustSkillsToCapForPlayer(Mobile m, int skillCapValue, List<SkillName> selectedSkills)
         {
-            int totalSkillPoints;
-            int excessPoints;
+            int totalSkillPoints = m.SkillsTotal / 10;
+            int excessPoints = totalSkillPoints - skillCapValue;
 
-            // Set all non-selected skills to zero
-            foreach (Skill skill in m.Skills)
-            {
-                if (!selectedSkills.Contains(skill.SkillName))
-                {
-                    skill.Base = 0;
-                }
-            }
-
-            // Update totalSkillPoints after setting non-selected skills to zero
-            totalSkillPoints = m.SkillsTotal / 10;
-            excessPoints = totalSkillPoints - skillCapValue;
-
-            // If excessPoints is still greater than 0 after setting non-selected skills to zero,
-            // reduce selected skills proportionally
             if (excessPoints > 0)
             {
-                double reductionFactor = 1.0 - excessPoints / (double)totalSkillPoints;
-                foreach (Skill skill in m.Skills)
+                // Soma dos pontos das skills selecionadas
+                double totalSelectedPoints = 0;
+                foreach (var skill in m.Skills)
+                {
+                    if (selectedSkills.Contains(skill.SkillName))
+                        totalSelectedPoints += skill.Base;
+                }
+
+                if (totalSelectedPoints == 0)
+                    return;
+
+                double reductionFactor = 1.0 - (excessPoints / totalSelectedPoints);
+
+                foreach (var skill in m.Skills)
                 {
                     if (selectedSkills.Contains(skill.SkillName))
                     {
@@ -201,6 +198,7 @@ namespace Server
                 }
             }
         }
+
 
         public class SkillData
         {
